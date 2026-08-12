@@ -2822,7 +2822,7 @@
           </span>
         </div>
 
-        <h1 id="heroTitle">Pare de perder margem comprando de <span class="hl">atravessador</span></h1>
+        <h1 id="heroTitle">PARE DE PERDER DINHEIRO<br>por não ter os <span class="hl">contatos certos</span></h1>
 
         <p class="hero-sub" id="heroSub">
           <strong>500+ fornecedores verificados</strong> de multimarcas premium, com WhatsApp e Instagram de cada um.
@@ -3068,42 +3068,6 @@
           <h3>Rede de profissionais</h3>
           <p>Designer, criador de site, gestor de tráfego e outros contatos que aceleram seu negócio.</p>
           <p class="product-price">Sem custo extra</p>
-        </div>
-      </article>
-      <article class="product-card" data-reveal="fade-left" data-tilt-card>
-        <div class="product-img mock" id="cardImg3">
-          <div class="mock-calc">
-            <div class="mk-row"><span>Custo da peça</span><b>R$ 45,00</b></div>
-            <div class="mk-row"><span>Markup</span><b>2,8x</b></div>
-            <div class="mk-row"><span>Frete + taxas</span><b>R$ 7,50</b></div>
-            <div class="mk-total"><span>Preço de venda</span><b>R$ 129,90</b></div>
-            <div class="mk-profit"><i class="fa-solid fa-arrow-trend-up"></i> Lucro R$ 77,40 · margem 59%</div>
-          </div>
-        </div>
-        <div class="product-body">
-          <span class="product-badge dark">Atualizado</span>
-          <h3>Planilha de precificação</h3>
-          <p>Calcule margens, markup e preço de venda com fórmulas prontas para multimarcas.</p>
-          <p class="product-price">Bônus digital</p>
-        </div>
-      </article>
-      <article class="product-card" data-reveal="fade-right" data-tilt-card>
-        <div class="product-img mock" id="cardImg4">
-          <div class="mock-pdf">
-            <div class="mpdf-cover">
-              <span class="mpdf-tag">PDF</span>
-              <strong>Manual do<br>Lojista</strong>
-              <span class="mpdf-sub">Do primeiro contato à primeira venda</span>
-              <span class="mpdf-rule"></span>
-              <span class="mpdf-meta">42 páginas · edição 2026</span>
-            </div>
-          </div>
-        </div>
-        <div class="product-body">
-          <span class="product-badge dark">Guia</span>
-          <h3>Manual do lojista</h3>
-          <p>Passo a passo para montar estoque, negociar com fornecedores e escalar vendas online.</p>
-          <p class="product-price">PDF exclusivo</p>
         </div>
       </article>
     </div>
@@ -3705,6 +3669,7 @@
               out.push(`<span class="word${accent ? " accent" : ""}"><span class="word-in">${chunk}</span></span>`);
             });
           } else if (child.nodeType === 1) {
+            if (child.tagName === "BR") { out.push("<br>"); return; }
             walk(child, accent || child.classList.contains("hl"));
           }
         });
