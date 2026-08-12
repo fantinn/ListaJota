@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lista de Fornecedores de Multimarcas — 500+ contatos verificados</title>
   <meta name="description" content="500+ fornecedores verificados de multimarcas premium com WhatsApp e Instagram. Acesso imediato, 6 bônus inclusos e garantia de 7 dias." />
-  <meta name="theme-color" content="#07130c" />
+  <meta name="theme-color" content="#0a0c0b" />
 
   <!-- Compartilhamento (WhatsApp / Instagram / Facebook) -->
   <meta property="og:type" content="website" />
@@ -2788,6 +2788,220 @@
       .banner-slot { padding: 28px 20px; }
       .wa-btn { bottom: 84px; width: 50px; height: 50px; font-size: 1.5rem; }
     }
+
+    /* =========================================================================
+       POLIMENTO FINAL — contraste de superfícies, ícones e micro-interações
+       Objetivo: o verde deixa de ser o fundo de tudo e passa a ser acento.
+       ========================================================================= */
+
+    :root {
+      /* superfícies neutras (padrão) + faixas de acento pontuais */
+      --surface-base: #0a0c0b;   /* fundo geral, quase neutro */
+      --surface-alt:  #0f1214;   /* faixa elevada, levemente fria */
+      --surface-green:#08150e;   /* faixa verde: só nos momentos-chave */
+      --surface-amber:#100d07;   /* faixa âmbar: seção de bônus */
+      --grid-line: rgba(255,255,255,0.022);
+      /* acento secundário: quebra a monotonia do verde em urgência/recompensa */
+      --amber: #f0b429;
+      --amber-soft: rgba(240,180,41,0.11);
+      --amber-line: rgba(240,180,41,0.30);
+    }
+
+    /* ---------- 1. FUNDO BASE NEUTRO ----------
+       Antes: verde-escuro + grade verde + gradiente animado em background-attachment
+       fixed (repaint da viewport inteira a cada scroll). Agora: base neutra, grade
+       branca discreta e sem animação — menos verde e scroll mais leve. */
+    .page-content {
+      background-color: var(--surface-base);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 64px 64px, 64px 64px;
+      background-attachment: scroll;
+      animation: none;
+    }
+
+    /* ---------- 2. RITMO DE FAIXAS ----------
+       Neutro é o padrão; o verde vira exceção (prova, oferta e fechamento). */
+    .page-content > section {
+      border-top: 1px solid rgba(255,255,255,0.055);
+      padding-inline: clamp(16px, 5vw, 24px);
+    }
+
+    /* faixas neutras elevadas — criam profundidade sem cor */
+    .page-content > section.about,
+    .page-content > section.how-it-works,
+    .page-content > section.testimonials,
+    .page-content > section.guarantee {
+      background: var(--surface-alt) !important;
+    }
+
+    /* faixas verdes — apenas os 3 momentos de conversão */
+    .page-content > section.stats,
+    .page-content > section.offer {
+      background:
+        radial-gradient(900px 420px at 50% 0%, rgba(0,177,64,0.11), transparent 70%),
+        var(--surface-green) !important;
+      border-top-color: rgba(0,177,64,0.22);
+    }
+
+    /* faixa âmbar — a seção de bônus ganha o acento secundário */
+    .page-content > section.bonus {
+      background:
+        radial-gradient(880px 400px at 50% 0%, rgba(240,180,41,0.09), transparent 68%),
+        var(--surface-amber) !important;
+      border-top-color: var(--amber-line);
+    }
+    .bonus .section-head .label {
+      color: var(--amber) !important;
+      background: var(--amber-soft);
+      border-color: var(--amber-line);
+    }
+    .bonus-num {
+      background: var(--amber-soft) !important;
+      border-color: var(--amber-line) !important;
+      color: var(--amber) !important;
+    }
+    .bonus-row:hover { border-color: var(--amber-line) !important; }
+
+    /* hero: mantém o verde como âncora, porém menos saturado.
+       Precisa de .page-content > section para vencer o `background: transparent
+       !important` do tema dark — antes o hero só exibia o fundo da página. */
+    .page-content > section.hero {
+      background:
+        radial-gradient(1000px 560px at 80% 6%, rgba(0,177,64,0.14), transparent 60%),
+        radial-gradient(700px 480px at 5% 95%, rgba(0,177,64,0.07), transparent 60%),
+        linear-gradient(168deg, #08150e 0%, #060908 55%, #0a1710 100%) !important;
+    }
+
+    footer {
+      background-color: var(--surface-base);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+
+    /* ---------- 3. ÍCONES: chips consistentes ----------
+       Antes eram glifos soltos de tamanhos diferentes; agora todos vivem no mesmo
+       container arredondado, o que dá alinhamento vertical e peso visual igual. */
+    .audience-card > i,
+    .about-highlight > i {
+      width: 46px; height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      border-radius: 13px;
+      font-size: 1.05rem;
+      color: var(--green);
+      background: rgba(0,177,64,0.10);
+      border: 1px solid rgba(0,177,64,0.24);
+      transition: transform 0.35s var(--ease-out), background 0.3s, border-color 0.3s;
+    }
+    .audience-card:hover > i,
+    .about-highlight:hover > i {
+      transform: translateY(-3px) scale(1.05);
+      background: rgba(0,177,64,0.18);
+      border-color: rgba(0,177,64,0.5);
+    }
+
+    .step-icon {
+      border-radius: 14px;
+      background: rgba(0,177,64,0.10) !important;
+      border: 1px solid rgba(0,177,64,0.24);
+      color: var(--green);
+    }
+    .step-card:hover .step-icon {
+      transform: translateY(-3px) scale(1.06) rotate(-4deg);
+      background: rgba(0,177,64,0.2) !important;
+      color: #fff;
+    }
+    /* número fantasma do passo em âmbar: separa "ordem" de "ação" */
+    .step-num { color: var(--amber-soft); font-size: 3.4rem; }
+
+    .guarantee-icon i, .offer-note i, .fb-note i { color: var(--green); }
+
+    /* ---------- 4. URGÊNCIA EM ÂMBAR (não em verde) ---------- */
+    .offer-timer {
+      color: var(--amber) !important;
+      border-color: var(--amber-line) !important;
+      background: rgba(240,180,41,0.08) !important;
+    }
+    .offer-timer i, .offer-timer strong { color: var(--amber) !important; }
+    .sticky-cta-info s { color: var(--amber) !important; opacity: 0.75; }
+
+    /* ---------- 5. MICRO-INTERAÇÕES ---------- */
+    .hero-cta, .btn-buy, .header-cta {
+      position: relative;
+      overflow: hidden;
+    }
+    /* brilho que atravessa o botão no hover */
+    .hero-cta::after, .btn-buy::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -60%;
+      width: 45%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.28), transparent);
+      transform: skewX(-18deg);
+      transition: left 0.65s var(--ease-out);
+      pointer-events: none;
+    }
+    .hero-cta:hover::after, .btn-buy:hover::after { left: 125%; }
+
+    .brands-tags .brand-tag:hover {
+      background: rgba(0,177,64,0.14) !important;
+      border-color: rgba(0,177,64,0.55) !important;
+    }
+    .faq-question i { transition: transform 0.35s var(--ease-out), color 0.25s; }
+    .faq-item:hover .faq-question i { color: #fff; }
+    .stat-item { transition: border-color 0.3s, transform 0.3s var(--ease-out), box-shadow 0.3s; }
+    .stat-item:hover { box-shadow: 0 18px 40px rgba(0,0,0,0.3), 0 0 26px rgba(0,177,64,0.1); }
+
+    /* ---------- 6. GRIDS FLUIDOS ----------
+       auto-fit ajusta as colunas sozinho e evita órfãos: os mínimos foram
+       escolhidos para que 3 cards ainda caibam no tablet em vez de sobrar um
+       sozinho na linha de baixo. (.stats-grid fica de fora: com 4 itens curtos
+       os breakpoints explícitos — 2 no mobile/tablet, 4 no desktop — leem melhor.) */
+    .product-grid     { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+    .audience-grid    { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+    .testimonial-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+    .bonus-grid       { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+
+    /* alívio de respiro quando 3 colunas dividem a largura do tablet */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .audience-card { padding: 22px 18px; }
+      .testimonial-card { padding: 22px 18px 20px; }
+      .testimonial-card blockquote { font-size: 0.85rem; }
+    }
+
+    /* alvos de toque confortáveis (mín. ~44px) */
+    .faq-question { min-height: 56px; }
+    .desk-nav a { padding: 10px 0; }
+
+    @media (min-width: 1024px) {
+      /* 4 passos lado a lado viram uma linha do tempo legível */
+      .steps-grid { grid-template-columns: repeat(4, 1fr); max-width: 1180px; }
+      .step-card { flex-direction: column; gap: 16px; padding: 28px 22px; }
+      .step-num { top: 14px; right: 18px; }
+    }
+
+    /* telas muito estreitas (iPhone SE e similares) */
+    @media (max-width: 400px) {
+      .section-head h2 { font-size: 1.45rem; }
+      .hero-text h1 { font-size: 1.7rem; }
+      .cat-item { width: 92px; }
+      .stat-item { padding: 22px 10px !important; }
+      .offer-list li, .compare-list li { font-size: 0.82rem; }
+      .fb-note { gap: 6px 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-cta::after, .btn-buy::after { display: none; }
+      .audience-card:hover > i,
+      .about-highlight:hover > i,
+      .step-card:hover .step-icon { transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -3419,32 +3633,6 @@
     </a>
   </section>
 
-  <!-- Banner final -->
-  <section class="final-banner">
-    <div class="banner-slot" id="bannerFinal">
-      <div class="fb-inner">
-        <p class="fb-label"><i class="fa-solid fa-bolt"></i> Última chamada</p>
-        <h3>Seus concorrentes já estão comprando direto da fonte.</h3>
-        <p class="fb-sub">Cada semana sem a lista é margem que fica na mão do atravessador. Comece hoje com 7 dias de garantia.</p>
-        <div class="fb-price">
-          <span class="fb-discount">-57%</span>
-          <span class="fb-old">R$ 700,00</span>
-          <strong>R$ 297,90</strong>
-          <span class="fb-inst">ou 12x de R$ 29,21</span>
-        </div>
-        <a href="#" class="hero-cta magnetic" id="ctaFinal">
-          Garantir minha lista agora
-          <i class="fa-solid fa-arrow-right arrow"></i>
-        </a>
-        <p class="fb-note">
-          <span><i class="fa-solid fa-lock"></i> Pagamento seguro</span>
-          <span><i class="fa-solid fa-bolt"></i> Acesso imediato</span>
-          <span><i class="fa-solid fa-shield"></i> Garantia de 7 dias</span>
-        </p>
-      </div>
-    </div>
-  </section>
-
   <a href="#" class="wa-btn" id="waLink" aria-label="WhatsApp">
     <i class="fa-brands fa-whatsapp"></i>
   </a>
@@ -4034,10 +4222,19 @@
       const timerEl = document.getElementById("timer");
       const timerWrap = document.getElementById("offerTimerWrap");
       const KEY = "jotaTimer";
-      let end = Number(localStorage.getItem(KEY));
+      /* localStorage lança SecurityError quando o armazenamento está bloqueado
+         (Safari privado, webviews, políticas restritivas). Sem proteção, o erro
+         subia e cancelava initCounters/initFaq/animateWaBtn logo abaixo. */
+      const store = {
+        get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+        set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+        remove(k) { try { localStorage.removeItem(k); } catch {} }
+      };
+
+      let end = Number(store.get(KEY));
       if (!end || end <= Date.now()) {
         end = Date.now() + TIMER_MINUTES * 60 * 1000;
-        localStorage.setItem(KEY, end);
+        store.set(KEY, end);
       }
 
       let lastMin = null;
@@ -4058,7 +4255,7 @@
       let left = tick();
       const iv = setInterval(() => {
         left = tick();
-        if (left <= 0) { clearInterval(iv); localStorage.removeItem(KEY); }
+        if (left <= 0) { clearInterval(iv); store.remove(KEY); }
       }, 1000);
     }
 
