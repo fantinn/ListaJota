@@ -416,7 +416,7 @@
       width: 100%;
     }
     /* Hero oculto até animação — evita flash */
-    #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTrust { opacity: 0; }
+    #heroTag, #heroTagline, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTrust { opacity: 0; }
     #heroTitle { opacity: 0; }
     body.hero-ready #heroTitle { opacity: 1; }
     .hero-text .hero-label {
@@ -1904,7 +1904,7 @@
       body.loading .page-content { visibility: visible; }
       [data-reveal], .cat-item, .step-card, .audience-card,
       .testimonial-card, .included-item, .brands-tags .brand-tag,
-      #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTitle,
+      #heroTag, #heroTagline, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTitle,
       #heroTitle .word-in, #heroTrust,
       .banner-slot, .offer-list li { opacity: 1 !important; transform: none !important; }
     }
@@ -2117,13 +2117,13 @@
 
     /* headline */
     .hero-text h1 {
-      font-size: clamp(1.9rem, 3.1vw, 2.75rem);
+      font-size: clamp(1.9rem, 2.7vw, 2.3rem);
       line-height: 1.08;
       letter-spacing: -0.025em;
       text-transform: none;
       font-weight: 900;
       margin-bottom: 18px;
-      max-width: 26ch;
+      max-width: none;
       overflow: visible;
     }
     .hero-text h1 .word {
@@ -2160,6 +2160,13 @@
       overflow: visible;
     }
     .hero-text .hero-sub strong { color: var(--white); font-weight: 700; }
+
+    .hero-text .hero-tagline {
+      font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
 
     .hero-bullets {
       list-style: none;
@@ -2823,6 +2830,8 @@
         </div>
 
         <h1 id="heroTitle">PARE DE PERDER DINHEIRO<br>por não ter os <span class="hl">contatos certos</span></h1>
+
+        <p class="hero-tagline" id="heroTagline">Compre de contatos já testados, aprovados e verificados</p>
 
         <p class="hero-sub" id="heroSub">
           <strong>500+ fornecedores verificados</strong> de multimarcas premium, com WhatsApp e Instagram de cada um.
@@ -3520,7 +3529,7 @@
       document.querySelectorAll("#offerList li").forEach((li) => li.classList.add("show"));
       document.getElementById("bannerFinal")?.classList.add("revealed");
       document.getElementById("offerBox")?.classList.add("animated");
-      ["#heroTag","#heroSub","#heroBullets","#ctaHeroWrap","#heroImage","#heroTitle"].forEach((sel) => {
+      ["#heroTag","#heroTagline","#heroSub","#heroBullets","#ctaHeroWrap","#heroImage","#heroTitle"].forEach((sel) => {
         const el = document.querySelector(sel);
         if (el) el.style.opacity = "1";
       });
@@ -3683,7 +3692,7 @@
     }
 
     function animateHero() {
-      const heroEls = ["#heroTag","#heroSub","#heroBullets","#ctaHeroWrap","#heroImage","#heroTitle","#heroTitle .word-in","#heroTrust"];
+      const heroEls = ["#heroTag","#heroTagline","#heroSub","#heroBullets","#ctaHeroWrap","#heroImage","#heroTitle","#heroTitle .word-in","#heroTrust"];
 
       if (reducedMotion) {
         gsap?.set(heroEls, { opacity: 1, y: 0, x: 0, yPercent: 0, scale: 1, rotateX: 0, rotateY: 0 });
@@ -3704,7 +3713,8 @@
           stagger: 0.045,
           duration: 0.7
         }, "-=0.25")
-        .fromTo("#heroSub", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.45")
+        .fromTo("#heroTagline", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, "-=0.3")
+        .fromTo("#heroSub", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.35")
         .fromTo("#heroBullets li", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.08 }, "-=0.3")
         .from("#ctaHeroWrap", { y: 20, opacity: 0, duration: 0.5 }, "-=0.2")
         .fromTo("#heroTrust", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, "-=0.3")
