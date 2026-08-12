@@ -2619,19 +2619,40 @@
       font-size: 1rem;
       font-weight: 400;
       clip-path: none !important;
-      border: 1px solid rgba(0,177,64,0.28) !important;
-      background: linear-gradient(160deg, rgba(0,177,64,0.12), rgba(255,255,255,0.02)) !important;
+      position: relative;
+      border: 1px solid rgba(0,177,64,0.35) !important;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(0,177,64,0.18), transparent 60%),
+        linear-gradient(160deg, rgba(0,177,64,0.12), rgba(255,255,255,0.02)) !important;
+      box-shadow: 0 0 0 1px rgba(0,177,64,0.08), 0 30px 70px -20px rgba(0,177,64,0.35);
       max-width: 780px;
       margin: 0 auto 28px;
-      padding: clamp(30px, 4vw, 48px) clamp(22px, 3vw, 40px);
+      padding: clamp(34px, 4.5vw, 52px) clamp(22px, 3vw, 40px);
       color: var(--white) !important;
       display: block;
+      overflow: hidden;
+    }
+    .banner-slot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(160deg, rgba(0,177,64,0.6), rgba(0,177,64,0) 45%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
     }
     .fb-label {
       display: inline-flex; align-items: center; gap: 7px;
       font-size: 0.66rem; font-weight: 800; letter-spacing: 0.16em;
       text-transform: uppercase; color: var(--green) !important;
-      margin-bottom: 14px;
+      background: rgba(0,177,64,0.12);
+      border: 1px solid rgba(0,177,64,0.3);
+      border-radius: 999px;
+      padding: 6px 14px;
+      margin-bottom: 16px;
     }
     .banner-slot h3 {
       font-size: clamp(1.3rem, 3vw, 1.9rem);
@@ -2644,11 +2665,32 @@
       display: flex; align-items: baseline; justify-content: center;
       gap: 12px; flex-wrap: wrap; margin-top: 22px;
     }
+    .fb-discount {
+      align-self: center;
+      font-size: 0.72rem; font-weight: 800;
+      color: #06140d !important;
+      background: var(--green);
+      border-radius: 999px;
+      padding: 4px 10px;
+      letter-spacing: 0.02em;
+    }
     .fb-old { text-decoration: line-through; color: var(--txt-3) !important; font-size: 0.86rem; }
     .fb-price strong { font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--green); letter-spacing: -0.02em; }
     .fb-inst { font-size: 0.8rem; color: var(--txt-3) !important; }
-    .fb-note { margin-top: 18px; font-size: 0.74rem; color: var(--txt-3) !important; }
-    .fb-note i { color: var(--green); margin-right: 5px; }
+    .banner-slot .hero-cta {
+      margin: 26px auto 0;
+      width: 100%;
+      max-width: 380px;
+      justify-content: center;
+    }
+    .fb-note {
+      margin-top: 18px;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      gap: 8px 18px;
+      font-size: 0.74rem; color: var(--txt-3) !important;
+    }
+    .fb-note span { display: inline-flex; align-items: center; gap: 5px; }
+    .fb-note i { color: var(--green); }
 
     /* ---------- TIPOGRAFIA DOS CARDS (frase, não caixa-alta) ---------- */
     .product-card h3,
@@ -3041,7 +3083,7 @@
   </section>
 
   <!-- Features -->
-  <section class="features">
+  <section class="features" id="conteudo">
     <div class="section-head">
       <p class="label" data-reveal="fade-up">Exclusividades</p>
       <h2 data-reveal="fade-up" data-delay="0.1">Tudo que você precisa</h2>
@@ -3182,59 +3224,6 @@
       <div class="bonus-row" data-reveal="slide-right" data-delay="0.5">
         <span class="bonus-num">6</span>
         <div><h4>Grupo exclusivo</h4><p>Acesso a comunidade de lojistas para trocar experiências e dicas.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Conteúdo incluso -->
-  <section class="included" id="conteudo">
-    <div class="section-head">
-      <p class="label" data-reveal="fade-up">Tudo em um só lugar</p>
-      <h2 data-reveal="fade-up" data-delay="0.1">O que você recebe na compra</h2>
-      <p data-reveal="fade-up" data-delay="0.2">Material completo para sair do zero e começar a vender ainda esta semana.</p>
-    </div>
-    <div class="included-grid">
-      <div class="included-item" data-reveal="fade-left">
-        <i class="fa-solid fa-list"></i>
-        <div>
-          <h4>Planilha de fornecedores</h4>
-          <p>Mais de 500 contatos com WhatsApp, Instagram, tipo de peça e observações de negociação.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-right">
-        <i class="fa-solid fa-book"></i>
-        <div>
-          <h4>Manual do lojista</h4>
-          <p>Guia em PDF com passo a passo: como abordar fornecedores, montar estoque e precificar.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-left">
-        <i class="fa-solid fa-calculator"></i>
-        <div>
-          <h4>Planilha de precificação</h4>
-          <p>Calcule markup, margem de lucro e preço final automaticamente. Basta inserir o custo da peça.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-right">
-        <i class="fa-solid fa-users"></i>
-        <div>
-          <h4>Rede de profissionais</h4>
-          <p>Contatos de designer, criador de site, gestor de tráfego e fotógrafo de produto.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-left">
-        <i class="fa-solid fa-video"></i>
-        <div>
-          <h4>Vídeo aulas bônus</h4>
-          <p>3 aulas gravadas: como negociar com fornecedor, montar vitrine e vender pelo Instagram.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-right">
-        <i class="fa-solid fa-arrows-rotate"></i>
-        <div>
-          <h4>Atualizações gratuitas</h4>
-          <p>Novos fornecedores adicionados todo mês. Você recebe por e-mail sem pagar nada a mais.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -3438,17 +3427,22 @@
         <h3>Seus concorrentes já estão comprando direto da fonte.</h3>
         <p class="fb-sub">Cada semana sem a lista é margem que fica na mão do atravessador. Comece hoje com 7 dias de garantia.</p>
         <div class="fb-price">
+          <span class="fb-discount">-57%</span>
           <span class="fb-old">R$ 700,00</span>
           <strong>R$ 297,90</strong>
           <span class="fb-inst">ou 12x de R$ 29,21</span>
         </div>
+        <a href="#" class="hero-cta magnetic" id="ctaFinal">
+          Garantir minha lista agora
+          <i class="fa-solid fa-arrow-right arrow"></i>
+        </a>
+        <p class="fb-note">
+          <span><i class="fa-solid fa-lock"></i> Pagamento seguro</span>
+          <span><i class="fa-solid fa-bolt"></i> Acesso imediato</span>
+          <span><i class="fa-solid fa-shield"></i> Garantia de 7 dias</span>
+        </p>
       </div>
     </div>
-    <a href="#" class="hero-cta magnetic" id="ctaFinal" data-reveal="fade-up">
-      Garantir minha lista agora
-      <i class="fa-solid fa-arrow-right arrow"></i>
-    </a>
-    <p class="fb-note"><i class="fa-solid fa-lock"></i> Pagamento seguro · Acesso imediato · Reembolso em 7 dias</p>
   </section>
 
   <a href="#" class="wa-btn" id="waLink" aria-label="WhatsApp">
