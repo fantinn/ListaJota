@@ -2368,6 +2368,14 @@
       .wa-btn { bottom: 84px; width: 50px; height: 50px; font-size: 1.5rem; }
     }
 
+    /* imagem da lista: proporção real, sem corte e sem fundo claro */
+    #cardImg1 {
+      aspect-ratio: 1560 / 1008;
+      background: #05070a !important;
+      min-height: 0 !important;
+    }
+    #cardImg1 img { object-fit: contain; }
+
     /* ---------- COMO FUNCIONA (refinado) ---------- */
     .steps-grid {
       max-width: 860px;
@@ -2738,11 +2746,8 @@
     <div class="product-grid">
       <article class="product-card" data-reveal="fade-left" data-tilt-card>
         <div class="product-img" id="cardImg1">
-          <picture>
-            <source srcset="listwhite_opt.webp" type="image/webp" />
-            <img src="listwhite_opt.jpg" alt="Prévia da lista completa de fornecedores"
-                 width="1200" height="800" loading="lazy" decoding="async" />
-          </picture>
+          <img src="bannerfornecedores.png" alt="Prévia da lista completa de fornecedores"
+               width="1560" height="1008" loading="lazy" decoding="async" />
         </div>
         <div class="product-body">
           <span class="product-badge dark">Incluso</span>
