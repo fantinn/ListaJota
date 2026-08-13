@@ -1496,68 +1496,6 @@
       line-height: 1.6;
     }
 
-    /* ===== COMPARATIVO ===== */
-    .compare {
-      background: var(--white);
-      padding: 56px 24px;
-      overflow: hidden;
-    }
-    .compare-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .compare-col {
-      padding: 28px 24px;
-      border: 1px solid #e8e8e8;
-    }
-    .compare-col.bad {
-      background: #fafafa;
-      opacity: 0.85;
-    }
-    .compare-col.good {
-      border: 2px solid var(--green);
-      background: rgba(0,177,64,0.03);
-      position: relative;
-    }
-    .compare-col.good::before {
-      content: "RECOMENDADO";
-      position: absolute;
-      top: -12px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--green);
-      color: var(--white);
-      font-size: 0.6rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      padding: 4px 12px;
-    }
-    .compare-col h3 {
-      font-size: 0.95rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .compare-col.good h3 { color: var(--green); }
-    .compare-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .compare-list li {
-      display: flex;
-      gap: 10px;
-      font-size: 0.82rem;
-      line-height: 1.5;
-      align-items: flex-start;
-    }
-    .compare-list .icon-x { color: #ccc; margin-top: 2px; flex-shrink: 0; }
-    .compare-list .icon-check { color: var(--green); margin-top: 2px; flex-shrink: 0; }
-
     /* ===== CONTEÚDO INCLUSO ===== */
     .included {
       color: var(--white);
@@ -1650,7 +1588,6 @@
     .faq-item,
     .about-highlight,
     .brands-tags .brand-tag,
-    .compare-col,
     .offer-box {
       background: linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.018)) !important;
       border-color: rgba(255,255,255,0.12) !important;
@@ -1661,8 +1598,7 @@
     .step-card:hover,
     .testimonial-card:hover,
     .about-highlight:hover,
-    .brands-tags .brand-tag:hover,
-    .compare-col:hover {
+    .brands-tags .brand-tag:hover {
       border-color: rgba(0,177,64,0.7) !important;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 42px rgba(0,0,0,0.26), 0 0 22px rgba(0,177,64,0.08);
     }
@@ -1673,13 +1609,10 @@
     .product-body p,
     .step-card p,
     .about-highlight p,
-    .compare-list li,
     .offer-note {
       color: rgba(255,255,255,0.58);
     }
     .brands-tags .brand-tag { color: rgba(255,255,255,0.82); }
-    .compare-col.bad { background: rgba(255,255,255,0.035) !important; opacity: 1; }
-    .compare-col.good { background: rgba(255,255,255,0.06) !important; }
     .faq-item { background: rgba(255,255,255,0.025); }
     .faq-item.open { background: rgba(255,255,255,0.045); }
     .testimonial-card::before { color: rgba(255,255,255,0.08); }
@@ -1820,7 +1753,6 @@
       .footer-brand p { margin: 0; }
       .footer-social { justify-content: flex-start; }
       .about-inner { grid-template-columns: 1fr 1fr; }
-      .compare-grid { grid-template-columns: 1fr 1fr; }
       .included-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (min-width: 768px) and (max-width: 1023px) {
@@ -1837,7 +1769,6 @@
       .stats-grid { gap: 12px; }
       .stats { padding: 80px 20px; }
       .stat-item { padding: 24px 12px; }
-      .compare-col.good::before { font-size: 0.55rem; padding: 3px 10px; }
       .offer-box { padding: 28px 20px; }
       section { scroll-margin-top: var(--header-h); }
     }
@@ -2253,7 +2184,7 @@
 
     /* cantos arredondados consistentes */
     .product-card, .step-card, .testimonial-card, .faq-item,
-    .about-highlight, .compare-col, .offer-box,
+    .about-highlight, .offer-box,
     .audience-card, .included-item, .stat-item, .bonus-row,
     .product-img, .brand-tag {
       border-radius: var(--radius);
@@ -2406,14 +2337,6 @@
     .faq-question i { color: var(--green); }
     .faq-answer-inner { padding: 0 22px 20px; font-size: 0.88rem; line-height: 1.65; }
 
-    /* ---------- COMPARATIVO ---------- */
-    .compare-col { padding: 30px 26px; }
-    .compare-col h3 { font-size: 1.1rem; letter-spacing: 0; text-transform: none; }
-    .compare-list li { font-size: 0.86rem; line-height: 1.5; padding: 11px 0; }
-    .compare-col.good { border-color: rgba(0,177,64,0.5) !important; }
-    .icon-x { color: #ff6b6b; }
-    .icon-check { color: var(--green); }
-
     /* ---------- OFERTA ---------- */
     .offer-box {
       position: relative;
@@ -2435,6 +2358,76 @@
       letter-spacing: 0.02em;
       background: linear-gradient(135deg, #00d44e, var(--green));
       box-shadow: 0 14px 34px rgba(0,177,64,0.35);
+    }
+
+    /* ---------- CARD DA OFERTA: acabamento final + detalhes em ambar ---------- */
+    :root { --amber: #ff9f1c; }
+
+    .offer-box {
+      background:
+        radial-gradient(120% 78% at 50% 0%, rgba(0,177,64,0.17), transparent 62%),
+        linear-gradient(168deg, #0d2417 0%, #09180f 58%, #061009 100%) !important;
+      border: 1px solid rgba(0,177,64,0.42) !important;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 46px rgba(0,177,64,0.10);
+    }
+
+    /* pilula do contador em ambar (destaca a urgencia sem competir com o CTA) */
+    .offer-timer {
+      background: rgba(255,159,28,0.10) !important;
+      border: 1px solid rgba(255,159,28,0.45) !important;
+      color: #ffc978;
+      padding: 9px 18px;
+      animation: timerPulse 2.6s ease-in-out infinite;
+    }
+    .offer-timer i { color: var(--amber); }
+    /* especificidade extra: ".page-content > section strong" pinta tudo de branco */
+    .offer-box .offer-timer strong {
+      color: var(--amber);
+      font-size: 1.05rem;
+      text-shadow: 0 0 14px rgba(255,159,28,0.55);
+    }
+    @keyframes timerPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,159,28,0.30); }
+      60%      { box-shadow: 0 0 0 9px rgba(255,159,28,0); }
+    }
+    /* ao entrar nos ultimos minutos o pulso vira um flash mais forte */
+    .offer-timer.urgent {
+      animation: urgentShake 0.5s ease, timerFlash 0.5s ease;
+    }
+    @keyframes timerFlash {
+      0%, 100% { background: rgba(255,159,28,0.10); }
+      50%      { background: rgba(255,159,28,0.28); }
+    }
+
+    .offer-box .offer-sub { color: rgba(255,255,255,0.55); }
+    .offer-box .price-old { color: rgba(255,255,255,0.38); }
+    .offer-box .price-new {
+      background: linear-gradient(180deg, #ffffff, #b9c6bd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .offer-list li { text-align: left; }
+
+    /* brilho percorrendo o botao */
+    .btn-buy { position: relative; overflow: hidden; }
+    .btn-buy::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -60%;
+      width: 38%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.38), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+      animation: btnShine 3.4s ease-in-out infinite;
+    }
+    @keyframes btnShine {
+      0%        { left: -60%; }
+      55%, 100% { left: 130%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .offer-timer, .btn-buy::after { animation: none !important; }
     }
 
     /* ---------- TIPOGRAFIA DOS CARDS (frase, não caixa-alta) ---------- */
@@ -2529,7 +2522,6 @@
       .section-head { margin-bottom: 32px; }
       .product-img { min-height: 190px; }
       .product-body { padding: 20px 18px 22px; }
-      .compare-col { padding: 24px 20px; }
       .wa-btn { bottom: 84px; width: 50px; height: 50px; font-size: 1.5rem; }
     }
   </style>
@@ -3144,7 +3136,7 @@
       </ul>
       <a href="#" class="btn-buy magnetic" id="ctaBuy">
         Garantir agora
-        <i class="fa-solid fa-bag-shopping"></i>
+        <i class="fa-solid fa-lock"></i>
       </a>
       <p class="offer-note"><i class="fa-solid fa-lock"></i> Compra 100% segura</p>
     </div>
