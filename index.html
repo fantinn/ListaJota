@@ -353,6 +353,21 @@
       align-items: center;
       overflow: hidden;
     }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .hero-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.5) 45%, rgba(10,10,10,0.8) 100%);
+      pointer-events: none;
+    }
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -383,15 +398,6 @@
     @keyframes orbFloat2 {
       0%, 100% { transform: translate(0, 0); }
       50% { transform: translate(20px, -30px); }
-    }
-    .hero-grid-lines {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
     }
     .hero-watermark {
       position: absolute;
@@ -1944,7 +1950,6 @@
     }
     .hero-orb-1, .hero-orb-2 { opacity: 0.12; }
     .hero-watermark { display: none; }
-    .hero-grid-lines { opacity: 0.35; }
 
     .hero-inner {
       max-width: 1240px;
@@ -2607,10 +2612,13 @@
 
   <!-- Hero -->
   <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="Green_particles_drifting_on_grid_202608122255.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-video-overlay"></div>
     <div class="hero-bg">
       <div class="hero-orb hero-orb-1"></div>
       <div class="hero-orb hero-orb-2"></div>
-      <div class="hero-grid-lines"></div>
     </div>
     <div class="hero-watermark" id="heroWatermark"></div>
     <div class="hero-inner">
