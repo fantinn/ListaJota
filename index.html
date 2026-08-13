@@ -353,20 +353,34 @@
       align-items: center;
       overflow: hidden;
     }
-    .hero-video {
+    /* linhas curvas fluindo (SVG animado) */
+    .hero-paths {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      /* esvazia o lado esquerdo, onde fica o texto do hero */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.75) 60%, #000 85%);
+      mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.75) 60%, #000 85%);
+    }
+    .hero-paths svg {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      opacity: 0.55;
-      pointer-events: none;
     }
-    .hero-video-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.5) 45%, rgba(10,10,10,0.8) 100%);
-      pointer-events: none;
+    .hero-paths path {
+      fill: none;
+      stroke: var(--green);
+      stroke-dasharray: 0.35 0.65;
+      animation-name: pathFlow;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      will-change: stroke-dashoffset;
+    }
+    @keyframes pathFlow {
+      from { stroke-dashoffset: 1; }
+      to   { stroke-dashoffset: 0; }
     }
     .hero-bg {
       position: absolute;
@@ -1999,13 +2013,15 @@
 
     /* headline */
     .hero-text h1 {
-      font-size: clamp(1.9rem, 3.1vw, 2.75rem);
+      /* teto reduzido: acima de ~1264px a coluna para de crescer, entao a
+         fonte nao pode crescer alem do que cabe em "PARE DE PERDER DINHEIRO" */
+      font-size: clamp(1.9rem, 3vw, 2.5rem);
       line-height: 1.08;
       letter-spacing: -0.025em;
       text-transform: none;
       font-weight: 900;
       margin-bottom: 18px;
-      max-width: 19ch;
+      max-width: 24ch;
       overflow: visible;
     }
     .hero-text h1 .word {
@@ -2612,10 +2628,7 @@
 
   <!-- Hero -->
   <section class="hero">
-    <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-      <source src="Green_particles_drifting_on_grid_202608122255.mp4" type="video/mp4" />
-    </video>
-    <div class="hero-video-overlay"></div>
+    <div class="hero-paths" id="heroPaths" aria-hidden="true"></div>
     <div class="hero-bg">
       <div class="hero-orb hero-orb-1"></div>
       <div class="hero-orb hero-orb-2"></div>
@@ -3406,6 +3419,50 @@
       return Promise.resolve();
     }
 
+    /* ===== HERO: LINHAS CURVAS FLUINDO ===== */
+    function initHeroPaths() {
+      const host = document.getElementById("heroPaths");
+      if (!host) return;
+
+      const SVG_NS = "http://www.w3.org/2000/svg";
+      const COUNT = 36;
+
+      // duas camadas espelhadas, como no efeito original
+      [1, -1].forEach((position) => {
+        const svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("viewBox", "0 0 696 316");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+
+        for (let i = 0; i < COUNT; i++) {
+          const off = i * 5 * position;
+          const d =
+            `M${-(380 - off)} ${-(189 + i * 6)}` +
+            `C${-(380 - off)} ${-(189 + i * 6)} ${-(312 - off)} ${216 - i * 6} ${152 - off} ${343 - i * 6}` +
+            `C${616 - off} ${470 - i * 6} ${684 - off} ${875 - i * 6} ${684 - off} ${875 - i * 6}`;
+
+          const path = document.createElementNS(SVG_NS, "path");
+          path.setAttribute("d", d);
+          // normaliza o comprimento para 1 -> o dash fecha o ciclo sem emenda
+          path.setAttribute("pathLength", "1");
+          path.setAttribute("stroke-width", (0.5 + i * 0.03).toFixed(2));
+          path.setAttribute("stroke-opacity", (0.04 + i * 0.012).toFixed(3));
+
+          if (!reducedMotion) {
+            const duration = 20 + Math.random() * 10;
+            path.style.animationDuration = duration.toFixed(2) + "s";
+            path.style.animationDelay = (-Math.random() * duration).toFixed(2) + "s";
+          } else {
+            path.style.animation = "none";
+          }
+
+          svg.appendChild(path);
+        }
+
+        host.appendChild(svg);
+      });
+    }
+
     /* ===== MARQUEE ===== */
     function initMarquee() {
       const track = document.getElementById("marqueeTrack");
@@ -3826,6 +3883,7 @@
 
     /* ===== INIT ===== */
     splitHeroText();
+    initHeroPaths();
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(initMarquee);
     } else {
