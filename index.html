@@ -353,6 +353,35 @@
       align-items: center;
       overflow: hidden;
     }
+    /* linhas curvas fluindo (SVG animado) */
+    .hero-paths {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      /* esvazia o lado esquerdo, onde fica o texto do hero */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.75) 60%, #000 85%);
+      mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.75) 60%, #000 85%);
+    }
+    .hero-paths svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .hero-paths path {
+      fill: none;
+      stroke: var(--green);
+      stroke-dasharray: 0.35 0.65;
+      animation-name: pathFlow;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      will-change: stroke-dashoffset;
+    }
+    @keyframes pathFlow {
+      from { stroke-dashoffset: 1; }
+      to   { stroke-dashoffset: 0; }
+    }
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -383,15 +412,6 @@
     @keyframes orbFloat2 {
       0%, 100% { transform: translate(0, 0); }
       50% { transform: translate(20px, -30px); }
-    }
-    .hero-grid-lines {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,177,64,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,177,64,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
     }
     .hero-watermark {
       position: absolute;
@@ -556,8 +576,8 @@
       transform-style: preserve-3d;
     }
     .hero-mock {
-      background: rgba(0,177,64,0.08);
-      border: 1px solid rgba(0,177,64,0.15);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 4px;
       display: flex;
       align-items: center;
@@ -1317,93 +1337,6 @@
       line-height: 1.65;
     }
 
-    /* ===== GARANTIA ===== */
-    .guarantee {
-      background: var(--black);
-      padding: 56px 24px;
-      overflow: hidden;
-    }
-    .guarantee-box {
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-      padding: 40px 32px;
-      border: 2px solid rgba(0,177,64,0.3);
-      position: relative;
-      overflow: hidden;
-    }
-    .guarantee-icon {
-      width: 72px; height: 72px;
-      margin: 0 auto 20px;
-      background: rgba(0,177,64,0.12);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      color: var(--green);
-    }
-    .guarantee-box h2 {
-      font-size: clamp(1.2rem, 4vw, 1.6rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-    .guarantee-box p {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.65;
-      margin-bottom: 24px;
-    }
-    .guarantee-badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-    }
-    .guarantee-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
-    }
-    .guarantee-badge i { color: var(--green); }
-
-    /* ===== CTA STRIP ===== */
-    .cta-strip {
-      background: var(--green);
-      padding: 40px 24px;
-      text-align: center;
-      overflow: hidden;
-    }
-    .cta-strip h2 {
-      font-size: clamp(1.2rem, 4vw, 1.8rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-    .cta-strip p {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 24px;
-      font-weight: 500;
-    }
-    .cta-strip .hero-cta {
-      background: var(--black);
-    }
-    .cta-strip .hero-cta:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    }
-
     /* ===== FOOTER EXPANDIDO ===== */
     .footer-inner {
       max-width: 900px;
@@ -1667,42 +1600,15 @@
       line-height: 1.55;
     }
 
-    /* ===== BANNER FINAL ===== */
-    .final-banner {
-      background: var(--gray-light);
-      padding: 48px 24px;
-      text-align: center;
-      overflow: hidden;
-    }
-    .banner-slot {
-      max-width: 900px;
-      margin: 0 auto 28px;
-      aspect-ratio: 16/7;
-      background: #ddd;
-      border: 2px dashed #bbb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #999;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      overflow: hidden;
-      clip-path: inset(0 100% 0 0);
-    }
-    .banner-slot.revealed { clip-path: inset(0 0 0 0); transition: clip-path 1s cubic-bezier(0.22,1,0.36,1); }
-    .banner-slot img { width: 100%; height: 100%; object-fit: cover; }
-
     /* ===== TEMA DARK UNIFICADO ===== */
     .page-content {
-      background-color: #07130c;
+      background-color: #0c0d0f;
       background-image:
-        radial-gradient(circle at 12% 18%, rgba(0, 177, 64, 0.14), transparent 28%),
-        radial-gradient(circle at 88% 72%, rgba(0, 177, 64, 0.1), transparent 30%),
-        linear-gradient(rgba(0, 177, 64, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 177, 64, 0.035) 1px, transparent 1px);
-      background-size: auto, auto, 60px 60px, 60px 60px;
+        radial-gradient(circle at 12% 18%, rgba(0, 177, 64, 0.05), transparent 32%),
+        radial-gradient(circle at 88% 72%, rgba(255, 255, 255, 0.025), transparent 34%),
+        linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
+      background-size: auto, auto, 64px 64px, 64px 64px;
       background-attachment: fixed;
       animation: darkGridDrift 24s ease-in-out infinite alternate;
     }
@@ -1741,8 +1647,7 @@
     .about-highlight,
     .brands-tags .brand-tag,
     .compare-col,
-    .offer-box,
-    .banner-slot {
+    .offer-box {
       background: linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.018)) !important;
       border-color: rgba(255,255,255,0.12) !important;
       color: var(--white);
@@ -1757,8 +1662,7 @@
       border-color: rgba(0,177,64,0.7) !important;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 42px rgba(0,0,0,0.26), 0 0 22px rgba(0,177,64,0.08);
     }
-    .product-img,
-    .banner-slot {
+    .product-img {
       background-color: rgba(0,0,0,0.28) !important;
       color: rgba(255,255,255,0.35);
     }
@@ -1771,16 +1675,14 @@
     }
     .brands-tags .brand-tag { color: rgba(255,255,255,0.82); }
     .compare-col.bad { background: rgba(255,255,255,0.035) !important; opacity: 1; }
-    .compare-col.good { background: rgba(0,177,64,0.09) !important; }
+    .compare-col.good { background: rgba(255,255,255,0.06) !important; }
     .faq-item { background: rgba(255,255,255,0.025); }
-    .faq-item.open { background: rgba(0,177,64,0.055); }
-    .testimonial-card::before { color: rgba(0,177,64,0.13); }
+    .faq-item.open { background: rgba(255,255,255,0.045); }
+    .testimonial-card::before { color: rgba(255,255,255,0.08); }
     .author-avatar,
     .step-icon { background: rgba(0,0,0,0.5); border: 1px solid rgba(0,177,64,0.35); }
     .product-badge.dark { background: rgba(0,0,0,0.72); }
     .offer-timer { background: rgba(0,0,0,0.52); border: 1px solid rgba(255,255,255,0.1); }
-    .cta-strip { border-top-color: rgba(0,177,64,0.45) !important; border-bottom: 1px solid rgba(0,177,64,0.45); }
-    .final-banner { border-bottom: 1px solid rgba(255,255,255,0.035); }
 
     /* ===== WHATSAPP ===== */
     .wa-btn {
@@ -1885,14 +1787,6 @@
     .brands-tags .brand-tag {
       opacity: 0;
     }
-    .banner-slot:not(.revealed) {
-      opacity: 0;
-    }
-    .banner-slot.revealed {
-      opacity: 1;
-      transition: clip-path 1s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;
-    }
-
     /* ===== REDUCED MOTION ===== */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1906,11 +1800,12 @@
       .testimonial-card, .included-item, .brands-tags .brand-tag,
       #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTitle,
       #heroTitle .word-in, #heroTrust,
-      .banner-slot, .offer-list li { opacity: 1 !important; transform: none !important; }
+      .offer-list li { opacity: 1 !important; transform: none !important; }
     }
 
     @media (min-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr 1fr; }
+      /* o hero so vira 2 colunas em 1024px (ver media abaixo): entre 768 e
+         1023 a coluna ficaria estreita demais e quebraria a headline */
       .product-grid { grid-template-columns: 1fr 1fr; }
       .stats-grid { grid-template-columns: repeat(4, 1fr); }
       .steps-grid { grid-template-columns: 1fr 1fr; }
@@ -1940,7 +1835,6 @@
       .stat-item { padding: 24px 12px; }
       .compare-col.good::before { font-size: 0.55rem; padding: 3px 10px; }
       .offer-box { padding: 28px 20px; }
-      .guarantee-box { padding: 32px 20px; }
       section { scroll-margin-top: var(--header-h); }
     }
     @media (min-width: 768px) {
@@ -2052,22 +1946,25 @@
     }
     .header-cta i { font-size: 0.72rem; }
 
-    .promo-strip { background: linear-gradient(90deg, var(--green-dark), var(--green) 45%, var(--green-dark)); }
+    .promo-strip {
+      background: #101215;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
     .marquee-viewport { padding: 10px 0; }
-    .marquee-track span { font-size: 0.68rem; letter-spacing: 0.1em; }
+    .marquee-track span { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--txt-2); }
 
     /* ---------- HERO ---------- */
     .hero {
       min-height: auto;
       background:
-        radial-gradient(1100px 620px at 78% 8%, rgba(0,177,64,0.16), transparent 62%),
-        radial-gradient(760px 520px at 8% 92%, rgba(0,177,64,0.09), transparent 60%),
-        linear-gradient(168deg, #071410 0%, #050807 52%, #08160e 100%);
+        radial-gradient(1100px 620px at 78% 8%, rgba(0,177,64,0.07), transparent 62%),
+        radial-gradient(760px 520px at 8% 92%, rgba(255,255,255,0.03), transparent 60%),
+        linear-gradient(168deg, #101215 0%, #0a0b0d 52%, #0c0e11 100%);
       border-bottom: 1px solid var(--line-soft);
     }
-    .hero-orb-1, .hero-orb-2 { opacity: 0.32; }
+    .hero-orb-1, .hero-orb-2 { opacity: 0.12; }
     .hero-watermark { display: none; }
-    .hero-grid-lines { opacity: 0.7; }
 
     .hero-inner {
       max-width: 1240px;
@@ -2117,13 +2014,15 @@
 
     /* headline */
     .hero-text h1 {
-      font-size: clamp(1.9rem, 3.1vw, 2.75rem);
+      /* teto reduzido: acima de ~1264px a coluna para de crescer, entao a
+         fonte nao pode crescer alem do que cabe em "PARE DE PERDER DINHEIRO" */
+      font-size: clamp(1.9rem, 3vw, 2.5rem);
       line-height: 1.08;
       letter-spacing: -0.025em;
       text-transform: none;
       font-weight: 900;
       margin-bottom: 18px;
-      max-width: 19ch;
+      max-width: 24ch;
       overflow: visible;
     }
     .hero-text h1 .word {
@@ -2350,9 +2249,9 @@
 
     /* cantos arredondados consistentes */
     .product-card, .step-card, .testimonial-card, .faq-item,
-    .about-highlight, .compare-col, .offer-box, .banner-slot,
+    .about-highlight, .compare-col, .offer-box,
     .audience-card, .included-item, .stat-item, .bonus-row,
-    .guarantee-box, .product-img, .brand-tag {
+    .product-img, .brand-tag {
       border-radius: var(--radius);
     }
     .brand-tag { border-radius: 999px; }
@@ -2367,8 +2266,8 @@
     }
     .cat-circle {
       width: 88px; height: 88px;
-      border: 1px solid rgba(0,177,64,0.35);
-      background: linear-gradient(155deg, rgba(0,177,64,0.16), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(155deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 26px rgba(0,0,0,0.35);
     }
     .cat-circle::before { display: none; }
@@ -2548,21 +2447,12 @@
     .icon-x { color: #ff6b6b; }
     .icon-check { color: var(--green); }
 
-    /* ---------- GARANTIA ---------- */
-    .guarantee-box {
-      border: 1px solid rgba(0,177,64,0.3);
-      background: linear-gradient(160deg, rgba(0,177,64,0.1), rgba(255,255,255,0.02)) !important;
-      padding: clamp(32px, 4vw, 52px) 28px;
-    }
-    .guarantee-box h2 { font-size: clamp(1.4rem, 3vw, 2rem); text-transform: none; letter-spacing: -0.02em; }
-    .guarantee-badge { border-radius: 999px; }
-
     /* ---------- OFERTA ---------- */
     .offer-box {
       position: relative;
-      border: 1px solid rgba(0,177,64,0.4) !important;
-      background: linear-gradient(165deg, rgba(0,177,64,0.13), rgba(255,255,255,0.03)) !important;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(0,177,64,0.08);
+      border: 1px solid rgba(0,177,64,0.28) !important;
+      background: linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)) !important;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
       padding: clamp(30px, 4vw, 52px) clamp(22px, 3vw, 44px) !important;
     }
     .offer-box h2 { font-size: clamp(1.5rem, 3vw, 2rem); text-transform: none; letter-spacing: -0.02em; }
@@ -2579,69 +2469,6 @@
       background: linear-gradient(135deg, #00d44e, var(--green));
       box-shadow: 0 14px 34px rgba(0,177,64,0.35);
     }
-
-    /* ---------- CTA STRIP (faixa verde: quebra o bloco escuro e destaca o CTA) ---------- */
-    .page-content > section.cta-strip {
-      background: linear-gradient(120deg, var(--green-dark), var(--green) 55%, #00c94c) !important;
-      border-top: none;
-      border-bottom: none;
-      padding: clamp(48px, 5vw, 72px) 24px;
-    }
-    .cta-strip h2 {
-      font-size: clamp(1.6rem, 3.4vw, 2.4rem);
-      text-transform: none;
-      letter-spacing: -0.025em;
-      color: #fff !important;
-    }
-    .cta-strip p { color: rgba(255,255,255,0.9) !important; font-size: 1rem; }
-    .cta-strip .hero-cta {
-      background: #06140d !important;
-      color: #fff;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.28);
-    }
-    .cta-strip .hero-cta:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
-
-    /* ---------- BANNER FINAL ---------- */
-    .final-banner { text-align: center; }
-    .banner-slot {
-      min-height: 0 !important;
-      height: auto !important;
-      aspect-ratio: auto !important;
-      text-transform: none;
-      letter-spacing: normal;
-      font-size: 1rem;
-      font-weight: 400;
-      clip-path: none !important;
-      border: 1px solid rgba(0,177,64,0.28) !important;
-      background: linear-gradient(160deg, rgba(0,177,64,0.12), rgba(255,255,255,0.02)) !important;
-      max-width: 780px;
-      margin: 0 auto 28px;
-      padding: clamp(30px, 4vw, 48px) clamp(22px, 3vw, 40px);
-      color: var(--white) !important;
-      display: block;
-    }
-    .fb-label {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 0.66rem; font-weight: 800; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--green) !important;
-      margin-bottom: 14px;
-    }
-    .banner-slot h3 {
-      font-size: clamp(1.3rem, 3vw, 1.9rem);
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-    .fb-sub { font-size: 0.94rem; line-height: 1.6; color: var(--txt-2) !important; max-width: 52ch; margin: 0 auto; }
-    .fb-price {
-      display: flex; align-items: baseline; justify-content: center;
-      gap: 12px; flex-wrap: wrap; margin-top: 22px;
-    }
-    .fb-old { text-decoration: line-through; color: var(--txt-3) !important; font-size: 0.86rem; }
-    .fb-price strong { font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--green); letter-spacing: -0.02em; }
-    .fb-inst { font-size: 0.8rem; color: var(--txt-3) !important; }
-    .fb-note { margin-top: 18px; font-size: 0.74rem; color: var(--txt-3) !important; }
-    .fb-note i { color: var(--green); margin-right: 5px; }
 
     /* ---------- TIPOGRAFIA DOS CARDS (frase, não caixa-alta) ---------- */
     .product-card h3,
@@ -2736,7 +2563,6 @@
       .product-img { min-height: 190px; }
       .product-body { padding: 20px 18px 22px; }
       .compare-col { padding: 24px 20px; }
-      .banner-slot { padding: 28px 20px; }
       .wa-btn { bottom: 84px; width: 50px; height: 50px; font-size: 1.5rem; }
     }
   </style>
@@ -2803,10 +2629,10 @@
 
   <!-- Hero -->
   <section class="hero">
+    <div class="hero-paths" id="heroPaths" aria-hidden="true"></div>
     <div class="hero-bg">
       <div class="hero-orb hero-orb-1"></div>
       <div class="hero-orb hero-orb-2"></div>
-      <div class="hero-grid-lines"></div>
     </div>
     <div class="hero-watermark" id="heroWatermark"></div>
     <div class="hero-inner">
@@ -3367,20 +3193,6 @@
     </div>
   </section>
 
-  <!-- Garantia -->
-  <section class="guarantee">
-    <div class="guarantee-box" data-reveal="scale">
-      <div class="guarantee-icon"><i class="fa-solid fa-shield-halved"></i></div>
-      <h2>Garantia de 7 dias</h2>
-      <p>Sua satisfação é nossa prioridade. Teste a lista por uma semana completa. Se não ficar satisfeito, devolvemos cada centavo — sem perguntas, sem complicação.</p>
-      <div class="guarantee-badges">
-        <span class="guarantee-badge"><i class="fa-solid fa-lock"></i> Pagamento seguro</span>
-        <span class="guarantee-badge"><i class="fa-solid fa-bolt"></i> Acesso imediato</span>
-        <span class="guarantee-badge"><i class="fa-solid fa-rotate-left"></i> Reembolso total</span>
-      </div>
-    </div>
-  </section>
-
   <!-- Oferta -->
   <section class="offer" id="comprar">
     <div class="offer-box" id="offerBox" data-reveal="scale">
@@ -3409,37 +3221,6 @@
       </a>
       <p class="offer-note"><i class="fa-solid fa-lock"></i> Compra 100% segura</p>
     </div>
-  </section>
-
-  <!-- CTA Strip -->
-  <section class="cta-strip">
-    <h2 data-reveal="fade-up">Pronto para começar?</h2>
-    <p data-reveal="fade-up" data-delay="0.1">Junte-se a mais de 1.200 lojistas que já transformaram seus negócios.</p>
-    <a href="#" class="hero-cta magnetic" id="ctaStrip" data-reveal="fade-up" data-delay="0.2">
-      Quero garantir minha vaga
-      <i class="fa-solid fa-arrow-right arrow"></i>
-    </a>
-  </section>
-
-  <!-- Banner final -->
-  <section class="final-banner">
-    <div class="banner-slot" id="bannerFinal">
-      <div class="fb-inner">
-        <p class="fb-label"><i class="fa-solid fa-bolt"></i> Última chamada</p>
-        <h3>Seus concorrentes já estão comprando direto da fonte.</h3>
-        <p class="fb-sub">Cada semana sem a lista é margem que fica na mão do atravessador. Comece hoje com 7 dias de garantia.</p>
-        <div class="fb-price">
-          <span class="fb-old">R$ 700,00</span>
-          <strong>R$ 297,90</strong>
-          <span class="fb-inst">ou 12x de R$ 29,21</span>
-        </div>
-      </div>
-    </div>
-    <a href="#" class="hero-cta magnetic" id="ctaFinal" data-reveal="fade-up">
-      Garantir minha lista agora
-      <i class="fa-solid fa-arrow-right arrow"></i>
-    </a>
-    <p class="fb-note"><i class="fa-solid fa-lock"></i> Pagamento seguro · Acesso imediato · Reembolso em 7 dias</p>
   </section>
 
   <a href="#" class="wa-btn" id="waLink" aria-label="WhatsApp">
@@ -3518,7 +3299,6 @@
         el.style.transform = "none";
       });
       document.querySelectorAll("#offerList li").forEach((li) => li.classList.add("show"));
-      document.getElementById("bannerFinal")?.classList.add("revealed");
       document.getElementById("offerBox")?.classList.add("animated");
       ["#heroTag","#heroSub","#heroBullets","#ctaHeroWrap","#heroImage","#heroTitle"].forEach((sel) => {
         const el = document.querySelector(sel);
@@ -3545,7 +3325,7 @@
     }
 
     function bindLinks() {
-      ["ctaHero","ctaBuy","ctaFinal","ctaStrip","waLink","footerWa","stickyCtaBtn"].forEach((id) => {
+      ["ctaHero","ctaBuy","waLink","footerWa","stickyCtaBtn"].forEach((id) => {
         const el = document.getElementById(id);
         if (!el) return;
         const isWa = id.includes("Wa") || id === "waLink";
@@ -3638,6 +3418,50 @@
     function runPreloader() {
       showPage();
       return Promise.resolve();
+    }
+
+    /* ===== HERO: LINHAS CURVAS FLUINDO ===== */
+    function initHeroPaths() {
+      const host = document.getElementById("heroPaths");
+      if (!host) return;
+
+      const SVG_NS = "http://www.w3.org/2000/svg";
+      const COUNT = 36;
+
+      // duas camadas espelhadas, como no efeito original
+      [1, -1].forEach((position) => {
+        const svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("viewBox", "0 0 696 316");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+
+        for (let i = 0; i < COUNT; i++) {
+          const off = i * 5 * position;
+          const d =
+            `M${-(380 - off)} ${-(189 + i * 6)}` +
+            `C${-(380 - off)} ${-(189 + i * 6)} ${-(312 - off)} ${216 - i * 6} ${152 - off} ${343 - i * 6}` +
+            `C${616 - off} ${470 - i * 6} ${684 - off} ${875 - i * 6} ${684 - off} ${875 - i * 6}`;
+
+          const path = document.createElementNS(SVG_NS, "path");
+          path.setAttribute("d", d);
+          // normaliza o comprimento para 1 -> o dash fecha o ciclo sem emenda
+          path.setAttribute("pathLength", "1");
+          path.setAttribute("stroke-width", (0.5 + i * 0.03).toFixed(2));
+          path.setAttribute("stroke-opacity", (0.04 + i * 0.012).toFixed(3));
+
+          if (!reducedMotion) {
+            const duration = 20 + Math.random() * 10;
+            path.style.animationDuration = duration.toFixed(2) + "s";
+            path.style.animationDelay = (-Math.random() * duration).toFixed(2) + "s";
+          } else {
+            path.style.animation = "none";
+          }
+
+          svg.appendChild(path);
+        }
+
+        host.appendChild(svg);
+      });
     }
 
     /* ===== MARQUEE ===== */
@@ -3994,24 +3818,6 @@
       }
     }
 
-    /* ===== BANNER CLIP REVEAL ===== */
-    function initBannerReveal() {
-      const banner = document.getElementById("bannerFinal");
-      if (!banner || reducedMotion) {
-        banner?.classList.add("revealed");
-        return;
-      }
-      ScrollTrigger.create({
-        trigger: banner,
-        start: "top 88%",
-        once: true,
-        onEnter: () => {
-          banner.classList.add("revealed");
-          gsap.fromTo(banner, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" });
-        }
-      });
-    }
-
     /* ===== RIPPLE ===== */
     document.getElementById("ctaBuy").addEventListener("click", function(e) {
       const ripple = document.createElement("span");
@@ -4076,23 +3882,9 @@
       });
     }
 
-    /* ===== GUARANTEE ICON ===== */
-    function initGuaranteeAnimation() {
-      if (reducedMotion) return;
-      gsap.from(".guarantee-icon", {
-        scale: 0,
-        rotation: -180,
-        duration: 0.9,
-        ease: "back.out(2)",
-        scrollTrigger: {
-          trigger: ".guarantee-box",
-          start: "top 80%"
-        }
-      });
-    }
-
     /* ===== INIT ===== */
     splitHeroText();
+    initHeroPaths();
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(initMarquee);
     } else {
@@ -4112,11 +3904,9 @@
           initCursorGlow();
           initHeaderScroll();
           initOfferAnimations();
-          initBannerReveal();
           initTimer();
           initCounters();
           initFaq();
-          initGuaranteeAnimation();
           animateWaBtn();
         } catch (err) {
           console.error(err);
