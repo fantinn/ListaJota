@@ -813,8 +813,7 @@
 
     /* ===== BÔNUS ===== */
     .bonus,
-    .audience,
-    .included {
+    .audience {
       background-color: #07130c;
       background-image:
         linear-gradient(rgba(0, 177, 64, 0.035) 1px, transparent 1px),
@@ -1496,52 +1495,6 @@
       line-height: 1.6;
     }
 
-    /* ===== CONTEÚDO INCLUSO ===== */
-    .included {
-      color: var(--white);
-      padding: 56px 24px;
-      overflow: hidden;
-    }
-    .included .section-head h2 { color: var(--white); }
-    .included .section-head p { color: rgba(255,255,255,0.5); }
-    .included-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .included-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-    }
-    .included-item i {
-      width: 40px; height: 40px;
-      flex-shrink: 0;
-      background: var(--green);
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-    }
-    .included-item h4 {
-      font-size: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 4px;
-    }
-    .included-item p {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.55;
-    }
-
     /* ===== TEMA DARK UNIFICADO ===== */
     .page-content {
       background-color: #0c0d0f;
@@ -1720,7 +1673,6 @@
     .step-card,
     .audience-card,
     .testimonial-card,
-    .included-item,
     .brands-tags .brand-tag {
       opacity: 0;
     }
@@ -1734,7 +1686,7 @@
       .preloader { display: none; }
       body.loading .page-content { visibility: visible; }
       [data-reveal], .cat-item, .step-card, .audience-card,
-      .testimonial-card, .included-item, .brands-tags .brand-tag,
+      .testimonial-card, .brands-tags .brand-tag,
       #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTitle,
       #heroTitle .word-in, #heroTrust,
       .offer-list li { opacity: 1 !important; transform: none !important; }
@@ -1753,7 +1705,6 @@
       .footer-brand p { margin: 0; }
       .footer-social { justify-content: flex-start; }
       .about-inner { grid-template-columns: 1fr 1fr; }
-      .included-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (min-width: 768px) and (max-width: 1023px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2185,7 +2136,7 @@
     /* cantos arredondados consistentes */
     .product-card, .step-card, .testimonial-card, .faq-item,
     .about-highlight, .offer-box,
-    .audience-card, .included-item, .stat-item, .bonus-row,
+    .audience-card, .stat-item, .bonus-row,
     .product-img, .brand-tag {
       border-radius: var(--radius);
     }
@@ -2288,18 +2239,18 @@
     .mpdf-meta { font-size: 0.55rem; color: var(--txt-3); letter-spacing: 0.06em; }
 
     /* ---------- COMO FUNCIONA / PÚBLICO / BÔNUS ---------- */
-    .step-card, .audience-card, .included-item, .bonus-row, .about-highlight {
+    .step-card, .audience-card, .bonus-row, .about-highlight {
       border: 1px solid var(--line-soft);
       transition: border-color 0.3s, transform 0.3s var(--ease-out), background 0.3s;
     }
-    .step-card:hover, .audience-card:hover, .included-item:hover, .bonus-row:hover, .about-highlight:hover {
+    .step-card:hover, .audience-card:hover, .bonus-row:hover, .about-highlight:hover {
       border-color: rgba(0,177,64,0.45);
       transform: translateY(-3px);
     }
-    .audience-card, .included-item, .bonus-row {
+    .audience-card, .bonus-row {
       background: linear-gradient(150deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015));
     }
-    .step-icon, .audience-card > i, .included-item > i {
+    .step-icon, .audience-card > i {
       color: var(--green);
     }
     .bonus-num {
@@ -2434,7 +2385,6 @@
     .product-card h3,
     .step-card h3,
     .audience-card h3,
-    .included-item h4,
     .bonus-row h4,
     .about-highlight h4,
     .testimonial-card .author-info strong {
@@ -2444,7 +2394,7 @@
       font-size: 1rem;
       line-height: 1.3;
     }
-    .step-card p, .audience-card p, .included-item p, .bonus-row p, .about-highlight p {
+    .step-card p, .audience-card p, .bonus-row p, .about-highlight p {
       font-size: 0.86rem;
       line-height: 1.55;
       color: var(--txt-3) !important;
@@ -2622,7 +2572,6 @@
 
       <nav class="desk-nav" aria-label="Navegação principal">
         <a href="#sobre">Sobre</a>
-        <a href="#conteudo">O que inclui</a>
         <a href="#depoimentos">Depoimentos</a>
         <a href="#faq">Dúvidas</a>
       </nav>
@@ -2649,7 +2598,6 @@
       <button class="mobile-nav-close" id="menuClose" aria-label="Fechar menu"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <a href="#sobre"><i class="fa-solid fa-circle-info"></i> Sobre a lista</a>
-    <a href="#conteudo"><i class="fa-solid fa-box"></i> O que inclui</a>
     <a href="#depoimentos"><i class="fa-solid fa-star"></i> Depoimentos</a>
     <a href="#faq"><i class="fa-solid fa-circle-question"></i> Dúvidas</a>
     <a href="#comprar" class="nav-cta"><i class="fa-solid fa-bag-shopping"></i> Comprar agora</a>
@@ -3033,52 +2981,6 @@
     </div>
   </section>
 
-  <!-- Conteúdo incluso -->
-  <section class="included" id="conteudo">
-    <div class="section-head">
-      <p class="label" data-reveal="fade-up">Tudo em um só lugar</p>
-      <h2 data-reveal="fade-up" data-delay="0.1">O que você recebe na compra</h2>
-      <p data-reveal="fade-up" data-delay="0.2">Material completo para sair do zero e começar a vender ainda esta semana.</p>
-    </div>
-    <div class="included-grid">
-      <div class="included-item" data-reveal="fade-left">
-        <i class="fa-solid fa-list"></i>
-        <div>
-          <h4>Planilha de fornecedores</h4>
-          <p>Contatos com WhatsApp, Instagram, tipo de peça e observações de negociação.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-right">
-        <i class="fa-solid fa-book"></i>
-        <div>
-          <h4>Manual do lojista</h4>
-          <p>Guia em PDF com passo a passo: como abordar fornecedores e montar seu estoque.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-right">
-        <i class="fa-solid fa-users"></i>
-        <div>
-          <h4>Rede de profissionais</h4>
-          <p>Contatos de designer, criador de site, gestor de tráfego e fotógrafo de produto.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-left">
-        <i class="fa-solid fa-video"></i>
-        <div>
-          <h4>Vídeo aulas bônus</h4>
-          <p>3 aulas gravadas: como negociar com fornecedor, montar vitrine e vender pelo Instagram.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-right">
-        <i class="fa-solid fa-arrows-rotate"></i>
-        <div>
-          <h4>Atualizações gratuitas</h4>
-          <p>Novos fornecedores adicionados todo mês. Você recebe por e-mail sem pagar nada a mais.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Depoimentos -->
   <section class="testimonials" id="depoimentos">
     <div class="section-head">
@@ -3286,7 +3188,7 @@
         el.style.opacity = "1";
         el.style.transform = "none";
       });
-      document.querySelectorAll(".cat-item, .step-card, .audience-card, .testimonial-card, .included-item, .brands-tags .brand-tag").forEach((el) => {
+      document.querySelectorAll(".cat-item, .step-card, .audience-card, .testimonial-card, .brands-tags .brand-tag").forEach((el) => {
         el.style.opacity = "1";
         el.style.transform = "none";
       });
@@ -3387,7 +3289,7 @@
     function initCatNav() {
       document.querySelectorAll(".cat-item").forEach((item) => {
         item.addEventListener("click", () => {
-          document.getElementById("conteudo")?.scrollIntoView({ behavior: "smooth" });
+          document.getElementById("comprar")?.scrollIntoView({ behavior: "smooth" });
         });
       });
     }
@@ -3590,7 +3492,6 @@
           { sel: ".steps-grid .step-card", trigger: ".steps-grid" },
           { sel: ".audience-grid .audience-card", trigger: ".audience-grid" },
           { sel: ".testimonial-grid .testimonial-card", trigger: ".testimonial-grid" },
-          { sel: ".included-grid .included-item", trigger: ".included-grid" },
           { sel: ".brands-tags .brand-tag", trigger: ".brands-tags" }
         ];
 
