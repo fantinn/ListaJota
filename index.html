@@ -369,6 +369,8 @@
     #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTrust { opacity: 0; }
     #heroTitle { opacity: 0; }
     body.hero-ready #heroTitle { opacity: 1; }
+    .hero-title-img { line-height: 0; margin-bottom: 12px; overflow: visible; }
+    .hero-title-img img { display: block; width: 100%; max-width: 560px; height: auto; }
     .hero-text h1 {
       font-size: clamp(2.8rem, 9vw, 4.5rem);
       font-weight: 900;
@@ -2487,7 +2489,9 @@
           </span>
         </div>
 
-        <h1 id="heroTitle">PARE DE PERDER DINHEIRO<br>por não ter os <span class="hl">contatos certos</span></h1>
+        <h1 id="heroTitle" class="hero-title-img">
+          <img src="textoprincip.png" alt="Pare de perder dinheiro por não ter os contatos certos" width="1120" height="393" decoding="async" fetchpriority="high" />
+        </h1>
 
         <p class="hero-sub" id="heroSub">
           <strong>Fornecedores verificados</strong> de multimarcas premium, com WhatsApp e Instagram de cada um.
@@ -3224,7 +3228,7 @@
        Palavras dentro de <span class="hl"> ganham o verde de destaque. */
     function splitHeroText() {
       const title = document.getElementById("heroTitle");
-      if (!title) return;
+      if (!title || title.querySelector("img")) return;
 
       const out = [];
       const walk = (node, accent) => {
@@ -3264,13 +3268,21 @@
       gsap.set(["#heroBullets", "#ctaHeroWrap"], { opacity: 1 });
       gsap.set("#heroBullets li", { opacity: 0 });
 
-      tl.fromTo("#heroTag", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 })
-        .to("#heroTitle .word-in", {
+      const hasWords = document.querySelectorAll("#heroTitle .word-in").length > 0;
+
+      tl.fromTo("#heroTag", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 });
+
+      if (hasWords) {
+        tl.to("#heroTitle .word-in", {
           yPercent: 0, opacity: 1,
           stagger: 0.045,
           duration: 0.7
-        }, "-=0.25")
-        .fromTo("#heroSub", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.45")
+        }, "-=0.25");
+      } else {
+        tl.fromTo("#heroTitle", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.25");
+      }
+
+      tl.fromTo("#heroSub", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.45")
         .fromTo("#heroBullets li", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.08 }, "-=0.3")
         .from("#ctaHeroWrap", { y: 20, opacity: 0, duration: 0.5 }, "-=0.2")
         .fromTo("#heroTrust", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, "-=0.3")
