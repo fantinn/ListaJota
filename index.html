@@ -2142,7 +2142,10 @@
       border: 1px solid rgba(255,159,28,0.45);
       color: var(--amber) !important;
     }
+    /* barra lateral que sobe no hover: era verde */
+    .bonus .bonus-row::before { background: var(--amber); }
     .bonus .bonus-row:hover {
+      background: rgba(255,159,28,0.07) !important;
       border-color: rgba(255,159,28,0.45) !important;
     }
     .bonus .bonus-row:hover .bonus-num {
