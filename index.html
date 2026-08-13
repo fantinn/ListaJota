@@ -351,7 +351,7 @@
       width: 100%;
     }
     /* Hero oculto até animação — evita flash */
-    #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTrust { opacity: 0; }
+    #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage { opacity: 0; }
     #heroTitle { opacity: 0; }
     body.hero-ready #heroTitle { opacity: 1; }
     .hero-title-img { line-height: 0; margin-bottom: 12px; overflow: visible; }
@@ -413,25 +413,6 @@
     @keyframes btnShine { to { transform: translateX(100%); } }
     .hero-cta .arrow { transition: transform 0.3s; }
     .hero-cta:hover .arrow { transform: translateX(5px); }
-
-    .hero-trust {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 24px;
-      opacity: 0;
-    }
-    body.hero-ready .hero-trust { opacity: 1; transition: opacity 0.4s ease; }
-    .hero-trust span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 0.04em;
-    }
-    .hero-trust i { color: var(--green); font-size: 0.75rem; }
 
     .hero-scroll-hint {
       position: absolute;
@@ -1537,7 +1518,7 @@
       [data-reveal], .cat-item, .step-card, .audience-card,
       .testimonial-card, .brands-tags .brand-tag,
       #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTitle,
-      #heroTitle .word-in, #heroTrust,
+      #heroTitle .word-in,
       .offer-list li { opacity: 1 !important; transform: none !important; }
     }
 
@@ -1561,8 +1542,6 @@
       .hero { min-height: 520px; }
       .hero-inner { padding: 40px 20px 64px; }
       .hero-scroll-hint { display: none; }
-      .hero-trust { gap: 10px; }
-      .hero-trust span { font-size: 0.62rem; }
       .wa-btn { bottom: 80px; }
       .stats-grid { gap: 12px; }
       .stats { padding: 80px 20px; }
@@ -1829,13 +1808,6 @@
       box-shadow: 0 12px 30px rgba(0,177,64,0.32);
     }
     .hero-cta:hover { box-shadow: 0 16px 40px rgba(0,177,64,0.45); }
-    .hero-trust {
-      gap: 8px 20px;
-      margin-top: 0;
-      padding-top: 22px;
-      border-top: 1px solid var(--line-soft);
-    }
-    .hero-trust span { font-size: 0.72rem; color: var(--txt-3); }
 
     /* mockup do produto */
     .hero-visual {
@@ -2273,8 +2245,6 @@
       .hero-bullets li { font-size: 0.82rem; }
       .hero-cta-row { gap: 14px; margin-bottom: 20px; }
       .hero-cta { width: 100%; justify-content: center; padding: 17px 24px; }
-      .hero-trust { padding-top: 18px; gap: 6px 14px; }
-      .hero-trust span { font-size: 0.66rem; }
 
       .hero-visual { max-width: 100%; margin-top: 6px; }
       .mock-chat { width: min(250px, 82%); padding: 11px 13px; }
@@ -2489,11 +2459,6 @@
             Quero a lista completa
             <i class="fa-solid fa-arrow-right arrow"></i>
           </a>
-        </div>
-
-        <div class="hero-trust" id="heroTrust">
-          <span><i class="fa-solid fa-shield-halved"></i> Compra 100% segura</span>
-          <span><i class="fa-solid fa-bolt"></i> Acesso imediato no e-mail</span>
         </div>
       </div>
 
@@ -3234,7 +3199,7 @@
     }
 
     function animateHero() {
-      const heroEls = ["#heroTag","#heroSub","#heroBullets","#ctaHeroWrap","#heroImage","#heroTitle","#heroTitle .word-in","#heroTrust"];
+      const heroEls = ["#heroTag","#heroSub","#heroBullets","#ctaHeroWrap","#heroImage","#heroTitle","#heroTitle .word-in"];
 
       if (reducedMotion) {
         gsap?.set(heroEls, { opacity: 1, y: 0, x: 0, yPercent: 0, scale: 1, rotateX: 0, rotateY: 0 });
@@ -3266,7 +3231,6 @@
       tl.fromTo("#heroSub", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.45")
         .fromTo("#heroBullets li", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.08 }, "-=0.3")
         .from("#ctaHeroWrap", { y: 20, opacity: 0, duration: 0.5 }, "-=0.2")
-        .fromTo("#heroTrust", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, "-=0.3")
         .fromTo("#heroImage", {
           x: 40, opacity: 0, rotateY: -8
         }, {
