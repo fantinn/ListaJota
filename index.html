@@ -2084,25 +2084,6 @@
     .product-body h3 { font-size: 1.08rem; letter-spacing: -0.01em; margin-bottom: 8px; }
     .product-badge { border-radius: 999px; }
 
-    /* mock: rede de profissionais */
-    .mock-people { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-    .mp-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--line-soft);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      text-align: center;
-    }
-    .mp-av {
-      display: block; width: 32px; height: 32px; margin: 0 auto 8px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, rgba(0,177,64,0.5), rgba(0,177,64,0.15));
-      color: #fff; font-size: 0.6rem; font-weight: 800;
-      line-height: 32px;
-    }
-    .mp-card b { display: block; font-size: 0.74rem; color: #fff; }
-    .mp-card i { font-style: normal; font-size: 0.62rem; color: var(--txt-3); }
-
     /* ---------- COMO FUNCIONA / PÚBLICO / BÔNUS ---------- */
     .step-card, .audience-card, .bonus-row, .about-highlight {
       border: 1px solid var(--line-soft);
@@ -2375,6 +2356,12 @@
       min-height: 0 !important;
     }
     #cardImg1 img { object-fit: contain; }
+    #cardImg2 {
+      aspect-ratio: 1484 / 1060;
+      background: #05070a !important;
+      min-height: 0 !important;
+    }
+    #cardImg2 img { object-fit: contain; }
 
     /* ---------- COMO FUNCIONA (refinado) ---------- */
     .steps-grid {
@@ -2538,7 +2525,6 @@
 
         <ul class="hero-bullets" id="heroBullets">
           <li><i class="fa-solid fa-circle-check"></i> Contatos testados de Nike, Adidas, Lacoste, CK, Oakley e mais</li>
-          <li><i class="fa-solid fa-circle-check"></i> Planilha pronta + manual de como abordar cada fornecedor</li>
           <li><i class="fa-solid fa-circle-check"></i> 6 bônus: designer, site, tráfego, fotógrafo e comunidade</li>
         </ul>
 
@@ -2547,11 +2533,6 @@
             Quero a lista completa
             <i class="fa-solid fa-arrow-right arrow"></i>
           </a>
-          <div class="hero-price">
-            <span class="hp-old">De R$ 700,00</span>
-            <span class="hp-new">por R$ 297,90</span>
-            <span class="hp-inst">ou 12x de R$ 29,21</span>
-          </div>
         </div>
 
         <div class="hero-trust" id="heroTrust">
@@ -2759,7 +2740,7 @@
       <article class="product-card featured" data-reveal="fade-right" data-tilt-card>
         <div class="product-img" id="cardImg2">
           <img src="bannerrede.png" alt="Rede de profissionais"
-               width="1560" height="1008" loading="lazy" decoding="async" />
+               width="1484" height="1060" loading="lazy" decoding="async" />
         </div>
         <div class="product-body">
           <span class="product-badge">Bônus grátis</span>
