@@ -388,8 +388,8 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(0,177,64,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,177,64,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
       background-size: 60px 60px;
       mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
     }
@@ -556,8 +556,8 @@
       transform-style: preserve-3d;
     }
     .hero-mock {
-      background: rgba(0,177,64,0.08);
-      border: 1px solid rgba(0,177,64,0.15);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 4px;
       display: flex;
       align-items: center;
@@ -1696,13 +1696,13 @@
 
     /* ===== TEMA DARK UNIFICADO ===== */
     .page-content {
-      background-color: #07130c;
+      background-color: #0c0d0f;
       background-image:
-        radial-gradient(circle at 12% 18%, rgba(0, 177, 64, 0.14), transparent 28%),
-        radial-gradient(circle at 88% 72%, rgba(0, 177, 64, 0.1), transparent 30%),
-        linear-gradient(rgba(0, 177, 64, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 177, 64, 0.035) 1px, transparent 1px);
-      background-size: auto, auto, 60px 60px, 60px 60px;
+        radial-gradient(circle at 12% 18%, rgba(0, 177, 64, 0.05), transparent 32%),
+        radial-gradient(circle at 88% 72%, rgba(255, 255, 255, 0.025), transparent 34%),
+        linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
+      background-size: auto, auto, 64px 64px, 64px 64px;
       background-attachment: fixed;
       animation: darkGridDrift 24s ease-in-out infinite alternate;
     }
@@ -1771,10 +1771,10 @@
     }
     .brands-tags .brand-tag { color: rgba(255,255,255,0.82); }
     .compare-col.bad { background: rgba(255,255,255,0.035) !important; opacity: 1; }
-    .compare-col.good { background: rgba(0,177,64,0.09) !important; }
+    .compare-col.good { background: rgba(255,255,255,0.06) !important; }
     .faq-item { background: rgba(255,255,255,0.025); }
-    .faq-item.open { background: rgba(0,177,64,0.055); }
-    .testimonial-card::before { color: rgba(0,177,64,0.13); }
+    .faq-item.open { background: rgba(255,255,255,0.045); }
+    .testimonial-card::before { color: rgba(255,255,255,0.08); }
     .author-avatar,
     .step-icon { background: rgba(0,0,0,0.5); border: 1px solid rgba(0,177,64,0.35); }
     .product-badge.dark { background: rgba(0,0,0,0.72); }
@@ -2052,22 +2052,26 @@
     }
     .header-cta i { font-size: 0.72rem; }
 
-    .promo-strip { background: linear-gradient(90deg, var(--green-dark), var(--green) 45%, var(--green-dark)); }
+    .promo-strip {
+      background: #101215;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
     .marquee-viewport { padding: 10px 0; }
-    .marquee-track span { font-size: 0.68rem; letter-spacing: 0.1em; }
+    .marquee-track span { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--txt-2); }
 
     /* ---------- HERO ---------- */
     .hero {
       min-height: auto;
       background:
-        radial-gradient(1100px 620px at 78% 8%, rgba(0,177,64,0.16), transparent 62%),
-        radial-gradient(760px 520px at 8% 92%, rgba(0,177,64,0.09), transparent 60%),
-        linear-gradient(168deg, #071410 0%, #050807 52%, #08160e 100%);
+        radial-gradient(1100px 620px at 78% 8%, rgba(0,177,64,0.07), transparent 62%),
+        radial-gradient(760px 520px at 8% 92%, rgba(255,255,255,0.03), transparent 60%),
+        linear-gradient(168deg, #101215 0%, #0a0b0d 52%, #0c0e11 100%);
       border-bottom: 1px solid var(--line-soft);
     }
-    .hero-orb-1, .hero-orb-2 { opacity: 0.32; }
+    .hero-orb-1, .hero-orb-2 { opacity: 0.12; }
     .hero-watermark { display: none; }
-    .hero-grid-lines { opacity: 0.7; }
+    .hero-grid-lines { opacity: 0.35; }
 
     .hero-inner {
       max-width: 1240px;
@@ -2367,8 +2371,8 @@
     }
     .cat-circle {
       width: 88px; height: 88px;
-      border: 1px solid rgba(0,177,64,0.35);
-      background: linear-gradient(155deg, rgba(0,177,64,0.16), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(155deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 26px rgba(0,0,0,0.35);
     }
     .cat-circle::before { display: none; }
@@ -2550,8 +2554,8 @@
 
     /* ---------- GARANTIA ---------- */
     .guarantee-box {
-      border: 1px solid rgba(0,177,64,0.3);
-      background: linear-gradient(160deg, rgba(0,177,64,0.1), rgba(255,255,255,0.02)) !important;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015)) !important;
       padding: clamp(32px, 4vw, 52px) 28px;
     }
     .guarantee-box h2 { font-size: clamp(1.4rem, 3vw, 2rem); text-transform: none; letter-spacing: -0.02em; }
@@ -2560,9 +2564,9 @@
     /* ---------- OFERTA ---------- */
     .offer-box {
       position: relative;
-      border: 1px solid rgba(0,177,64,0.4) !important;
-      background: linear-gradient(165deg, rgba(0,177,64,0.13), rgba(255,255,255,0.03)) !important;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(0,177,64,0.08);
+      border: 1px solid rgba(0,177,64,0.28) !important;
+      background: linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)) !important;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
       padding: clamp(30px, 4vw, 52px) clamp(22px, 3vw, 44px) !important;
     }
     .offer-box h2 { font-size: clamp(1.5rem, 3vw, 2rem); text-transform: none; letter-spacing: -0.02em; }
@@ -2580,11 +2584,11 @@
       box-shadow: 0 14px 34px rgba(0,177,64,0.35);
     }
 
-    /* ---------- CTA STRIP (faixa verde: quebra o bloco escuro e destaca o CTA) ---------- */
+    /* ---------- CTA STRIP ---------- */
     .page-content > section.cta-strip {
-      background: linear-gradient(120deg, var(--green-dark), var(--green) 55%, #00c94c) !important;
-      border-top: none;
-      border-bottom: none;
+      background: linear-gradient(120deg, #14171b, #101215 55%, #131619) !important;
+      border-top: 1px solid rgba(0,177,64,0.25);
+      border-bottom: 1px solid rgba(0,177,64,0.25);
       padding: clamp(48px, 5vw, 72px) 24px;
     }
     .cta-strip h2 {
@@ -2593,13 +2597,13 @@
       letter-spacing: -0.025em;
       color: #fff !important;
     }
-    .cta-strip p { color: rgba(255,255,255,0.9) !important; font-size: 1rem; }
+    .cta-strip p { color: var(--txt-2) !important; font-size: 1rem; }
     .cta-strip .hero-cta {
-      background: #06140d !important;
+      background: var(--green) !important;
       color: #fff;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+      box-shadow: 0 12px 30px rgba(0,177,64,0.22);
     }
-    .cta-strip .hero-cta:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .cta-strip .hero-cta:hover { box-shadow: 0 16px 40px rgba(0,177,64,0.3); }
 
     /* ---------- BANNER FINAL ---------- */
     .final-banner { text-align: center; }
@@ -2612,8 +2616,8 @@
       font-size: 1rem;
       font-weight: 400;
       clip-path: none !important;
-      border: 1px solid rgba(0,177,64,0.28) !important;
-      background: linear-gradient(160deg, rgba(0,177,64,0.12), rgba(255,255,255,0.02)) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      background: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015)) !important;
       max-width: 780px;
       margin: 0 auto 28px;
       padding: clamp(30px, 4vw, 48px) clamp(22px, 3vw, 40px);
