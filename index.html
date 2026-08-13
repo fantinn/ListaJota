@@ -86,42 +86,6 @@
     button:focus:not(:focus-visible),
     a:focus:not(:focus-visible) { outline: none; }
 
-    /* ===== PRELOADER ===== */
-    .preloader {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: var(--black);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-    }
-    .preloader-bar {
-      width: 160px;
-      height: 3px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .preloader-bar span {
-      display: block;
-      height: 100%;
-      width: 100%;
-      background: var(--green);
-      border-radius: 4px;
-      transform: scaleX(0);
-      transform-origin: left center;
-    }
-    .preloader-text {
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.3em;
-      color: rgba(255,255,255,0.5);
-      text-transform: uppercase;
-    }
-
     /* ===== CURSOR GLOW (desktop) ===== */
     .cursor-glow {
       position: fixed;
@@ -249,46 +213,6 @@
     }
     .mobile-nav .nav-cta:hover { background: var(--green-dark); padding-left: 16px; }
     .mobile-nav .nav-cta i { color: var(--white); }
-    .logo-slot {
-      width: 90px;
-      height: 44px;
-      border: 2px dashed rgba(255,255,255,0.25);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.35);
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      overflow: hidden;
-    }
-    .logo-slot img { width: 100%; height: 100%; object-fit: contain; }
-    .header-cart {
-      position: relative;
-      color: var(--white);
-      font-size: 1.25rem;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .header-cart:hover { transform: scale(1.15) rotate(-8deg); }
-    .header-cart .dot {
-      position: absolute;
-      top: -4px; right: -6px;
-      width: 16px; height: 16px;
-      background: var(--green);
-      border-radius: 50%;
-      font-size: 0.55rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: dotPulse 2s ease-in-out infinite;
-    }
-    @keyframes dotPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0,177,64,0.5); }
-      50% { box-shadow: 0 0 0 8px rgba(0,177,64,0); }
-    }
 
     /* ===== PROMO STRIP ===== */
     .promo-strip {
@@ -376,11 +300,17 @@
       animation-name: pathFlow;
       animation-timing-function: linear;
       animation-iteration-count: infinite;
-      will-change: stroke-dashoffset;
+      /* sem will-change: stroke-dashoffset nao e composto na GPU, entao a
+         dica nao acelera nada e ainda promove uma camada por path */
     }
     @keyframes pathFlow {
       from { stroke-dashoffset: 1; }
       to   { stroke-dashoffset: 0; }
+    }
+    /* no celular as linhas ficam estaticas: animar stroke-dashoffset repinta
+       o SVG inteiro a cada frame, caro demais para GPU de telefone */
+    @media (max-width: 767px) {
+      .hero-paths path { animation: none; }
     }
     .hero-bg {
       position: absolute;
@@ -439,15 +369,6 @@
     #heroTag, #heroSub, #heroBullets, #ctaHeroWrap, #heroImage, #heroTrust { opacity: 0; }
     #heroTitle { opacity: 0; }
     body.hero-ready #heroTitle { opacity: 1; }
-    .hero-text .hero-label {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      color: rgba(255,255,255,0.55);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
     .hero-text h1 {
       font-size: clamp(2.8rem, 9vw, 4.5rem);
       font-weight: 900;
@@ -462,10 +383,6 @@
       display: inline-block;
       overflow: hidden;
       vertical-align: top;
-    }
-    .hero-text h1 .char {
-      display: inline-block;
-      will-change: transform, opacity;
     }
     .hero-text .hero-sub {
       font-size: 0.85rem;
@@ -557,36 +474,6 @@
     }
     .hero-scroll-hint i { font-size: 0.85rem; }
 
-    .hero-text h1 .char.accent { color: var(--green); }
-
-    .hero-image-slot {
-      width: 100%;
-      aspect-ratio: 16/10;
-      max-height: 320px;
-      background: rgba(255,255,255,0.04);
-      border: 2px dashed rgba(0,177,64,0.35);
-      border-radius: 8px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 8px;
-      padding: 12px;
-      overflow: hidden;
-      will-change: transform;
-      transform-style: preserve-3d;
-    }
-    .hero-mock {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.2);
-      font-size: 1.2rem;
-    }
-    .hero-mock:first-child { grid-row: span 2; font-size: 1.6rem; }
-    .hero-image-slot img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; }
 
     /* ===== CATEGORIAS ===== */
     .categories {
@@ -1349,10 +1236,6 @@
       gap: 28px;
       text-align: center;
     }
-    .footer-brand .logo-slot {
-      margin: 0 auto 12px;
-      border-color: rgba(255,255,255,0.15);
-    }
     .footer-brand p {
       font-size: 0.75rem;
       line-height: 1.6;
@@ -1496,20 +1379,27 @@
     }
 
     /* ===== TEMA DARK UNIFICADO ===== */
+    /* O padrao de fundo vive numa camada fixa propria em vez de usar
+       "background-attachment: fixed" + animacao de background-position no
+       .page-content: aquilo repintava a pagina inteira (12.000px) a cada
+       frame de scroll, principal causa de travamento no celular.
+       Como camada fixa isolada, o navegador pinta uma vez e so compoe. */
     .page-content {
       background-color: #0c0d0f;
+      position: relative;
+    }
+    .page-content::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
       background-image:
         radial-gradient(circle at 12% 18%, rgba(0, 177, 64, 0.05), transparent 32%),
         radial-gradient(circle at 88% 72%, rgba(255, 255, 255, 0.025), transparent 34%),
         linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
       background-size: auto, auto, 64px 64px, 64px 64px;
-      background-attachment: fixed;
-      animation: darkGridDrift 24s ease-in-out infinite alternate;
-    }
-    @keyframes darkGridDrift {
-      from { background-position: center, center, 0 0, 0 0; }
-      to { background-position: center, center, 30px 30px, 30px 30px; }
     }
     .page-content > section {
       background: transparent !important;
@@ -1683,7 +1573,6 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
-      .preloader { display: none; }
       body.loading .page-content { visibility: visible; }
       [data-reveal], .cat-item, .step-card, .audience-card,
       .testimonial-card, .brands-tags .brand-tag,
@@ -1701,7 +1590,6 @@
       .audience-grid { grid-template-columns: repeat(3, 1fr); }
       .testimonial-grid { grid-template-columns: repeat(3, 1fr); }
       .footer-inner { grid-template-columns: 1.2fr 1fr 1fr; text-align: left; }
-      .footer-brand .logo-slot { margin: 0 0 12px; }
       .footer-brand p { margin: 0; }
       .footer-social { justify-content: flex-start; }
       .about-inner { grid-template-columns: 1fr 1fr; }
@@ -2214,29 +2102,6 @@
     }
     .mp-card b { display: block; font-size: 0.74rem; color: #fff; }
     .mp-card i { font-style: normal; font-size: 0.62rem; color: var(--txt-3); }
-
-    /* mock: capa do PDF */
-    .mock-pdf { perspective: 700px; }
-    .mpdf-cover {
-      width: 168px;
-      padding: 22px 18px 20px;
-      background: linear-gradient(160deg, #0f2418, #071410);
-      border: 1px solid rgba(0,177,64,0.32);
-      border-left: 4px solid var(--green);
-      border-radius: 4px 10px 10px 4px;
-      box-shadow: 0 22px 44px rgba(0,0,0,0.55);
-      transform: rotateY(-12deg) rotateX(4deg);
-    }
-    .mpdf-tag {
-      display: inline-block;
-      background: var(--green); color: #04120a;
-      font-size: 0.55rem; font-weight: 900; letter-spacing: 0.1em;
-      padding: 3px 8px; border-radius: 4px; margin-bottom: 14px;
-    }
-    .mpdf-cover strong { display: block; font-size: 1.25rem; line-height: 1.1; color: #fff; letter-spacing: -0.02em; }
-    .mpdf-sub { display: block; margin-top: 8px; font-size: 0.62rem; color: var(--txt-3); line-height: 1.4; }
-    .mpdf-rule { display: block; width: 34px; height: 2px; background: var(--green); margin: 14px 0 10px; }
-    .mpdf-meta { font-size: 0.55rem; color: var(--txt-3); letter-spacing: 0.06em; }
 
     /* ---------- COMO FUNCIONA / PÚBLICO / BÔNUS ---------- */
     .step-card, .audience-card, .bonus-row, .about-highlight {
@@ -3237,12 +3102,6 @@
       if (page) page.style.visibility = "visible";
     }
 
-    function removePreloader() {
-      const preloader = document.getElementById("preloader");
-      if (preloader) preloader.remove();
-      showPage();
-    }
-
     function bindLinks() {
       ["ctaHero","ctaBuy","waLink","footerWa","stickyCtaBtn"].forEach((id) => {
         const el = document.getElementById(id);
@@ -3325,7 +3184,7 @@
     initCatNav();
 
     if (typeof gsap === "undefined") {
-      removePreloader();
+      showPage();
       revealAll();
     } else {
       gsap.registerPlugin(ScrollTrigger);
@@ -3345,7 +3204,9 @@
       if (!host) return;
 
       const SVG_NS = "http://www.w3.org/2000/svg";
-      const COUNT = 36;
+      // 20 por camada (40 no total, antes eram 72): as curvas se sobrepoem
+      // muito sob a mascara, entao o corte quase nao muda o visual
+      const COUNT = 20;
 
       // duas camadas espelhadas, como no efeito original
       [1, -1].forEach((position) => {
@@ -3355,18 +3216,21 @@
         svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
 
         for (let i = 0; i < COUNT; i++) {
-          const off = i * 5 * position;
+          // indice virtual 0..35: preserva o leque e a intensidade originais
+          // mesmo desenhando menos curvas
+          const k = i * (35 / (COUNT - 1));
+          const off = k * 5 * position;
           const d =
-            `M${-(380 - off)} ${-(189 + i * 6)}` +
-            `C${-(380 - off)} ${-(189 + i * 6)} ${-(312 - off)} ${216 - i * 6} ${152 - off} ${343 - i * 6}` +
-            `C${616 - off} ${470 - i * 6} ${684 - off} ${875 - i * 6} ${684 - off} ${875 - i * 6}`;
+            `M${-(380 - off)} ${-(189 + k * 6)}` +
+            `C${-(380 - off)} ${-(189 + k * 6)} ${-(312 - off)} ${216 - k * 6} ${152 - off} ${343 - k * 6}` +
+            `C${616 - off} ${470 - k * 6} ${684 - off} ${875 - k * 6} ${684 - off} ${875 - k * 6}`;
 
           const path = document.createElementNS(SVG_NS, "path");
           path.setAttribute("d", d);
           // normaliza o comprimento para 1 -> o dash fecha o ciclo sem emenda
           path.setAttribute("pathLength", "1");
-          path.setAttribute("stroke-width", (0.5 + i * 0.03).toFixed(2));
-          path.setAttribute("stroke-opacity", (0.04 + i * 0.012).toFixed(3));
+          path.setAttribute("stroke-width", (0.5 + k * 0.03).toFixed(2));
+          path.setAttribute("stroke-opacity", (0.04 + k * 0.012).toFixed(3));
 
           if (!reducedMotion) {
             const duration = 20 + Math.random() * 10;
@@ -3750,14 +3614,24 @@
     });
 
     /* ===== TIMER ===== */
+    /* Ler localStorage lanca SecurityError no navegador interno do Instagram e
+       Facebook, no Safari privado e quando o armazenamento esta bloqueado.
+       Sem esse guarda o erro derrubava initCounters, initFaq e animateWaBtn:
+       o FAQ parava de abrir e os contadores ficavam em "0+". */
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+      remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+    };
+
     function initTimer() {
       const timerEl = document.getElementById("timer");
       const timerWrap = document.getElementById("offerTimerWrap");
       const KEY = "jotaTimer";
-      let end = Number(localStorage.getItem(KEY));
+      let end = Number(store.get(KEY));
       if (!end || end <= Date.now()) {
         end = Date.now() + TIMER_MINUTES * 60 * 1000;
-        localStorage.setItem(KEY, end);
+        store.set(KEY, end);
       }
 
       let lastMin = null;
@@ -3778,7 +3652,7 @@
       let left = tick();
       const iv = setInterval(() => {
         left = tick();
-        if (left <= 0) { clearInterval(iv); localStorage.removeItem(KEY); }
+        if (left <= 0) { clearInterval(iv); store.remove(KEY); }
       }, 1000);
     }
 
@@ -3813,23 +3687,17 @@
 
     if (typeof gsap !== "undefined") {
       runPreloader().then(() => {
-        try {
-          animateHero();
-          initScrollReveals();
-          initParallax();
-          initTilt();
-          initMagnetic();
-          initCursorGlow();
-          initHeaderScroll();
-          initOfferAnimations();
-          initTimer();
-          initCounters();
-          initFaq();
-          animateWaBtn();
-        } catch (err) {
-          console.error(err);
-          revealAll();
-        }
+        /* cada init roda isolado: uma falha pontual nao pode cancelar as
+           funcoes seguintes (era o que acontecia com o timer + localStorage) */
+        let failed = 0;
+        [
+          animateHero, initScrollReveals, initParallax, initTilt,
+          initMagnetic, initCursorGlow, initHeaderScroll, initOfferAnimations,
+          initTimer, initCounters, initFaq, animateWaBtn
+        ].forEach((fn) => {
+          try { fn(); } catch (err) { failed++; console.error(fn.name, err); }
+        });
+        if (failed) revealAll();
       }).catch(() => revealAll());
     }
   </script>
