@@ -477,8 +477,6 @@
 
     /* ===== CATEGORIAS ===== */
     .categories {
-      background: var(--white);
-      padding: 48px 24px 56px;
       overflow: hidden;
     }
     .categories h2 {
@@ -595,8 +593,6 @@
 
     /* ===== FEATURES ===== */
     .features {
-      background: var(--gray-light);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .section-head {
@@ -699,17 +695,7 @@
     }
 
     /* ===== BÔNUS ===== */
-    .bonus,
-    .audience {
-      background-color: #07130c;
-      background-image:
-        linear-gradient(rgba(0, 177, 64, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 177, 64, 0.035) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
     .bonus {
-      color: var(--white);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .bonus .section-head h2 { color: var(--white); }
@@ -775,8 +761,6 @@
 
     /* ===== OFERTA ===== */
     .offer {
-      background: var(--white);
-      padding: 56px 24px 64px;
       overflow: hidden;
     }
     .offer-box {
@@ -988,8 +972,6 @@
 
     /* ===== COMO FUNCIONA ===== */
     .how-it-works {
-      background: var(--white);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .steps-grid {
@@ -1051,8 +1033,6 @@
 
     /* ===== PARA QUEM É ===== */
     .audience {
-      color: var(--white);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .audience .section-head h2 { color: var(--white); }
@@ -1101,8 +1081,6 @@
 
     /* ===== DEPOIMENTOS ===== */
     .testimonials {
-      background: var(--gray-light);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .testimonial-grid {
@@ -1173,8 +1151,6 @@
 
     /* ===== FAQ ===== */
     .faq {
-      background: var(--white);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .faq-list {
@@ -1291,8 +1267,6 @@
 
     /* ===== SOBRE ===== */
     .about {
-      background: var(--white);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .about-inner {
@@ -1342,8 +1316,6 @@
 
     /* ===== MARCAS ===== */
     .brands {
-      background: var(--gray-light);
-      padding: 56px 24px;
       overflow: hidden;
     }
     .brands-tags {
@@ -1871,15 +1843,6 @@
       box-shadow: 0 12px 30px rgba(0,177,64,0.32);
     }
     .hero-cta:hover { box-shadow: 0 16px 40px rgba(0,177,64,0.45); }
-    .hero-price { display: flex; flex-direction: column; gap: 1px; }
-    .hp-old {
-      font-size: 0.72rem;
-      color: var(--txt-3);
-      text-decoration: line-through;
-    }
-    .hp-new { font-size: 1.02rem; font-weight: 900; color: var(--white); }
-    .hp-inst { font-size: 0.72rem; color: var(--txt-3); }
-
     .hero-trust {
       gap: 8px 20px;
       margin-top: 0;
@@ -2032,7 +1995,7 @@
     .brand-tag { border-radius: 999px; }
 
     /* ---------- CATEGORIAS (círculos escuros, não bolas brancas) ---------- */
-    .categories { padding-bottom: calc(var(--section-y) - 12px); }
+    .page-content > section.categories { padding-bottom: calc(var(--section-y) - 12px); }
     .categories h2 {
       font-size: clamp(1.55rem, 3.3vw, 2.35rem);
       text-transform: none;
@@ -2073,14 +2036,6 @@
     /* ---------- CARDS DE PRODUTO ---------- */
     .product-card { overflow: hidden; }
     .product-img { min-height: 230px; }
-    .product-img.mock {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 22px;
-      background: radial-gradient(600px 300px at 50% 0%, rgba(0,177,64,0.12), rgba(0,0,0,0.32)) !important;
-      border-bottom: 1px solid var(--line-soft);
-    }
     .product-body { padding: 22px 22px 26px; }
     .product-body h3 { font-size: 1.08rem; letter-spacing: -0.01em; margin-bottom: 8px; }
     .product-badge { border-radius: 999px; }
@@ -2332,7 +2287,6 @@
       .hero-bullets li { font-size: 0.82rem; }
       .hero-cta-row { gap: 14px; margin-bottom: 20px; }
       .hero-cta { width: 100%; justify-content: center; padding: 17px 24px; }
-      .hero-price { flex-direction: row; align-items: baseline; gap: 8px; flex-wrap: wrap; width: 100%; justify-content: center; }
       .hero-trust { padding-top: 18px; gap: 6px 14px; }
       .hero-trust span { font-size: 0.66rem; }
 
@@ -2352,13 +2306,13 @@
 
     /* imagem da lista: proporção real, sem corte e sem fundo claro */
     #cardImg1 {
-      aspect-ratio: 1488 / 1057;
+      aspect-ratio: 1184 / 841;
       background: #05070a !important;
       min-height: 0 !important;
     }
     #cardImg1 img { object-fit: contain; }
     #cardImg2 {
-      aspect-ratio: 1484 / 1060;
+      aspect-ratio: 1184 / 846;
       background: #05070a !important;
       min-height: 0 !important;
     }
@@ -2681,7 +2635,7 @@
         <div class="section-head left">
           <p class="label" data-reveal="fade-up">Quem somos</p>
           <h2 data-reveal="fade-up" data-delay="0.1" class="about-title-img">
-            <img src="lojistasconfiam.png" alt="A lista que lojistas confiam" width="2172" height="724" loading="lazy" decoding="async" />
+            <img src="lojistasconfiam.png" alt="A lista que lojistas confiam" width="840" height="280" loading="lazy" decoding="async" />
           </h2>
         </div>
         <p data-reveal="fade-up" data-delay="0.15">Montar uma loja de multimarcas do zero é difícil quando você não sabe <strong>onde encontrar fornecedores confiáveis</strong>. Perde tempo pesquisando no Google, cai em golpes e compra de intermediários que comem sua margem.</p>
@@ -2718,7 +2672,7 @@
     <div class="section-head">
       <p class="label" data-reveal="fade-up">Categorias inclusas</p>
       <h2 data-reveal="fade-up" data-delay="0.1" class="brands-title-img">
-        <img src="encontra.png" alt="Marcas que você encontra na lista — Fornecedores de multimarcas premium com peças originais e alta procura no varejo." width="2079" height="756" loading="lazy" decoding="async" />
+        <img src="encontra.png" alt="Marcas que você encontra na lista — Fornecedores de multimarcas premium com peças originais e alta procura no varejo." width="1040" height="378" loading="lazy" decoding="async" />
       </h2>
     </div>
     <div class="brands-tags">
@@ -2747,8 +2701,8 @@
     <div class="product-grid">
       <article class="product-card" data-reveal="fade-left" data-tilt-card>
         <div class="product-img" id="cardImg1">
-          <img src="bannerfornecedores.png" alt="Prévia da lista completa de fornecedores"
-               width="1488" height="1057" loading="lazy" decoding="async" />
+          <img src="bannerfornecedores.jpg" alt="Prévia da lista completa de fornecedores"
+               width="1184" height="841" loading="lazy" decoding="async" />
         </div>
         <div class="product-body">
           <span class="product-badge dark">Incluso</span>
@@ -2759,8 +2713,8 @@
       </article>
       <article class="product-card featured" data-reveal="fade-right" data-tilt-card>
         <div class="product-img" id="cardImg2">
-          <img src="bannerrede.png" alt="Rede de profissionais"
-               width="1484" height="1060" loading="lazy" decoding="async" />
+          <img src="bannerrede.jpg" alt="Rede de profissionais"
+               width="1184" height="846" loading="lazy" decoding="async" />
         </div>
         <div class="product-body">
           <span class="product-badge">Bônus grátis</span>
