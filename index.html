@@ -1804,7 +1804,8 @@
     }
 
     @media (min-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr 1fr; }
+      /* o hero so vira 2 colunas em 1024px (ver media abaixo): entre 768 e
+         1023 a coluna ficaria estreita demais e quebraria a headline */
       .product-grid { grid-template-columns: 1fr 1fr; }
       .stats-grid { grid-template-columns: repeat(4, 1fr); }
       .steps-grid { grid-template-columns: 1fr 1fr; }
