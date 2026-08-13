@@ -11,13 +11,20 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Fornecedores verificados de multimarcas premium" />
   <meta property="og:description" content="Pare de perder margem comprando de atravessador. Contatos diretos, planilha pronta e 6 bônus. Acesso imediato." />
-  <meta property="og:image" content="listwhite_opt.jpg" />
+  <meta property="og:image" content="bannerfornecedores.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+  <!-- CSS não-crítico (fontes, ícones): carrega sem bloquear o primeiro paint -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </noscript>
 
   <!-- Evita flash de conteúdo antes das animações -->
   <script>document.documentElement.classList.add("js-ready");</script>
@@ -3477,9 +3484,14 @@
       document.querySelectorAll("[data-tilt], [data-tilt-card]").forEach((el) => {
         const isCard = el.hasAttribute("data-tilt-card");
         const max = isCard ? 8 : 12;
+        /* mede o retângulo só ao entrar no hover — chamar getBoundingClientRect()
+           a cada mousemove força reflow síncrono em toda a página, muitas vezes
+           por segundo, sem necessidade (o elemento não se move durante o hover) */
+        let rect = null;
 
+        el.addEventListener("mouseenter", () => { rect = el.getBoundingClientRect(); });
         el.addEventListener("mousemove", (e) => {
-          const rect = el.getBoundingClientRect();
+          if (!rect) rect = el.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width - 0.5;
           const y = (e.clientY - rect.top) / rect.height - 0.5;
           gsap.to(el, {
@@ -3491,6 +3503,7 @@
           });
         });
         el.addEventListener("mouseleave", () => {
+          rect = null;
           gsap.to(el, { rotateY: 0, rotateX: 0, duration: 0.5, ease: "power2.out" });
         });
       });
@@ -3501,13 +3514,16 @@
       if (reducedMotion || window.innerWidth < 768) return;
 
       document.querySelectorAll(".magnetic").forEach((btn) => {
+        let rect = null;
+        btn.addEventListener("mouseenter", () => { rect = btn.getBoundingClientRect(); });
         btn.addEventListener("mousemove", (e) => {
-          const rect = btn.getBoundingClientRect();
+          if (!rect) rect = btn.getBoundingClientRect();
           const x = e.clientX - rect.left - rect.width / 2;
           const y = e.clientY - rect.top - rect.height / 2;
           gsap.to(btn, { x: x * 0.25, y: y * 0.25, duration: 0.3, ease: "power2.out" });
         });
         btn.addEventListener("mouseleave", () => {
+          rect = null;
           gsap.to(btn, { x: 0, y: 0, duration: 0.45, ease: "power2.out" });
         });
       });
@@ -3554,10 +3570,12 @@
       });
 
       if (!reducedMotion) {
+        let boxRect = null;
+        box.addEventListener("mouseenter", () => { boxRect = box.getBoundingClientRect(); });
         box.addEventListener("mousemove", (e) => {
-          const rect = box.getBoundingClientRect();
-          glow.style.left = (e.clientX - rect.left - 100) + "px";
-          glow.style.top  = (e.clientY - rect.top - 100) + "px";
+          if (!boxRect) boxRect = box.getBoundingClientRect();
+          glow.style.left = (e.clientX - boxRect.left - 100) + "px";
+          glow.style.top  = (e.clientY - boxRect.top - 100) + "px";
         });
 
         gsap.from("#priceNew", {
