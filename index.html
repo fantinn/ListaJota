@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista de Fornecedores de Multimarcas — 500+ contatos verificados</title>
-  <meta name="description" content="500+ fornecedores verificados de multimarcas premium com WhatsApp e Instagram. Acesso imediato, 6 bônus inclusos e garantia de 7 dias." />
+  <title>Lista de Fornecedores de Multimarcas — contatos verificados</title>
+  <meta name="description" content="Fornecedores verificados de multimarcas premium com WhatsApp e Instagram. Acesso imediato e 6 bônus inclusos." />
   <meta name="theme-color" content="#07130c" />
 
   <!-- Compartilhamento (WhatsApp / Instagram / Facebook) -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="500+ fornecedores verificados de multimarcas premium" />
+  <meta property="og:title" content="Fornecedores verificados de multimarcas premium" />
   <meta property="og:description" content="Pare de perder margem comprando de atravessador. Contatos diretos, planilha pronta e 6 bônus. Acesso imediato." />
   <meta property="og:image" content="listwhite_opt.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -832,8 +832,12 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 12px;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
+    }
+    /* a partir de tablet os 6 bonus ficam em 2 colunas (3 linhas) */
+    @media (min-width: 768px) {
+      .bonus-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
     }
     .bonus-row {
       display: flex;
@@ -2329,43 +2333,6 @@
     .mp-card b { display: block; font-size: 0.74rem; color: #fff; }
     .mp-card i { font-style: normal; font-size: 0.62rem; color: var(--txt-3); }
 
-    /* mock: calculadora de precificação */
-    .mock-calc {
-      width: 100%;
-      background: rgba(0,0,0,0.34);
-      border: 1px solid var(--line-soft);
-      border-radius: var(--radius-sm);
-      padding: 16px;
-    }
-    .mk-row, .mk-total {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 8px 0;
-      font-size: 0.76rem;
-      color: var(--txt-2);
-      border-bottom: 1px dashed rgba(255,255,255,0.08);
-    }
-    .mk-row b { color: #fff; font-weight: 700; }
-    .mk-total {
-      border-bottom: none;
-      margin-top: 4px;
-      padding-top: 12px;
-      border-top: 1px solid var(--line);
-      font-size: 0.82rem;
-      color: #fff;
-    }
-    .mk-total b { color: var(--green); font-size: 1.05rem; font-weight: 900; }
-    .mk-profit {
-      margin-top: 10px;
-      background: var(--green-soft);
-      border: 1px solid rgba(0,177,64,0.3);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--green);
-      text-align: center;
-    }
-
     /* mock: capa do PDF */
     .mock-pdf { perspective: 700px; }
     .mpdf-cover {
@@ -2603,8 +2570,8 @@
     <div class="promo-strip">
       <div class="marquee-viewport">
         <div class="marquee-track" id="marqueeTrack">
-          <span>500+ FORNECEDORES VERIFICADOS · ACESSO IMEDIATO POR E-MAIL · 6 BÔNUS INCLUSOS · GARANTIA DE 7 DIAS ·</span>
-          <span aria-hidden="true">500+ FORNECEDORES VERIFICADOS · ACESSO IMEDIATO POR E-MAIL · 6 BÔNUS INCLUSOS · GARANTIA DE 7 DIAS ·</span>
+          <span>FORNECEDORES VERIFICADOS · ACESSO IMEDIATO POR E-MAIL · 6 BÔNUS INCLUSOS ·</span>
+          <span aria-hidden="true">FORNECEDORES VERIFICADOS · ACESSO IMEDIATO POR E-MAIL · 6 BÔNUS INCLUSOS ·</span>
         </div>
       </div>
     </div>
@@ -2651,7 +2618,7 @@
         <h1 id="heroTitle">PARE DE PERDER DINHEIRO<br>por não ter os <span class="hl">contatos certos</span></h1>
 
         <p class="hero-sub" id="heroSub">
-          <strong>500+ fornecedores verificados</strong> de multimarcas premium, com WhatsApp e Instagram de cada um.
+          <strong>Fornecedores verificados</strong> de multimarcas premium, com WhatsApp e Instagram de cada um.
           Você negocia direto com a fonte e monta sua loja ainda esta semana.
         </p>
 
@@ -2676,7 +2643,6 @@
         <div class="hero-trust" id="heroTrust">
           <span><i class="fa-solid fa-shield-halved"></i> Compra 100% segura</span>
           <span><i class="fa-solid fa-bolt"></i> Acesso imediato no e-mail</span>
-          <span><i class="fa-solid fa-rotate-left"></i> Garantia de 7 dias</span>
         </div>
       </div>
 
@@ -2778,8 +2744,8 @@
     </div>
     <div class="stats-grid">
       <div class="stat-item" data-reveal="fade-up">
-        <p class="stat-num"><span class="counter" data-target="500">0</span><span class="suffix">+</span></p>
-        <p>Fornecedores verificados</p>
+        <p class="stat-num"><span class="counter" data-target="10">0</span><span class="suffix">+</span></p>
+        <p>Marcas premium</p>
       </div>
       <div class="stat-item" data-reveal="fade-up" data-delay="0.1">
         <p class="stat-num"><span class="counter" data-target="1200">0</span><span class="suffix">+</span></p>
@@ -2805,7 +2771,7 @@
           <h2 data-reveal="fade-up" data-delay="0.1">A lista que lojistas confiam</h2>
         </div>
         <p data-reveal="fade-up" data-delay="0.15">Montar uma loja de multimarcas do zero é difícil quando você não sabe <strong>onde encontrar fornecedores confiáveis</strong>. Perde tempo pesquisando no Google, cai em golpes e compra de intermediários que comem sua margem.</p>
-        <p data-reveal="fade-up" data-delay="0.2">Nossa lista reúne <strong>mais de 500 contatos verificados</strong> de fornecedores que trabalham com peças premium — roupas, calçados, acessórios e relógios das marcas que seu cliente já procura. Tudo organizado em planilha, com instruções de como abordar cada um.</p>
+        <p data-reveal="fade-up" data-delay="0.2">Nossa lista reúne <strong>contatos verificados</strong> de fornecedores que trabalham com peças premium — roupas, calçados, acessórios e relógios das marcas que seu cliente já procura. Tudo organizado em planilha, com instruções de como abordar cada um.</p>
         <p data-reveal="fade-up" data-delay="0.25">Além dos fornecedores, você leva <strong>bônus com profissionais</strong> (designer, site, tráfego pago) para montar sua operação completa sem depender de indicações aleatórias.</p>
       </div>
       <div class="about-highlights">
@@ -2851,7 +2817,6 @@
       <span class="brand-tag">Polo Ralph Lauren</span>
       <span class="brand-tag">New Balance</span>
       <span class="brand-tag">Vans</span>
-      <span class="brand-tag">Converse</span>
       <span class="brand-tag">+ muito mais</span>
     </div>
     <p class="brands-note" data-reveal="fade-up" data-delay="0.2">A lista é atualizada mensalmente com novos fornecedores e contatos revisados. Você sempre terá acesso à versão mais recente.</p>
@@ -3015,21 +2980,14 @@
         <i class="fa-solid fa-list"></i>
         <div>
           <h4>Planilha de fornecedores</h4>
-          <p>Mais de 500 contatos com WhatsApp, Instagram, tipo de peça e observações de negociação.</p>
+          <p>Contatos com WhatsApp, Instagram, tipo de peça e observações de negociação.</p>
         </div>
       </div>
       <div class="included-item" data-reveal="fade-right">
         <i class="fa-solid fa-book"></i>
         <div>
           <h4>Manual do lojista</h4>
-          <p>Guia em PDF com passo a passo: como abordar fornecedores, montar estoque e precificar.</p>
-        </div>
-      </div>
-      <div class="included-item" data-reveal="fade-left">
-        <i class="fa-solid fa-calculator"></i>
-        <div>
-          <h4>Planilha de precificação</h4>
-          <p>Calcule markup, margem de lucro e preço final automaticamente. Basta inserir o custo da peça.</p>
+          <p>Guia em PDF com passo a passo: como abordar fornecedores e montar seu estoque.</p>
         </div>
       </div>
       <div class="included-item" data-reveal="fade-right">
@@ -3162,37 +3120,6 @@
     </div>
   </section>
 
-  <!-- Comparativo -->
-  <section class="compare">
-    <div class="section-head">
-      <p class="label" data-reveal="fade-up">Veja a diferença</p>
-      <h2 data-reveal="fade-up" data-delay="0.1">Com lista vs. Sem lista</h2>
-      <p data-reveal="fade-up" data-delay="0.2">Compare o que muda quando você tem acesso aos contatos certos.</p>
-    </div>
-    <div class="compare-grid">
-      <div class="compare-col bad" data-reveal="fade-left">
-        <h3>Sem a lista</h3>
-        <ul class="compare-list">
-          <li><i class="fa-solid fa-xmark icon-x"></i> Horas perdidas procurando fornecedor no Google</li>
-          <li><i class="fa-solid fa-xmark icon-x"></i> Risco de cair em golpe ou revendedor caro</li>
-          <li><i class="fa-solid fa-xmark icon-x"></i> Margem de lucro baixa comprando de intermediário</li>
-          <li><i class="fa-solid fa-xmark icon-x"></i> Sem saber como precificar corretamente</li>
-          <li><i class="fa-solid fa-xmark icon-x"></i> Meses até montar operação completa sozinho</li>
-        </ul>
-      </div>
-      <div class="compare-col good" data-reveal="fade-right">
-        <h3>Com a lista</h3>
-        <ul class="compare-list">
-          <li><i class="fa-solid fa-check icon-check"></i> 500+ contatos prontos na hora da compra</li>
-          <li><i class="fa-solid fa-check icon-check"></i> Fornecedores verificados e confiáveis</li>
-          <li><i class="fa-solid fa-check icon-check"></i> Margens de 100% a 300% por peça vendida</li>
-          <li><i class="fa-solid fa-check icon-check"></i> Planilha de precificação inclusa</li>
-          <li><i class="fa-solid fa-check icon-check"></i> Bônus com profissionais para acelerar tudo</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
   <!-- Oferta -->
   <section class="offer" id="comprar">
     <div class="offer-box" id="offerBox" data-reveal="scale">
@@ -3207,10 +3134,10 @@
       <p class="price-new" id="priceNew">R$ 297,90</p>
       <p class="price-install">ou 12x de R$ 29,21</p>
       <ul class="offer-list" id="offerList">
-        <li><i class="fa-solid fa-check"></i>Lista completa com 500+ fornecedores verificados</li>
+        <li><i class="fa-solid fa-check"></i>Lista completa com fornecedores verificados</li>
         <li><i class="fa-solid fa-check"></i>Planilha organizada com WhatsApp e Instagram</li>
         <li><i class="fa-solid fa-check"></i>Bônus: designer, site, tráfego e fotógrafo</li>
-        <li><i class="fa-solid fa-check"></i>Manual do lojista + planilha de precificação</li>
+        <li><i class="fa-solid fa-check"></i>Manual do lojista com passo a passo</li>
         <li><i class="fa-solid fa-check"></i>3 vídeo aulas para começar a vender</li>
         <li><i class="fa-solid fa-check"></i>Entrega imediata por e-mail após pagamento</li>
         <li><i class="fa-solid fa-check"></i>Atualizações gratuitas por tempo vitalício</li>
