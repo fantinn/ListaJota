@@ -86,21 +86,6 @@
     button:focus:not(:focus-visible),
     a:focus:not(:focus-visible) { outline: none; }
 
-    /* ===== CURSOR GLOW (desktop) ===== */
-    .cursor-glow {
-      position: fixed;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,177,64,0.08), transparent 70%);
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    body.cursor-on .cursor-glow { opacity: 1; }
-
     /* ===== HEADER ===== */
     .top-header {
       background: var(--black);
@@ -1573,7 +1558,6 @@
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 767px) {
-      .cursor-glow { display: none; }
       .hero { min-height: 520px; }
       .hero-inner { padding: 40px 20px 64px; }
       .hero-scroll-hint { display: none; }
@@ -2416,9 +2400,6 @@
   <div class="scroll-progress" id="scrollProgress"></div>
 
   <!-- Preloader removido: atrasava a primeira dobra em ~1,3s e aumentava a taxa de rejeição -->
-
-  <!-- Cursor glow -->
-  <div class="cursor-glow" id="cursorGlow"></div>
 
   <!-- Header -->
   <header class="top-header" id="header">
@@ -3502,16 +3483,6 @@
       });
     }
 
-    /* ===== CURSOR GLOW ===== */
-    function initCursorGlow() {
-      if (reducedMotion || window.innerWidth < 768) return;
-      const glow = document.getElementById("cursorGlow");
-      document.body.classList.add("cursor-on");
-      window.addEventListener("mousemove", (e) => {
-        gsap.to(glow, { x: e.clientX, y: e.clientY, duration: 0.6, ease: "power2.out" });
-      });
-    }
-
     /* ===== HEADER SCROLL ===== */
     function initHeaderScroll() {
       const header = document.getElementById("header");
@@ -3663,7 +3634,7 @@
         let failed = 0;
         [
           animateHero, initScrollReveals, initParallax, initTilt,
-          initMagnetic, initCursorGlow, initHeaderScroll, initOfferAnimations,
+          initMagnetic, initHeaderScroll, initOfferAnimations,
           initTimer, initCounters, initFaq, animateWaBtn
         ].forEach((fn) => {
           try { fn(); } catch (err) { failed++; console.error(fn.name, err); }
