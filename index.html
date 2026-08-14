@@ -18,6 +18,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
 
+  <!-- GSAP só é solicitado quando o parser chega no fim do <body>; como o hero
+       fica invisível (opacity:0) até essa animação rodar, isso atrasava o LCP.
+       Preload adianta o download para paralelo com o parsing do HTML. -->
+  <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" />
+  <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" />
+
   <!-- CSS não-crítico (fontes, ícones): carrega sem bloquear o primeiro paint -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'" />
@@ -2163,13 +2169,17 @@
       top: 0; left: -60%;
       width: 38%; height: 100%;
       background: linear-gradient(100deg, transparent, rgba(255,255,255,0.38), transparent);
-      transform: skewX(-20deg);
+      transform: skewX(-20deg) translateX(0%);
       pointer-events: none;
-      animation: btnShine 3.4s ease-in-out infinite;
+      animation: btnShineOffer 3.4s ease-in-out infinite;
     }
-    @keyframes btnShine {
-      0%        { left: -60%; }
-      55%, 100% { left: 130%; }
+    /* anima transform em vez de "left": "left" força layout a cada frame
+       (animação não-composta); translateX roda no compositor, sem custo de
+       reflow. 500% do próprio elemento (38% do botão) = 190% do botão,
+       equivalente ao percurso original de -60% até 130% */
+    @keyframes btnShineOffer {
+      0%        { transform: skewX(-20deg) translateX(0%); }
+      55%, 100% { transform: skewX(-20deg) translateX(500%); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2375,50 +2385,47 @@
     .stats-grid { gap: 18px; max-width: 1180px; }
 
     .stat-item {
-      /* vidro bem transparente: a grade verde da seção atravessa o card */
-      background: linear-gradient(155deg, rgba(255,255,255,0.028), rgba(255,255,255,0.004));
-      backdrop-filter: blur(20px) saturate(130%);
-      -webkit-backdrop-filter: blur(20px) saturate(130%);
-      border: 1px solid rgba(255,255,255,0.06);
+      /* vidro quase invisível: só o blur e a borda entregam o "glass",
+         sem caixa escura pesando por cima do fundo da seção */
+      background: rgba(255,255,255,0.012);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.055);
       border-radius: 18px;
       padding: 34px 18px 30px !important;
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.07),
-        inset 0 -1px 0 rgba(255,255,255,0.015),
-        0 20px 44px rgba(0,0,0,0.20);
-      transition: transform 0.5s var(--ease-out), border-color 0.4s, box-shadow 0.5s;
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 12px 28px rgba(0,0,0,0.12);
+      transition: transform 0.5s var(--ease-out), border-color 0.4s, box-shadow 0.5s, background 0.4s;
     }
     /* brilho especular no canto superior — assinatura do liquid glass */
     .stat-item::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(142deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.012) 26%, transparent 52%);
+      background: linear-gradient(142deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.008) 26%, transparent 52%);
       pointer-events: none;
     }
     .stat-item:hover {
       transform: translateY(-6px);
-      border-color: rgba(0,177,64,0.30);
+      background: rgba(255,255,255,0.022);
+      border-color: rgba(0,177,64,0.24);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.10),
-        0 28px 58px rgba(0,0,0,0.30),
-        0 0 28px rgba(0,177,64,0.08);
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 20px 40px rgba(0,0,0,0.18),
+        0 0 22px rgba(0,177,64,0.06);
     }
     .stat-item::after { width: 52px; height: 2px; border-radius: 2px 2px 0 0; }
 
-    /* números em degradê discreto, ancorado no verde da marca */
+    /* números em branco — o verde vira acento (traço, suffix, hover), não a cor principal */
     .stat-item .stat-num {
       position: relative;
       font-size: clamp(2.3rem, 3.6vw, 3.05rem);
       letter-spacing: -0.035em;
       margin-bottom: 12px;
-      background: linear-gradient(180deg, #58b981 0%, var(--green) 52%, #068037 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 2px 10px rgba(0,177,64,0.12));
+      color: rgba(255,255,255,0.94);
     }
-    .stat-num .suffix { font-size: 0.5em; font-weight: 800; letter-spacing: 0; margin-left: 1px; }
+    .stat-num .suffix { font-size: 0.5em; font-weight: 800; letter-spacing: 0; margin-left: 1px; color: var(--green); }
     .stat-item p:last-child {
       font-size: 0.72rem !important;
       letter-spacing: 0.13em;
