@@ -2465,10 +2465,14 @@
       border-color: rgba(0,177,64,0.4);
       color: var(--green) !important;
       font-weight: 800;
+      /* no mobile (grid de 2 colunas) ocupa a fileira inteira, em vez de
+         sobrar uma célula vazia do lado */
+      grid-column: span 2;
     }
 
     @media (min-width: 480px) {
       .brands-tags { grid-template-columns: repeat(3, 1fr); }
+      .brands-tags .brand-tag:last-child { grid-column: auto; }
     }
     @media (min-width: 768px) {
       /* colunas com largura mínima seguem cabendo "Polo Ralph Lauren" numa
