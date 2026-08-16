@@ -1579,6 +1579,15 @@
     @media (min-width: 768px) {
       .sticky-cta { display: none; }
     }
+    /* Abaixo de 768px a .sticky-cta fica fixa no rodapé (~63px de altura) e
+       cobria o fim do footer — o crédito, sendo o último elemento, sumia.
+       Este respiro extra libera o conteúdo por baixo dela. */
+    @media (max-width: 767px) {
+      footer { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+      /* "Links" some no mobile: "Comprar agora" e "Perguntas frequentes" já
+         estão no menu hambúrguer, e os outros dois são links vazios (#) */
+      .footer-links-nav { display: none; }
+    }
 
     /* =========================================================================
        REFINO v2 — hero de conversão + polimento geral
@@ -3076,7 +3085,7 @@
         </a>
         <p>Lista exclusiva de fornecedores para lojistas de multimarcas. Contatos verificados e bônus para acelerar seu negócio.</p>
       </div>
-      <div class="footer-links" data-reveal="fade-up" data-delay="0.1">
+      <div class="footer-links footer-links-nav" data-reveal="fade-up" data-delay="0.1">
         <h4>Links</h4>
         <ul>
           <li><a href="#comprar">Comprar agora</a></li>
