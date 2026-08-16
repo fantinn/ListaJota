@@ -1245,6 +1245,20 @@
       border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 20px;
     }
+    .footer-credit {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.42);
+    }
+    .footer-credit a {
+      color: rgba(255,255,255,0.62);
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .footer-credit a:hover { color: rgba(255,255,255,0.92); }
+    .footer-credit .credit-accent { color: var(--green); font-weight: 800; }
 
     /* ===== SOBRE ===== */
     .about {
@@ -3075,17 +3089,20 @@
         <h4>Contato</h4>
         <ul>
           <li><a href="#" id="footerWa">WhatsApp</a></li>
-          <li><a href="mailto:contato@exemplo.com">contato@exemplo.com</a></li>
         </ul>
         <div class="footer-social" style="margin-top:16px">
-          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://www.instagram.com/jotamultimarcas2/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@jotamultimarcas8?_t=ZM-8zfZ8yudBlm&_r=1" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
         </div>
       </div>
     </div>
-    <div class="footer-copy" data-reveal="fade-up">
-      <p>© 2026 · Todos os direitos reservados.</p>
+    <!-- sem data-reveal: é o último elemento da página, e o gatilho de scroll
+         cairia além do scroll máximo, deixando o bloco invisível para sempre -->
+    <div class="footer-copy">
+      <p class="footer-credit">
+        Desenvolvido por
+        <a href="https://www.instagram.com/fantinnco/" target="_blank" rel="noopener">fantinn<span class="credit-accent">CO</span></a>
+      </p>
     </div>
   </footer>
 
@@ -3099,8 +3116,8 @@
     /* ==========================================================
        ⚙️  CONFIGURAÇÃO — edite apenas estas 3 linhas
        ========================================================== */
-    const CHECKOUT = "#";                 // cole aqui o link do checkout (Kiwify/Hotmart/Pagar.me...)
-    const WHATSAPP = "#";                 // ex.: "https://wa.me/5551999999999?text=Quero%20a%20lista"
+    const CHECKOUT = "https://go.perfectpay.com.br/PPU38CQFD93";
+    const WHATSAPP = "https://wa.me/5527999091975?text=Quero%20a%20lista%20completa";
     const TIMER_MINUTES = 30;             // duração do contador da oferta
     /* ========================================================== */
 
@@ -3409,7 +3426,10 @@
           ease: "power2.out",
           scrollTrigger: {
             trigger: el,
-            start: "top 90%",
+            /* clamp() trava o ponto de disparo dentro do range rolável: sem ele,
+               elementos no fim da página (ex.: .footer-copy) geram um start maior
+               que o scroll máximo e NUNCA revelam, ficando em opacity:0 pra sempre */
+            start: "clamp(top 90%)",
             toggleActions: "play none none none"
           },
           onComplete: () => el.classList.add("revealed")
@@ -3431,7 +3451,7 @@
             stagger: 0.07,
             duration: 0.65,
             ease: "power2.out",
-            scrollTrigger: { trigger, start: "top 88%" }
+            scrollTrigger: { trigger, start: "clamp(top 88%)" }
           });
         });
       }
