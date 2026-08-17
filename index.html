@@ -1609,6 +1609,31 @@
     body { -webkit-font-smoothing: antialiased; }
     ::selection { background: var(--green); color: #fff; }
 
+    /* ---------- BARRA DE ROLAGEM (só no desktop) ----------
+       No celular o sistema usa barra flutuante própria, que some sozinha e
+       ignora esses estilos — por isso fica restrito a telas grandes. */
+    @media (min-width: 1024px) {
+      html {
+        scrollbar-width: thin;                    /* Firefox */
+        scrollbar-color: var(--green) #0c0d0f;    /* polegar / trilho */
+      }
+      ::-webkit-scrollbar { width: 12px; height: 12px; }
+      ::-webkit-scrollbar-track { background: #0c0d0f; }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--green), var(--green-dark));
+        border-radius: 999px;
+        /* borda da cor do trilho + padding-box "afina" o polegar sem
+           encostar nas bordas */
+        border: 3px solid #0c0d0f;
+        background-clip: padding-box;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #00d44e, var(--green));
+        background-clip: padding-box;
+      }
+      ::-webkit-scrollbar-corner { background: #0c0d0f; }
+    }
+
     /* ---------- HEADER ---------- */
     .top-header {
       background: rgba(8,10,9,0.92);
