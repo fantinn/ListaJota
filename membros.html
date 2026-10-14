@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Minha lista de fornecedores</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="area.css" />
+
+    <style>
+      /* Uma medida so para a barra do topo e para o conteudo. */
+      :root { --largura: 1100px; }
+      body { padding-top: 64px; }
+
+      .topo {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 120;
+        height: 64px;
+        background: rgba(10,10,10,0.92);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(14px);
+      }
+      /* A barra atravessa a tela, mas o conteudo dela respeita a mesma
+         largura do resto: sem isso, em monitor largo o logo ficava sozinho
+         num canto e o e-mail no outro, sem relacao com a lista no meio. */
+      .topo-interno {
+        height: 100%; width: 100%; max-width: var(--largura); margin: 0 auto;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 16px; padding: 0 20px;
+      }
+      .topo img { height: 30px; width: auto; }
+      .topo .acoes { display: flex; align-items: center; gap: 10px; }
+      .topo .quem {
+        font-size: 0.72rem; color: rgba(242,242,242,0.5);
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 32vw;
+      }
+
+      .conteudo { position: relative; z-index: 10; max-width: var(--largura); margin: 0 auto; padding: 20px 20px 80px; }
+
+      /* Fundo solido, nao gradiente: com gradiente o conteudo que rola por
+         baixo aparecia atraves da barra fixa. */
+      .busca-area {
+        position: sticky; top: 64px; z-index: 100;
+        padding: 16px 0 14px; margin-bottom: 4px;
+        background: var(--dark);
+        box-shadow: 0 10px 20px -12px rgba(0,0,0,0.9);
+      }
+      .busca { position: relative; }
+      .busca i {
+        position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+        color: rgba(242,242,242,0.35); font-size: 0.9rem;
+      }
+      .busca input {
+        width: 100%; padding: 15px 16px 15px 44px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 12px; color: var(--light);
+        font-family: "Montserrat", sans-serif; font-size: 0.95rem;
+      }
+      .busca input:focus { outline: none; border-color: var(--blue); background: rgba(0,177,64,0.08); }
+      .busca input::placeholder { color: rgba(242,242,242,0.28); }
+
+      /* Vista 1: os retângulos de categoria. */
+      .categorias {
+        display: grid; gap: 14px; margin-top: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      }
+
+      .tile {
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column; justify-content: flex-end;
+        min-height: 152px; padding: 18px;
+        border-radius: 16px;
+        background: var(--darker);
+        border: 1px solid rgba(255,255,255,0.09);
+        color: var(--light);
+        font-family: "Montserrat", sans-serif; text-align: left; cursor: pointer;
+        transition: transform 0.18s, border-color 0.18s;
+      }
+      /* Brilho no canto superior, atrás do conteúdo. Discreto em repouso:
+         com 9 tiles lado a lado, brilho forte em todos vira ruído. */
+      .tile::before {
+        content: "";
+        position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(120% 90% at 100% 0%, rgba(0,177,64,0.22), transparent 62%);
+        transition: opacity 0.18s; opacity: 0.5;
+      }
+      .tile:hover {
+        transform: translateY(-3px); border-color: rgba(0,177,64,0.55);
+        box-shadow: 0 16px 30px -18px rgba(0,177,64,0.7);
+      }
+      .tile:hover::before { opacity: 1; }
+      .tile:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+      /* Ícone dentro de um quadrado próprio: solto no canto ele lia como
+         enfeite; emoldurado vira o marcador da categoria. */
+      .tile .icone {
+        position: absolute; top: 16px; left: 18px;
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 40px; height: 40px; border-radius: 11px;
+        background: rgba(0,177,64,0.14);
+        border: 1px solid rgba(0,177,64,0.24);
+        color: var(--sky);
+        transition: background 0.18s, border-color 0.18s;
+      }
+      .tile .icone svg { width: 21px; height: 21px; display: block; }
+      .tile:hover .icone { background: rgba(0,177,64,0.26); border-color: rgba(0,177,64,0.5); }
+
+      /* Diz que o retângulo leva a algum lugar. */
+      .tile .seta {
+        position: absolute; top: 26px; right: 20px;
+        font-size: 0.78rem; color: rgba(242,242,242,0.22);
+        transition: transform 0.18s, color 0.18s;
+      }
+      .tile:hover .seta { color: var(--sky); transform: translateX(3px); }
+      .tile .nome {
+        position: relative; display: block;
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.05rem; font-weight: 700; line-height: 1.25;
+        /* Anula o "anywhere" global: só quebra palavra que não couber
+           sozinha na linha, senão virava "Bermuda / s Street". */
+        overflow-wrap: break-word;
+      }
+      .tile .qtd {
+        position: relative; display: block; margin-top: 6px;
+        font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+        color: rgba(242,242,242,0.45);
+      }
+
+      /* block, nao o inline padrao do span: inline, o nome e a contagem
+         corriam na mesma linha. */
+      .tile .texto { position: relative; display: block; }
+
+      /* Os bônus fecham a grade e ganham destaque próprio. Ocupando a
+         fileira inteira viram o fecho da lista, em vez de um retângulo
+         solto sobrando no canto. */
+      .tile.bonus {
+        grid-column: 1 / -1;
+        flex-direction: row; align-items: center; justify-content: flex-start; gap: 16px;
+        min-height: 0; padding: 20px;
+        border-color: rgba(245,158,11,0.32);
+      }
+      .tile.bonus .icone { position: static; width: 44px; height: 44px; }
+      .tile.bonus .icone svg { width: 23px; height: 23px; }
+      /* order manda a seta para o fim: no DOM ela vem antes do texto, por
+         causa do posicionamento absoluto dos outros tiles. */
+      .tile.bonus .seta { position: static; order: 3; margin-left: auto; }
+      .tile.bonus .texto { order: 2; }
+      /* Deitado, o brilho vem da direita, nao do topo. */
+      .tile.bonus::before {
+        background: radial-gradient(60% 200% at 100% 50%, rgba(245,158,11,0.26), transparent 65%);
+      }
+      .tile.bonus:hover {
+        border-color: rgba(245,158,11,0.65);
+        box-shadow: 0 16px 30px -18px rgba(245,158,11,0.6);
+      }
+      .tile.bonus .icone {
+        color: #fbbf24;
+        background: rgba(245,158,11,0.13);
+        border-color: rgba(245,158,11,0.26);
+      }
+      .tile.bonus:hover .icone { background: rgba(245,158,11,0.24); border-color: rgba(245,158,11,0.5); }
+      .tile.bonus:hover .seta { color: #fbbf24; }
+
+      /* Vista 2: cabeçalho da lista de contatos. */
+      .voltar {
+        display: inline-flex; align-items: center; gap: 9px;
+        padding: 10px 15px; margin-top: 20px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 10px; color: rgba(242,242,242,0.8);
+        font-family: "Montserrat", sans-serif; font-size: 0.78rem; cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+      }
+      .voltar:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+      /* Título e contagem na mesma linha: empilhados, comiam três alturas
+         de texto antes do primeiro contato aparecer. */
+      .cabecalho-vista {
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        margin: 18px 0 18px; padding-bottom: 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+      .titulo-vista {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.3rem; font-weight: 700; margin: 0;
+      }
+      .contagem {
+        margin: 0; padding: 5px 10px; border-radius: 999px;
+        background: rgba(255,255,255,0.06);
+        font-size: 0.68rem; letter-spacing: 0.1em;
+        color: rgba(242,242,242,0.55); text-transform: uppercase;
+      }
+
+      .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+
+      .card {
+        display: flex; flex-direction: column; gap: 10px;
+        padding: 14px; border-radius: 14px;
+        background: var(--darker);
+        border: 1px solid rgba(255,255,255,0.09);
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .card:hover { border-color: rgba(0,177,64,0.45); transform: translateY(-2px); }
+
+      /* Linha de contato: inicial, dados e acao lado a lado. Empilhado,
+         cada card tinha um nome no topo, um vazio no meio e uma barra
+         verde larga embaixo - com 8 cards virava uma parede de barras. */
+      .card .topo-card { display: flex; align-items: center; gap: 11px; }
+      /* min-width:0 deixa o nome longo truncar em vez de esticar a linha. */
+      .card .dados { flex: 1; min-width: 0; }
+      .card .meta {
+        margin-top: 3px; font-size: 0.78rem;
+        color: rgba(242,242,242,0.5);
+        /* normal anula o "anywhere" global: o telefone e um bloco unico,
+           quebrar no meio do numero e pior do que passar do card. */
+        overflow-wrap: normal;
+      }
+      .card .insta-link {
+        display: inline-flex; align-items: center; gap: 6px;
+        margin-top: 5px; font-size: 0.76rem;
+        color: rgba(242,242,242,0.6); text-decoration: none;
+        transition: color 0.15s;
+      }
+      .card .insta-link:hover { color: var(--sky); }
+      .card .insta-link:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+      .card .acoes-card { display: flex; gap: 7px; margin-left: auto; flex-shrink: 0; }
+      .card .acoes-card a {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 40px; height: 40px; border-radius: 11px;
+        font-size: 1rem; text-decoration: none;
+        border: 1px solid transparent;
+        transition: filter 0.15s, transform 0.15s;
+      }
+      .card .acoes-card a:hover { filter: brightness(1.25); transform: translateY(-1px); }
+      .card .acoes-card a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+      /* A inicial preenche o vazio do card: a maioria dos contatos só tem
+         nome e telefone, e o card ficava com um canto oco. */
+      .card .inicial {
+        flex-shrink: 0;
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 38px; height: 38px; border-radius: 10px;
+        background: linear-gradient(140deg, rgba(0,177,64,0.3), rgba(0,177,64,0.08));
+        border: 1px solid rgba(0,177,64,0.26);
+        font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.95rem;
+        color: var(--sky); text-transform: uppercase;
+      }
+      .card h2 {
+        font-size: 0.92rem; font-weight: 700; line-height: 1.3;
+        /* break-word anula o "anywhere" global, e hyphens poe o hifen quando
+           a palavra realmente nao cabe: sem isso "PERSONALIZACAO" era
+           cortada no meio sem nenhuma marca. */
+        overflow-wrap: break-word; hyphens: auto;
+      }
+      .card .categoria {
+        align-self: flex-start; padding: 4px 10px; border-radius: 6px;
+        background: rgba(0,177,64,0.16); color: var(--sky);
+        font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+      }
+      /* Dentro de uma categoria o título já diz qual é; o rótulo em cada
+         card só repetiria. Na busca ele volta, porque ali mistura tudo. */
+      .grade.sem-rotulo .card .categoria { display: none; }
+      .card .local { font-size: 0.78rem; color: rgba(242,242,242,0.5); }
+      .card .obs { font-size: 0.8rem; line-height: 1.5; color: rgba(242,242,242,0.65); }
+      .zap { background: rgba(37,211,102,0.14); border-color: rgba(37,211,102,0.3); color: #4ade80; }
+
+      .estado {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 14px; text-align: center; min-height: 45vh; padding: 40px 24px;
+        color: rgba(242,242,242,0.6); font-size: 0.9rem; line-height: 1.6;
+      }
+      .estado i { font-size: 1.6rem; color: var(--blue); }
+      .estado.erro i { color: #f87171; }
+
+      .aviso { margin-top: 40px; text-align: center; font-size: 0.72rem; line-height: 1.6; color: rgba(242,242,242,0.3); }
+
+      /* Avisos do fim da lista (o mesmo texto que ia no PDF): so aparecem
+         depois da grade de categorias, apos o card de bonus. Mesma
+         linguagem visual dos tiles - brilho no canto, icone emoldurado -
+         para nao parecer um texto solto colado na pagina. */
+      .info-extra { margin-top: 44px; display: flex; flex-direction: column; gap: 18px; }
+
+      .info-bloco {
+        position: relative; overflow: hidden;
+        padding: 26px 28px; border-radius: 18px;
+        background: var(--darker); border: 1px solid rgba(255,255,255,0.09);
+      }
+      .info-bloco::before {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(130% 90% at 0% 0%, rgba(0,177,64,0.14), transparent 60%);
+      }
+      .info-bloco > * { position: relative; }
+
+      .info-cabecalho { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+      .info-cabecalho .icone-info {
+        flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+        width: 42px; height: 42px; border-radius: 12px;
+        background: rgba(0,177,64,0.15); border: 1px solid rgba(0,177,64,0.3);
+        color: var(--sky); font-size: 1.05rem;
+      }
+      .info-cabecalho h3 {
+        font-family: "Montserrat", sans-serif; font-size: 1.05rem; font-weight: 700; color: #fff;
+      }
+
+      .info-bloco p {
+        font-size: 0.88rem; line-height: 1.7;
+        color: rgba(242,242,242,0.78);
+      }
+      .info-bloco p + p { margin-top: 12px; }
+      .info-bloco strong { color: var(--sky); font-weight: 700; }
+
+      /* Atencao: mesmo ambar do aviso de acesso obrigatorio, pra puxar o
+         olho de verdade num ponto de alerta. */
+      .info-bloco.atencao { border-color: rgba(245,158,11,0.35); }
+      .info-bloco.atencao::before { background: radial-gradient(130% 90% at 0% 0%, rgba(245,158,11,0.16), transparent 60%); }
+      .info-bloco.atencao .icone-info { color: #fbbf24; background: rgba(245,158,11,0.16); border-color: rgba(245,158,11,0.35); }
+
+      /* Lista numerada: cada item com seu numero, no lugar do "1 - " solto
+         no texto. Usada nas Precaucoes e nas Dicas, que tem o mesmo formato. */
+      .lista-numerada { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 26px; }
+      .item-numerado { display: flex; align-items: flex-start; gap: 12px; }
+      .item-numerado .numero {
+        flex-shrink: 0; margin-top: 1px;
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 24px; height: 24px; border-radius: 50%;
+        background: rgba(0,177,64,0.15); border: 1px solid rgba(0,177,64,0.32);
+        color: var(--sky); font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.72rem;
+      }
+      .item-numerado p {
+        margin: 0; font-size: 0.8rem; line-height: 1.6;
+        color: rgba(242,242,242,0.68);
+      }
+
+      @media (max-width: 640px) {
+        .lista-numerada { grid-template-columns: 1fr; }
+        .info-bloco { padding: 20px; }
+        .info-cabecalho .icone-info { width: 38px; height: 38px; }
+      }
+
+      .destaque {
+        display: flex; align-items: flex-start; gap: 12px;
+        padding: 14px 16px; border-radius: 12px; margin-bottom: 18px;
+        background: rgba(0,177,64,0.1); border: 1px solid rgba(0,177,64,0.35);
+        font-size: 0.82rem; line-height: 1.5; color: rgba(242,242,242,0.9);
+      }
+      .destaque i { color: var(--sky); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+      .destaque strong { color: #fff; }
+
+      /* Aviso de acesso individual, mostrado a cada entrada na area. */
+      .fundo-aviso {
+        position: fixed; inset: 0; z-index: 300;
+        display: flex; align-items: center; justify-content: center;
+        padding: 20px;
+        background: rgba(10,10,10,0.86);
+        backdrop-filter: blur(6px);
+        overflow-y: auto;
+      }
+      .caixa-aviso {
+        position: relative;
+        width: 100%; max-width: 520px; margin: auto;
+        padding: 28px;
+        border-radius: 18px;
+        background: var(--darker);
+        border: 1px solid rgba(248,113,113,0.4);
+        box-shadow: 0 30px 60px -20px rgba(0,0,0,0.9);
+        text-align: left;
+      }
+      .caixa-aviso .selo {
+        display: inline-flex; align-items: center; gap: 9px;
+        padding: 7px 13px; border-radius: 999px; margin-bottom: 16px;
+        background: rgba(248,113,113,0.14); color: #f87171;
+        font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      }
+      .caixa-aviso h2 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.35rem; font-weight: 700; line-height: 1.25; margin-bottom: 16px;
+      }
+      .caixa-aviso p {
+        font-size: 0.88rem; line-height: 1.65;
+        color: rgba(242,242,242,0.75); margin-bottom: 12px;
+      }
+      .caixa-aviso strong { color: #fff; font-weight: 600; }
+      .caixa-aviso .grave { color: #fca5a5; font-weight: 600; }
+      .caixa-aviso .btn-blue { width: 100%; margin-top: 10px; justify-content: center; }
+
+      /* Botao-convite: paragrafo + botao, sem a grade da precaucoes - so
+         texto corrido dentro do info-bloco padrao. */
+      .dicas-cta p { font-size: 0.88rem; line-height: 1.65; color: rgba(242,242,242,0.75); margin-bottom: 18px; }
+
+      /* Popup das dicas: mesmo fundo com blur do aviso obrigatorio, mas
+         fecha livremente (X, clique fora, Esc) - por isso o proprio nome
+         diferente (fundo-dicas, nao fundo-aviso). */
+      .fundo-dicas {
+        position: fixed; inset: 0; z-index: 300;
+        display: flex; align-items: center; justify-content: center;
+        padding: 20px;
+        background: rgba(10,10,10,0.86);
+        backdrop-filter: blur(6px);
+        overflow-y: auto;
+      }
+      .caixa-dicas {
+        position: relative; overflow: hidden;
+        width: 100%; max-width: 480px; margin: auto;
+        padding: 36px 30px 28px;
+        border-radius: 20px;
+        background: var(--darker);
+        border: 1px solid rgba(0,177,64,0.35);
+        box-shadow: 0 30px 60px -20px rgba(0,0,0,0.9);
+        text-align: left;
+      }
+      .caixa-dicas::before {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(120% 90% at 100% 0%, rgba(0,177,64,0.18), transparent 60%);
+      }
+      .caixa-dicas > * { position: relative; }
+
+      .fechar-dicas {
+        position: absolute; top: 14px; right: 14px;
+        width: 34px; height: 34px; border-radius: 9px; cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(242,242,242,0.7);
+      }
+      .fechar-dicas:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+      .selo-dicas {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 6px 12px; border-radius: 999px; margin-bottom: 22px;
+        background: rgba(0,177,64,0.14); color: var(--sky);
+        font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      }
+
+      /* Numero grande, apagado: marca "qual dica e essa" sem competir com o
+         titulo, que e o que a pessoa realmente vai ler. */
+      .dica-numero {
+        font-family: "Montserrat", sans-serif; font-weight: 700;
+        font-size: 2.4rem; line-height: 1; color: rgba(0,177,64,0.4);
+        margin-bottom: 8px;
+      }
+      .dica-titulo {
+        font-family: "Montserrat", sans-serif; font-weight: 700;
+        font-size: 1.3rem; line-height: 1.35; color: #fff; margin-bottom: 14px;
+      }
+      .dica-texto { font-size: 0.92rem; line-height: 1.75; color: rgba(242,242,242,0.78); }
+
+      .dicas-rodape {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-top: 28px; padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
+      .dica-seta {
+        width: 42px; height: 42px; border-radius: 11px; cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: rgba(0,177,64,0.12); border: 1px solid rgba(0,177,64,0.3);
+        color: var(--sky); transition: background 0.15s, opacity 0.15s;
+      }
+      .dica-seta:hover:not(:disabled) { background: rgba(0,177,64,0.26); }
+      .dica-seta:disabled { opacity: 0.3; cursor: default; }
+      .dica-progresso { font-size: 0.76rem; letter-spacing: 0.05em; color: rgba(242,242,242,0.5); }
+
+      @media (max-width: 640px) {
+        .topo .quem { display: none; }
+        .caixa-aviso { padding: 22px 20px; }
+        .caixa-aviso h2 { font-size: 1.15rem; }
+        .caixa-dicas { padding: 30px 22px 24px; }
+        .dica-numero { font-size: 2rem; }
+        .dica-titulo { font-size: 1.12rem; }
+        .grade { grid-template-columns: 1fr; }
+
+        /* Duas colunas: em coluna única só cabiam ~2 categorias na tela e
+           os bônus ficavam a nove rolagens de distância. */
+        .categorias { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .tile { min-height: 132px; padding: 15px; border-radius: 14px; }
+        .tile .icone { top: 13px; left: 15px; width: 34px; height: 34px; border-radius: 9px; }
+        .tile .icone svg { width: 18px; height: 18px; }
+        .tile .seta { top: 20px; right: 15px; font-size: 0.7rem; }
+        .tile .nome { font-size: 0.92rem; }
+        .tile .qtd { font-size: 0.66rem; }
+        .cabecalho-vista { margin: 16px 0 16px; }
+        .titulo-vista { font-size: 1.15rem; }
+      }
+    </style>
+  </head>
+
+  <body class="grid-bg">
+    <header class="topo">
+      <div class="topo-interno">
+        <span class="marca" aria-label="ListaJota"><span class="marca-j" aria-hidden="true">J</span><span class="marca-txt">Lista<strong>Jota</strong></span></span>
+        <div class="acoes">
+          <span class="quem" id="quem"></span>
+          <a class="btn-ghost" id="linkAdmin" href="admin.html" hidden><i class="fa-solid fa-sliders"></i> Editar</a>
+          <button class="btn-ghost" id="sair" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Aviso obrigatorio: aparece a cada entrada na area de membros. -->
+    <div class="fundo-aviso" id="fundoAviso" hidden role="dialog" aria-modal="true" aria-labelledby="tituloAviso">
+      <div class="caixa-aviso">
+        <span class="selo"><i class="fa-solid fa-triangle-exclamation"></i> Atenção</span>
+        <h2 id="tituloAviso">Acesso individual</h2>
+        <p>
+          O acesso à Lista de Fornecedores é
+          <strong>pessoal, exclusivo e intransferível</strong>.
+        </p>
+        <p>
+          É <strong>proibido</strong> compartilhar login, senha ou permitir o acesso de terceiros.
+        </p>
+        <p>
+          Caso sejam identificados acessos indevidos ou compartilhamento da conta,
+          <span class="grave">o acesso à plataforma será bloqueado</span> e o usuário
+          <span class="grave">perderá o acesso à lista</span>.
+        </p>
+        <p>Para voltar a acessar, será necessário adquirir um novo acesso.</p>
+        <button class="btn-blue" id="fecharAviso" type="button">Li e entendi</button>
+      </div>
+    </div>
+
+    <!-- Dicas para voce: uma por vez, aberta so por quem clica no botao
+         (ao contrario do aviso acima, fecha pelo X, clicando fora ou Esc). -->
+    <div class="fundo-dicas" id="fundoDicas" hidden role="dialog" aria-modal="true" aria-labelledby="dicaTitulo">
+      <div class="caixa-dicas">
+        <button class="fechar-dicas" id="fecharDicas" type="button" aria-label="Fechar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <span class="selo-dicas"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dicas para você</span>
+        <div class="dica-numero" id="dicaNumero" aria-hidden="true"></div>
+        <h2 class="dica-titulo" id="dicaTitulo"></h2>
+        <p class="dica-texto" id="dicaTexto"></p>
+        <div class="dicas-rodape">
+          <button class="dica-seta" id="dicaAnterior" type="button" aria-label="Dica anterior">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <span class="dica-progresso" id="dicaProgresso"></span>
+          <button class="dica-seta" id="dicaProxima" type="button" aria-label="Próxima dica">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="conteudo">
+      <div class="estado" id="estado">
+        <i class="fa-solid fa-circle-notch fa-spin"></i>
+        <span id="estadoTexto">Carregando sua lista...</span>
+      </div>
+
+      <div id="painel" hidden>
+        <p class="destaque">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Ao chamar qualquer contato desta lista, avise que foi indicação da <strong>Jota Multimarcas</strong> para ter aquela atenção diferenciada dos fornecedores e dos contatos bônus.</span>
+        </p>
+        <div class="busca-area">
+          <div class="busca">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" id="busca" placeholder="Buscar por nome, categoria, cidade..." autocomplete="off" />
+          </div>
+        </div>
+
+        <!-- Vista 1: escolha da categoria -->
+        <div id="vistaCategorias">
+          <div class="categorias" id="categorias"></div>
+
+          <!-- Avisos de fim de lista: mesmo texto que ia no PDF, agora fixo
+               na pagina, sempre depois do card de bonus. -->
+          <div class="info-extra">
+            <div class="info-bloco">
+              <div class="info-cabecalho">
+                <span class="icone-info"><i class="fa-solid fa-gift" aria-hidden="true"></i></span>
+                <h3>Parabéns pela compra!</h3>
+              </div>
+              <p>
+                Você acaba de garantir nossa lista com os mesmos fornecedores que nos
+                abastecem diariamente com os <strong>melhores produtos</strong> e a
+                melhor qualidade!
+              </p>
+              <p>
+                E ganhou de <strong>brinde</strong> alguns contatos que se encontram
+                no final da lista, em “Contatos Bônus”.
+              </p>
+            </div>
+
+            <div class="info-bloco atencao">
+              <div class="info-cabecalho">
+                <span class="icone-info"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
+                <h3>Atenção</h3>
+              </div>
+              <p>
+                Todos os fornecedores dessa lista fornecem para nós. Os modelos, com
+                o tempo, vão trocando — nós garantimos a <strong>qualidade</strong>,
+                porém os modelos nem sempre vão ser os mesmos. Viu e gostou? Faça o
+                pedido, pois quando acaba não tem como garantir se vai ter reposição.
+              </p>
+            </div>
+
+            <div class="info-bloco precaucoes">
+              <div class="info-cabecalho">
+                <span class="icone-info"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
+                <h3>Precauções</h3>
+              </div>
+              <div class="lista-numerada">
+                <div class="item-numerado"><span class="numero">1</span><p>O fornecedor vende em atacado, focado em quem quer revender. Não insista em fazer pedidos com 1 só tamanho, nem em pegar quantidades menores que o mínimo que eles pedem.</p></div>
+                <div class="item-numerado"><span class="numero">2</span><p>O fornecedor prioriza vender para quem faz pedido no resumo e na grade, levando quantidade em todos os tamanhos.</p></div>
+                <div class="item-numerado"><span class="numero">3</span><p>Evite pedir ao fornecedor que envie mais fotos ou vídeos de um produto que ele já te enviou foto. A demanda deles é alta, e eles priorizam atender quem já chega no resumo.</p></div>
+                <div class="item-numerado"><span class="numero">4</span><p>Chame um fornecedor só quando já estiver com a intenção de realizar o pedido. Ficar mandando muitas mensagens e nunca fechar pedido pode fazer com que, de uma hora para outra, ele pare de te responder. (Não nos responsabilizamos caso isso aconteça.)</p></div>
+                <div class="item-numerado"><span class="numero">5</span><p>Nunca faça um pedido e depois cancele, pois isso atrasa muito o trabalho dos fornecedores — nesses casos, ele pode nunca mais te atender. (Não nos responsabilizamos caso isso aconteça.)</p></div>
+                <div class="item-numerado"><span class="numero">6</span><p>Nunca fique pedindo descontos absurdos ou comparando preço de um fornecedor com o outro. Os fornecedores ganham na quantidade, não na unidade — o desconto existe para clientes que compram grandes quantidades e com frequência. Desconto é cortesia, não obrigação do fornecedor.</p></div>
+                <div class="item-numerado"><span class="numero">7</span><p>Trocas por defeito ou reclamações só são aceitas quando o cliente grava a conferência desde o pacote lacrado até o fim. Se não tem vídeo, não tem como reclamar.</p></div>
+                <div class="item-numerado"><span class="numero">8</span><p>A demanda dos fornecedores é alta. Mandou mensagem, aguarde — ficar ligando ou mandando várias mensagens só vai atrasar seu atendimento.</p></div>
+              </div>
+            </div>
+
+            <!-- Ultimo bloco da pagina, de proposito: dica de negocio, nao
+                 sobre como usar a lista - fecha o conteudo, nao compete com
+                 as precaucoes (essas sim, sobre os fornecedores). O conteudo
+                 das 15 dicas vive no JS (array DICAS), lido uma de cada vez
+                 no popup - aqui so o convite para abrir. -->
+            <div class="info-bloco dicas-cta">
+              <div class="info-cabecalho">
+                <span class="icone-info"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></span>
+                <h3>Dicas para você</h3>
+              </div>
+              <p>
+                15 dicas práticas de quem monta um negócio de revenda todo dia — dos
+                primeiros produtos até a hora de precificar certo.
+              </p>
+              <button class="btn-blue" id="abrirDicas" type="button">
+                <i class="fa-solid fa-lightbulb"></i> Dicas para você
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista 2: contatos da categoria escolhida (ou da busca) -->
+        <div id="vistaContatos" hidden>
+          <button class="voltar" id="voltar" type="button">
+            <i class="fa-solid fa-arrow-left"></i> Todas as categorias
+          </button>
+          <div class="cabecalho-vista">
+            <h2 class="titulo-vista" id="tituloVista"></h2>
+            <span class="contagem" id="contagem"></span>
+          </div>
+          <div class="grade" id="grade"></div>
+        </div>
+
+        <p class="aviso">Lista de uso pessoal e intransferível, vinculada ao seu e-mail de compra.</p>
+      </div>
+    </div>
+
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/+esm";
+      import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, WHATSAPP } from "./supabase-config.js";
+      import { normalizar, ehBonus, montarIcone } from "./categorias-ui.js";
+
+      const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+      const estado = document.getElementById("estado");
+      const estadoTexto = document.getElementById("estadoTexto");
+      const painel = document.getElementById("painel");
+      const grade = document.getElementById("grade");
+      const contagem = document.getElementById("contagem");
+      const campoBusca = document.getElementById("busca");
+      const categorias = document.getElementById("categorias");
+      const vistaCategorias = document.getElementById("vistaCategorias");
+      const vistaContatos = document.getElementById("vistaContatos");
+      const tituloVista = document.getElementById("tituloVista");
+
+      function falhar(mensagem) {
+        painel.hidden = true;
+        estado.classList.add("erro");
+        estado.querySelector("i").className = "fa-solid fa-triangle-exclamation";
+        estadoTexto.innerHTML =
+          mensagem +
+          '<br /><br /><a href="' + WHATSAPP + '" target="_blank" rel="noopener" style="color:var(--sky);">Falar com o suporte</a>';
+        estado.hidden = false;
+      }
+
+      // 1. getSession so le o que esta guardado no navegador; getUser confere
+      //    com o servidor, senao uma conta revogada fica presa numa tela de erro.
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.replace("login.html");
+        throw new Error("sem sessao");
+      }
+
+      const { data: { user }, error: erroUsuario } = await supabase.auth.getUser();
+      if (erroUsuario || !user) {
+        await supabase.auth.signOut();
+        window.location.replace("login.html");
+        throw new Error("sessao invalida");
+      }
+      document.getElementById("quem").textContent = user.email;
+
+      // 1b. Aviso de acesso individual. So depois de validar a sessao, senao
+      //     ele pisca na tela de quem esta sendo mandado de volta ao login.
+      //     Sai unicamente pelo botao: e um aviso que precisa ser lido.
+      const fundoAviso = document.getElementById("fundoAviso");
+      const fecharAviso = document.getElementById("fecharAviso");
+      fundoAviso.hidden = false;
+      document.body.style.overflow = "hidden";
+      fecharAviso.focus();
+      fecharAviso.addEventListener("click", () => {
+        fundoAviso.hidden = true;
+        document.body.style.overflow = "";
+      });
+
+      document.getElementById("sair").addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.replace("login.html");
+      });
+
+      // 1c. Popup das dicas: uma por vez, para cada uma ganhar espaço
+      //     proprio em vez de ficar espremida numa grade de 15.
+      const DICAS = [
+        { titulo: "Foque nos seus próprios resultados", texto: "Nunca baseie o sucesso da sua loja nos resultados de outras. Cada negócio possui uma realidade diferente. Analise sua própria evolução e busque melhorar constantemente." },
+        { titulo: "Tenha cuidado ao trazer novos produtos", texto: "Não compre um produto apenas porque um concorrente está vendendo bem. Nem toda tendência funciona para todos os públicos. Conheça seus clientes antes de investir." },
+        { titulo: "Profissionalize suas redes sociais", texto: "Mantenha suas redes sociais organizadas, com boas fotos, posts profissionais e conteúdo frequente. Estar ativo ajuda a fortalecer sua marca e atrair novos clientes." },
+        { titulo: "Invista em tráfego pago", texto: "Não dependa somente do alcance orgânico. Anúncios bem planejados podem apresentar sua loja para milhares de novos clientes e aumentar suas oportunidades de venda." },
+        { titulo: "Valorize o nome e a logomarca da sua loja", texto: "Evite mudanças frequentes no nome ou na identidade visual. São elementos que fazem o público reconhecer e lembrar da sua marca." },
+        { titulo: "Organize suas finanças", texto: "Nunca misture o dinheiro da empresa com suas finanças pessoais. Conheça sua margem de lucro, controle entradas e despesas e estabeleça uma retirada mensal para você." },
+        { titulo: "Separe opiniões pessoais da sua marca", texto: "Evite envolver sua empresa desnecessariamente em assuntos como política, religião ou temas polêmicos. Uma opinião pessoal pode acabar afetando a imagem do negócio." },
+        { titulo: "Reserve tempo para inovar", texto: "Analise regularmente o que está ou não trazendo resultados. Corrija o que não funciona, aprimore o que funciona e esteja sempre buscando novas ideias." },
+        { titulo: "Crie algo que faça o cliente lembrar da sua marca", texto: "Se possível, envie pequenos brindes junto aos pedidos. Adesivos de qualidade com sua logomarca, por exemplo, possuem baixo custo e ajudam a fortalecer sua marca." },
+        { titulo: "Ofereça um bom atendimento em todas as situações", texto: "O atendimento deve ser profissional tanto na primeira compra quanto no pós-venda, incluindo dúvidas, trocas e devoluções. A experiência do cliente não termina após o pagamento." },
+        { titulo: "Busque estar sempre à frente", texto: "Acompanhe novos produtos, tendências e formatos de conteúdo. Quanto mais atualizado estiver o seu negócio, maiores serão suas oportunidades de se destacar." },
+        { titulo: "Ofereça variedade aos seus clientes", texto: "Ter boas opções de modelos, cores, tamanhos e produtos aumenta as possibilidades de escolha e pode contribuir para vendas maiores por cliente." },
+        { titulo: "Precifique seus produtos corretamente", texto: "Ter o menor preço nem sempre significa ter o melhor negócio. Considere custos, impostos, despesas e margem de lucro para estabelecer um preço saudável e sustentável." },
+        { titulo: "Padronize seus horários de atendimento", texto: "Estabeleça horários para iniciar e encerrar o trabalho. Ter organização permite administrar melhor a empresa sem deixar de preservar sua vida pessoal e seu descanso." },
+        { titulo: "Tenha cuidado com promoções em excesso", texto: "Promoções frequentes podem fazer o cliente se acostumar a comprar somente quando houver desconto. Utilize ofertas de forma estratégica, preservando o valor dos seus produtos e da sua marca." },
+      ];
+
+      const fundoDicas = document.getElementById("fundoDicas");
+      const dicaNumero = document.getElementById("dicaNumero");
+      const dicaTitulo = document.getElementById("dicaTitulo");
+      const dicaTexto = document.getElementById("dicaTexto");
+      const dicaProgresso = document.getElementById("dicaProgresso");
+      const dicaAnterior = document.getElementById("dicaAnterior");
+      const dicaProxima = document.getElementById("dicaProxima");
+      let dicaAtual = 0;
+
+      function renderDica() {
+        const d = DICAS[dicaAtual];
+        dicaNumero.textContent = String(dicaAtual + 1).padStart(2, "0");
+        dicaTitulo.textContent = d.titulo;
+        dicaTexto.textContent = d.texto;
+        dicaProgresso.textContent = `${dicaAtual + 1} de ${DICAS.length}`;
+        dicaAnterior.disabled = dicaAtual === 0;
+        dicaProxima.disabled = dicaAtual === DICAS.length - 1;
+      }
+
+      function abrirDicas() {
+        dicaAtual = 0;
+        renderDica();
+        fundoDicas.hidden = false;
+        document.body.style.overflow = "hidden";
+      }
+
+      function fecharDicas() {
+        fundoDicas.hidden = true;
+        document.body.style.overflow = "";
+      }
+
+      document.getElementById("abrirDicas").addEventListener("click", abrirDicas);
+      document.getElementById("fecharDicas").addEventListener("click", fecharDicas);
+      // Clique no fundo escuro tambem fecha; clique dentro da caixa, nao -
+      // por isso confere se o alvo do clique e o proprio fundo.
+      fundoDicas.addEventListener("click", (evento) => {
+        if (evento.target === fundoDicas) fecharDicas();
+      });
+      dicaAnterior.addEventListener("click", () => {
+        if (dicaAtual > 0) { dicaAtual--; renderDica(); }
+      });
+      dicaProxima.addEventListener("click", () => {
+        if (dicaAtual < DICAS.length - 1) { dicaAtual++; renderDica(); }
+      });
+      document.addEventListener("keydown", (evento) => {
+        if (fundoDicas.hidden) return;
+        if (evento.key === "Escape") fecharDicas();
+        else if (evento.key === "ArrowLeft" && !dicaAnterior.disabled) { dicaAtual--; renderDica(); }
+        else if (evento.key === "ArrowRight" && !dicaProxima.disabled) { dicaAtual++; renderDica(); }
+      });
+
+      // 2. Admin ganha o atalho para o painel de edicao.
+      const { data: perfil } = await supabase
+        .from("membros")
+        .select("admin")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (perfil?.admin) document.getElementById("linkAdmin").hidden = false;
+
+      supabase
+        .from("membros")
+        .update({ ultimo_acesso: new Date().toISOString() })
+        .eq("id", user.id)
+        .then(() => {}, () => {});
+
+      // Projeto no plano free hiberna: a primeira chamada depois de um tempo
+      // parado pode voltar 5xx. Vale insistir antes de desistir.
+      async function insistir(acao, tentativas = 3) {
+        let ultimoErro;
+        for (let i = 0; i < tentativas; i++) {
+          try {
+            return await acao();
+          } catch (e) {
+            ultimoErro = e;
+            await new Promise((r) => setTimeout(r, 800 * (i + 1)));
+          }
+        }
+        throw ultimoErro;
+      }
+
+      // 3. Busca fornecedores e categorias. A RLS ja limita fornecedores aos
+      //    ativos e a quem e membro; categorias e so leitura de nome/ordem.
+      // As duas ficam em tentativas separadas: se categorias falhar, a tela
+      // nao pode virar uma tela de "compra nao liberada" por causa de um
+      // problema que nao tem nada a ver com o acesso do comprador -
+      // nomeExibido() e o sort ja sabem lidar com categoriasInfo vazio.
+      let fornecedores = [];
+      let categoriasInfo = [];
+      try {
+        fornecedores = await insistir(async () => {
+          const resp = await supabase
+            .from("fornecedores")
+            .select("nome, categoria, telefone, instagram, cidade, estado, observacoes")
+            // Explicito de proposito: a RLS ja esconde os inativos do comprador,
+            // mas o admin enxerga tudo - e aqui a tela e a do comprador.
+            .eq("ativo", true)
+            .order("categoria", { ascending: true, nullsFirst: false })
+            .order("nome", { ascending: true });
+          if (resp.error) throw resp.error;
+          return resp.data ?? [];
+        });
+      } catch (e) {
+        falhar(
+          "Sua conta existe, mas não consta como compra liberada. " +
+          "Se você já pagou, fale com a gente que liberamos na hora."
+        );
+        throw e;
+      }
+
+      try {
+        categoriasInfo = await insistir(async () => {
+          const resp = await supabase.from("categorias").select("chave, nome, ordem").order("ordem", { ascending: true });
+          if (resp.error) throw resp.error;
+          return resp.data ?? [];
+        });
+      } catch (e) {
+        // Nao fatal: sem categoriasInfo a grade cai para nome bruto e ordem
+        // alfabetica, mas a lista continua utilizavel.
+        console.error("falha ao carregar categorias:", e);
+      }
+
+      let categoriaAtiva = "";
+
+      // Só dígitos: o link do WhatsApp não aceita máscara.
+      function linkWhatsapp(telefone) {
+        const numero = (telefone ?? "").replace(/\D/g, "");
+        if (numero.length < 10) return null;
+        return "https://wa.me/" + (numero.length <= 11 ? "55" + numero : numero);
+      }
+
+      // Chave -> {nome, ordem} vinda do painel do admin. O rotulo mostrado
+      // pode ter sido renomeado ali; a chave (normalizar do nome original)
+      // e o que liga essa linha ao texto bruto salvo em fornecedores.categoria
+      // e ao desenho do icone, que nao muda com o renome.
+      const infoPorChave = new Map(categoriasInfo.map((c) => [c.chave, c]));
+      // Nome exibido: o do admin quando existe; senao o texto bruto mesmo -
+      // caso de categoria digitada direto no fornecedor antes de sincronizar.
+      function nomeExibido(categoriaBruta) {
+        return infoPorChave.get(normalizar(categoriaBruta))?.nome ?? categoriaBruta;
+      }
+
+      function montarCategorias() {
+        const porCategoria = new Map();
+        for (const f of fornecedores) {
+          if (!f.categoria) continue;
+          porCategoria.set(f.categoria, (porCategoria.get(f.categoria) ?? 0) + 1);
+        }
+        if (porCategoria.size === 0) return;
+
+        // Ordem definida no admin, com o bonus sempre por ultimo - isso nao
+        // depende dos dados estarem em dia: mesmo que uma categoria fique
+        // sem linha em `categorias` (raro, ainda nao sincronizada) ou com a
+        // chave desatualizada, o bonus nunca fica no meio da grade.
+        const ordenadas = [...porCategoria.keys()].sort((a, b) => {
+          if (ehBonus(a) !== ehBonus(b)) return ehBonus(a) ? 1 : -1;
+          const infoA = infoPorChave.get(normalizar(a));
+          const infoB = infoPorChave.get(normalizar(b));
+          if (infoA && infoB) return infoA.ordem - infoB.ordem;
+          if (infoA !== infoB) return infoA ? -1 : 1;
+          return a.localeCompare(b, "pt-BR");
+        });
+
+        for (const categoriaBruta of ordenadas) {
+          const tile = document.createElement("button");
+          tile.type = "button";
+          tile.className = "tile" + (ehBonus(categoriaBruta) ? " bonus" : "");
+
+          const icone = document.createElement("span");
+          icone.className = "icone";
+          icone.appendChild(montarIcone(categoriaBruta));
+
+          const rotulo = document.createElement("span");
+          rotulo.className = "nome";
+          const nome = nomeExibido(categoriaBruta);
+          // Espaço de largura zero depois da barra: dá ao navegador um ponto
+          // de quebra legal, senão "Camisas/Bermudas" partia no meio.
+          rotulo.textContent = nome.split("/").join("/\u200B");
+
+          const seta = document.createElement("i");
+          seta.className = "seta fa-solid fa-arrow-right";
+
+          const qtd = document.createElement("span");
+          qtd.className = "qtd";
+          const total = porCategoria.get(categoriaBruta);
+          qtd.textContent = total === 1 ? "1 contato" : `${total} contatos`;
+
+          // Nome e quantidade num bloco so: o tile de bonus deita o layout
+          // em linha, e sem o bloco os dois ficariam lado a lado.
+          const texto = document.createElement("span");
+          texto.className = "texto";
+          texto.append(rotulo, qtd);
+
+          tile.append(icone, seta, texto);
+          tile.addEventListener("click", () => {
+            categoriaAtiva = categoriaBruta;
+            campoBusca.value = "";
+            render();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+          categorias.appendChild(tile);
+        }
+      }
+
+      function voltarParaCategorias() {
+        categoriaAtiva = "";
+        campoBusca.value = "";
+        render();
+      }
+
+      // Monta por DOM, nunca por innerHTML: o conteudo vem do banco e nao
+      // pode virar HTML executavel dentro da pagina.
+      function montarCard(f) {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        if (f.categoria) {
+          const cat = document.createElement("span");
+          cat.className = "categoria";
+          cat.textContent = nomeExibido(f.categoria);
+          card.appendChild(cat);
+        }
+
+        const topo = document.createElement("div");
+        topo.className = "topo-card";
+
+        const inicial = document.createElement("span");
+        inicial.className = "inicial";
+        // Ignora o que nao for letra ou numero: nome como "2E" fica "2",
+        // e um nome comecando com simbolo nao vira um quadrado vazio.
+        inicial.textContent = ((f.nome ?? "").match(/[\p{L}\p{N}]/u) ?? ["?"])[0];
+        inicial.setAttribute("aria-hidden", "true");
+
+        const dados = document.createElement("div");
+        dados.className = "dados";
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = f.nome;
+        dados.appendChild(titulo);
+
+        // Telefone visivel como texto: o botao e a acao, mas o numero ainda
+        // precisa dar para ler e copiar sem sair da pagina.
+        const perfil = f.instagram ? f.instagram.replace(/^@/, "").trim() : "";
+        if (f.telefone) {
+          const meta = document.createElement("p");
+          meta.className = "meta";
+          meta.textContent = f.telefone;
+          dados.appendChild(meta);
+        }
+
+        // Instagram vai como link de texto, nao como segundo botao redondo:
+        // dois botoes espremiam a coluna a ponto de quebrar o telefone no
+        // meio do numero.
+        if (perfil) {
+          const link = document.createElement("a");
+          link.className = "insta-link";
+          link.href = "https://instagram.com/" + encodeURIComponent(perfil);
+          link.target = "_blank";
+          link.rel = "noopener";
+          const icone = document.createElement("i");
+          icone.className = "fa-brands fa-instagram";
+          icone.setAttribute("aria-hidden", "true");
+          link.append(icone, "@" + perfil);
+          dados.appendChild(link);
+        }
+
+        const acoes = document.createElement("div");
+        acoes.className = "acoes-card";
+
+        const zap = linkWhatsapp(f.telefone);
+        if (zap) {
+          const a = document.createElement("a");
+          a.className = "zap";
+          a.href = zap;
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.setAttribute("aria-label", "Chamar " + f.nome + " no WhatsApp");
+          a.title = "Chamar no WhatsApp";
+          const icone = document.createElement("i");
+          icone.className = "fa-brands fa-whatsapp";
+          icone.setAttribute("aria-hidden", "true");
+          a.appendChild(icone);
+          acoes.appendChild(a);
+        }
+
+        topo.append(inicial, dados);
+        if (acoes.children.length > 0) topo.appendChild(acoes);
+        card.appendChild(topo);
+
+        const lugar = [f.cidade, f.estado].filter(Boolean).join(" - ");
+        if (lugar) {
+          const local = document.createElement("p");
+          local.className = "local";
+          local.textContent = lugar;
+          card.appendChild(local);
+        }
+
+        if (f.observacoes) {
+          const obs = document.createElement("p");
+          obs.className = "obs";
+          obs.textContent = f.observacoes;
+          card.appendChild(obs);
+        }
+
+        return card;
+      }
+
+      function render() {
+        const termo = normalizar(campoBusca.value.trim());
+        const buscando = termo.length > 0;
+
+        // Sem categoria escolhida e sem busca, mostra a grade de categorias.
+        if (!buscando && !categoriaAtiva) {
+          vistaContatos.hidden = true;
+          vistaCategorias.hidden = false;
+          return;
+        }
+
+        vistaCategorias.hidden = true;
+        vistaContatos.hidden = false;
+
+        // A busca atravessa todas as categorias; a categoria escolhida só
+        // vale enquanto não houver termo digitado.
+        const visiveis = fornecedores.filter((f) => {
+          if (!buscando && categoriaAtiva && f.categoria !== categoriaAtiva) return false;
+          if (!buscando) return true;
+          const alvo = normalizar(
+            [f.nome, f.categoria, f.cidade, f.estado, f.observacoes, f.instagram].join(" ")
+          );
+          return termo.split(/\s+/).every((parte) => alvo.includes(parte));
+        });
+
+        tituloVista.textContent = buscando ? "Resultados da busca" : nomeExibido(categoriaAtiva);
+        grade.classList.toggle("sem-rotulo", !buscando);
+
+        contagem.hidden = false;
+        contagem.textContent =
+          visiveis.length === 1 ? "1 contato" : `${visiveis.length} contatos`;
+
+        grade.replaceChildren();
+
+        if (visiveis.length === 0) {
+          const vazio = document.createElement("p");
+          vazio.className = "obs";
+          vazio.style.color = "rgba(242,242,242,0.5)";
+          vazio.textContent = "Nenhum fornecedor encontrado para essa busca.";
+          grade.appendChild(vazio);
+          return;
+        }
+
+        for (const f of visiveis) grade.appendChild(montarCard(f));
+      }
+
+      if (fornecedores.length === 0) {
+        estado.querySelector("i").className = "fa-solid fa-clock";
+        estadoTexto.textContent = "A lista está sendo atualizada. Volte em instantes.";
+      } else {
+        estado.hidden = true;
+        painel.hidden = false;
+        montarCategorias();
+        render();
+        campoBusca.addEventListener("input", render);
+        document.getElementById("voltar").addEventListener("click", voltarParaCategorias);
+      }
+    </script>
+  </body>
+</html>

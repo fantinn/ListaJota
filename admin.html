@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Editar lista | ListaJota</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="area.css" />
+
+    <style>
+      body { padding-top: 64px; }
+
+      .topo {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 120;
+        height: 64px; display: flex; align-items: center; justify-content: space-between;
+        gap: 16px; padding: 0 20px;
+        background: rgba(10,10,10,0.92);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(14px);
+      }
+      .topo img { height: 30px; width: auto; }
+      .topo .acoes { display: flex; align-items: center; gap: 10px; }
+      .selo {
+        padding: 4px 10px; border-radius: 6px;
+        background: rgba(0,177,64,0.18); color: var(--sky);
+        font-size: 0.64rem; letter-spacing: 0.12em; font-weight: 700;
+      }
+
+      .conteudo { position: relative; z-index: 10; max-width: 1000px; margin: 0 auto; padding: 24px 20px 80px; }
+
+      h1 { font-size: 1.2rem; margin-bottom: 4px; }
+      .sub { font-size: 0.8rem; color: rgba(242,242,242,0.5); margin-bottom: 24px; }
+
+      .painel {
+        background: var(--darker);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 14px; padding: 20px; margin-bottom: 22px;
+      }
+      .painel h2 { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,242,242,0.6); margin-bottom: 16px; }
+
+      .campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+      .campo { display: flex; flex-direction: column; gap: 6px; }
+      .campo.largo { grid-column: 1 / -1; }
+      label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,242,242,0.55); }
+      label .opcional { color: rgba(242,242,242,0.3); letter-spacing: 0.06em; }
+      input, textarea, select {
+        width: 100%; padding: 12px 14px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 10px; color: var(--light);
+        font-family: "Montserrat", sans-serif; font-size: 0.9rem;
+      }
+      textarea { resize: vertical; min-height: 68px; }
+      input:focus, textarea:focus, select:focus { outline: none; border-color: var(--blue); background: rgba(0,177,64,0.08); }
+      input::placeholder, textarea::placeholder { color: rgba(242,242,242,0.25); }
+
+      .barra-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+      .btn-blue { padding: 13px 26px; font-size: 0.9rem; }
+      .btn-perigo {
+        padding: 10px 16px; border-radius: 10px; cursor: pointer;
+        background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3);
+        color: #fca5a5; font-size: 0.78rem; font-weight: 600;
+      }
+      .btn-perigo:hover { background: rgba(248,113,113,0.22); }
+
+      .busca { position: relative; margin-bottom: 16px; }
+      .busca i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(242,242,242,0.35); font-size: 0.85rem; }
+      .busca input { padding-left: 40px; }
+
+      /* Categorias: cartao deitado, parecido com o retangulo que o
+         comprador ve, so que com o nome editavel no lugar do link. */
+      .linha-categoria {
+        display: flex; align-items: center; gap: 14px;
+        padding: 12px 14px; border-radius: 14px;
+        background: var(--darker);
+        border: 1px solid rgba(255,255,255,0.09);
+        margin-bottom: 10px;
+        cursor: grab;
+      }
+      .linha-categoria.arrastando { opacity: 0.4; }
+      /* Realce indicando onde o item solto vai entrar. */
+      .linha-categoria.sobre { border-color: var(--blue); background: rgba(0,177,64,0.08); }
+      .linha-categoria .alca { color: rgba(242,242,242,0.3); font-size: 0.85rem; flex-shrink: 0; }
+      .linha-categoria .icone-cat {
+        flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+        width: 42px; height: 42px; border-radius: 11px;
+        background: rgba(0,177,64,0.14); border: 1px solid rgba(0,177,64,0.24);
+        color: var(--sky);
+      }
+      .linha-categoria .icone-cat svg { width: 21px; height: 21px; }
+      .linha-categoria .dados-cat { flex: 1; min-width: 0; }
+      .linha-categoria .dados-cat input {
+        width: 100%; padding: 7px 9px;
+        font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.92rem;
+        background: transparent; border: 1px solid transparent; border-radius: 8px; color: var(--light);
+      }
+      .linha-categoria .dados-cat input:hover { border-color: rgba(255,255,255,0.12); }
+      .linha-categoria .dados-cat input:focus { outline: none; background: rgba(0,177,64,0.08); border-color: var(--blue); }
+      .linha-categoria .contagem-cat {
+        display: block; margin-top: 2px; padding-left: 9px;
+        font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase;
+        color: rgba(242,242,242,0.45); flex-shrink: 0; white-space: nowrap;
+      }
+
+      /* Bonus: mesma cor ambar do card do comprador, sem alca - e fixo, nao
+         se arrasta. */
+      .linha-categoria.bonus {
+        cursor: default;
+        border-color: rgba(245,158,11,0.32);
+      }
+      .linha-categoria.bonus .icone-cat {
+        color: #fbbf24; background: rgba(245,158,11,0.13); border-color: rgba(245,158,11,0.26);
+      }
+      .linha-categoria .fixo {
+        flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px;
+        font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase;
+        color: rgba(242,242,242,0.35);
+      }
+
+      .linha {
+        display: flex; align-items: flex-start; gap: 14px;
+        padding: 14px 16px; border-radius: 11px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        margin-bottom: 8px;
+      }
+      .linha.inativo { opacity: 0.45; }
+      .linha .info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+      .linha .nome { font-weight: 600; font-size: 0.92rem; }
+      .linha .meta { font-size: 0.75rem; color: rgba(242,242,242,0.5); }
+      .linha .botoes { display: flex; gap: 6px; flex-shrink: 0; }
+      .linha .botoes button {
+        width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(242,242,242,0.75); font-size: 0.8rem;
+      }
+      .linha .botoes button:hover { background: rgba(0,177,64,0.28); color: #fff; }
+      .linha .botoes button.remover:hover { background: rgba(248,113,113,0.28); color: #fff; }
+      .linha .botoes a.zap {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 34px; height: 34px; border-radius: 8px;
+        background: rgba(37,211,102,0.14); border: 1px solid rgba(37,211,102,0.35);
+        color: #4ade80; font-size: 0.85rem; text-decoration: none;
+      }
+      .linha .botoes a.zap:hover { background: rgba(37,211,102,0.28); color: #fff; }
+
+      .recado {
+        display: none; align-items: center; gap: 10px;
+        padding: 12px 16px; border-radius: 10px; margin-bottom: 16px;
+        font-size: 0.82rem; line-height: 1.45;
+      }
+      .recado.visivel { display: flex; }
+      .recado.ok { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3); color: #86efac; }
+      .recado.ruim { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: #fca5a5; }
+
+      .estado {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 14px; text-align: center; min-height: 55vh; padding: 40px 24px;
+        color: rgba(242,242,242,0.6); font-size: 0.9rem; line-height: 1.6;
+      }
+      .estado i { font-size: 1.6rem; color: var(--blue); }
+      .estado.erro i { color: #f87171; }
+
+      .abas {
+        display: flex; gap: 4px; margin-bottom: 22px;
+        border-bottom: 1px solid rgba(255,255,255,0.09);
+      }
+      .aba {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 12px 16px; margin-bottom: -1px; cursor: pointer;
+        background: none; border: none; border-bottom: 2px solid transparent;
+        color: rgba(242,242,242,0.5);
+        font-family: "Montserrat", sans-serif; font-size: 0.85rem; font-weight: 600;
+      }
+      .aba:hover { color: var(--light); }
+      .aba.ativa { color: var(--light); border-bottom-color: var(--blue); }
+
+      .nota-acesso { margin-top: 12px; font-size: 0.76rem; line-height: 1.5; color: rgba(242,242,242,0.45); }
+
+      /* Verde do painel de credencial: e a confirmacao de que deu certo, e
+         precisa se distinguir dos paineis normais na hora de copiar. */
+      .credencial { border-color: rgba(74,222,128,0.3); }
+      .credencial .par {
+        display: flex; align-items: baseline; gap: 12px;
+        padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+      }
+      .credencial .par:last-of-type { border-bottom: none; }
+      .credencial .par span {
+        flex-shrink: 0; width: 62px;
+        font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+        color: rgba(242,242,242,0.45);
+      }
+      /* user-select:all - um clique ja seleciona a senha inteira, para quem
+         preferir copiar na mao em vez de usar o botao. */
+      .credencial .par strong {
+        font-family: "Montserrat", sans-serif; font-size: 1rem;
+        color: var(--light); user-select: all; word-break: break-all;
+      }
+
+      /* Sem isto o cabecalho quebra palavra no meio em telas estreitas
+         ("ADMI N", "SA IR"). */
+      .topo .btn-ghost, .selo { white-space: nowrap; }
+      @media (max-width: 720px) {
+        .topo { padding: 0 12px; gap: 8px; }
+        .topo .rotulo { display: none; }
+        .topo .btn-ghost { padding: 10px 12px; }
+      }
+    </style>
+  </head>
+
+  <body class="grid-bg">
+    <header class="topo">
+      <span class="marca" aria-label="ListaJota"><span class="marca-j" aria-hidden="true">J</span><span class="marca-txt">Lista<strong>Jota</strong></span></span>
+      <div class="acoes">
+        <span class="selo">ADMIN</span>
+        <a class="btn-ghost" href="membros.html" title="Ver como comprador"><i class="fa-solid fa-eye"></i><span class="rotulo"> Ver como comprador</span></a>
+        <button class="btn-ghost" id="sair" type="button" title="Sair"><i class="fa-solid fa-arrow-right-from-bracket"></i><span class="rotulo"> Sair</span></button>
+      </div>
+    </header>
+
+    <div class="conteudo">
+      <div class="estado" id="estado">
+        <i class="fa-solid fa-circle-notch fa-spin"></i>
+        <span id="estadoTexto">Conferindo seu acesso...</span>
+      </div>
+
+      <div id="painelAdmin" hidden>
+        <div class="abas" role="tablist">
+          <button class="aba ativa" type="button" id="abaFornecedores" role="tab" aria-selected="true" aria-controls="paneFornecedores">
+            <i class="fa-solid fa-list" aria-hidden="true"></i> Fornecedores
+          </button>
+          <button class="aba" type="button" id="abaAcessos" role="tab" aria-selected="false" aria-controls="paneAcessos">
+            <i class="fa-solid fa-key" aria-hidden="true"></i> Acessos
+          </button>
+        </div>
+
+        <div class="recado" id="recado"><i id="recadoIcone"></i><span id="recadoTexto"></span></div>
+
+        <div id="paneFornecedores" role="tabpanel" aria-labelledby="abaFornecedores">
+          <h1>Editar lista de fornecedores</h1>
+          <p class="sub">Toda alteração aparece para os compradores no acesso seguinte. Não precisa publicar nada.</p>
+
+          <form class="painel" id="form">
+            <h2 id="tituloForm">Novo fornecedor</h2>
+            <div class="campos">
+              <div class="campo">
+                <label for="nome">Nome *</label>
+                <input id="nome" required placeholder="Distribuidora Exemplo" />
+              </div>
+              <div class="campo">
+                <label for="categoria">Categoria</label>
+                <input id="categoria" list="categorias" placeholder="Calçados" />
+                <datalist id="categorias"></datalist>
+              </div>
+              <div class="campo">
+                <label for="telefone">WhatsApp</label>
+                <input id="telefone" placeholder="27 99999-9999" />
+              </div>
+              <div class="campo">
+                <label for="instagram">Instagram <span class="opcional">(opcional)</span></label>
+                <input id="instagram" placeholder="@perfil" />
+              </div>
+            </div>
+            <div class="barra-form">
+              <button type="submit" class="btn-blue" id="salvar"><i class="fa-solid fa-check"></i> Adicionar</button>
+              <button type="button" class="btn-ghost" id="cancelar" hidden>Cancelar edição</button>
+            </div>
+          </form>
+
+          <div class="painel">
+            <h2>Categorias</h2>
+            <p class="sub" style="margin-bottom:14px;">Arraste para mudar a ordem em que aparecem para o comprador. Clique no nome para renomear — o fornecedor continua na mesma categoria. Contatos Bônus fica sempre por último.</p>
+            <div id="listaCategorias"></div>
+          </div>
+
+          <div class="painel">
+            <h2 id="tituloLista">Fornecedores</h2>
+            <div class="busca">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="search" id="busca" placeholder="Filtrar..." autocomplete="off" />
+            </div>
+            <div id="lista"></div>
+          </div>
+        </div>
+
+        <div id="paneAcessos" role="tabpanel" aria-labelledby="abaAcessos" hidden>
+          <h1>Criar acesso manualmente</h1>
+          <p class="sub">Para a venda que não passou pelo caminho normal: pagamento por fora, cortesia, ou comprador que errou o e-mail na compra e por isso não consegue se liberar sozinho.</p>
+
+          <form class="painel" id="formAcesso">
+            <h2>Novo acesso de comprador</h2>
+            <div class="campos">
+              <div class="campo largo">
+                <label for="emailAcesso">E-mail do comprador *</label>
+                <input id="emailAcesso" type="email" required placeholder="comprador@gmail.com" autocomplete="off" />
+              </div>
+            </div>
+            <div class="barra-form">
+              <button type="submit" class="btn-blue" id="criarAcesso"><i class="fa-solid fa-key"></i> Criar acesso</button>
+            </div>
+            <p class="nota-acesso">A senha aparece uma vez só, aqui na tela. Ela não fica guardada em lugar nenhum — se perder, o jeito é criar outro acesso. O acesso criado aqui é sempre de comprador.</p>
+          </form>
+
+          <div class="painel credencial" id="credencial" hidden>
+            <h2>Acesso criado — copie antes de sair</h2>
+            <div class="par"><span>E-mail</span><strong id="credEmail"></strong></div>
+            <div class="par"><span>Senha</span><strong id="credSenha"></strong></div>
+            <div class="barra-form">
+              <button type="button" class="btn-blue" id="copiarCred"><i class="fa-regular fa-copy"></i> Copiar mensagem pronta</button>
+            </div>
+          </div>
+
+          <div class="painel">
+            <h2 id="tituloMembros">Compradores cadastrados</h2>
+            <div id="listaMembros"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/+esm";
+      import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-config.js";
+      import { normalizar, ehBonus, montarIcone } from "./categorias-ui.js";
+
+      const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+      const estado = document.getElementById("estado");
+      const estadoTexto = document.getElementById("estadoTexto");
+      const painelAdmin = document.getElementById("painelAdmin");
+      const lista = document.getElementById("lista");
+      const form = document.getElementById("form");
+      const recado = document.getElementById("recado");
+      const campoBusca = document.getElementById("busca");
+      const btCancelar = document.getElementById("cancelar");
+      const btSalvar = document.getElementById("salvar");
+
+      const campos = ["nome", "categoria", "telefone", "instagram"];
+      const el = Object.fromEntries(campos.map((c) => [c, document.getElementById(c)]));
+
+      let editandoId = null;
+      let fornecedores = [];
+      let categoriasLista = [];
+
+      function avisar(texto, ok = true) {
+        recado.className = "recado visivel " + (ok ? "ok" : "ruim");
+        document.getElementById("recadoIcone").className =
+          ok ? "fa-solid fa-circle-check" : "fa-solid fa-triangle-exclamation";
+        document.getElementById("recadoTexto").textContent = texto;
+        if (ok) setTimeout(() => recado.classList.remove("visivel"), 4000);
+      }
+
+      // invoke() so entrega o status; a mensagem que escrevemos na funcao
+      // fica no corpo da resposta, que vem em error.context.
+      async function mensagemDoErro(error, padrao) {
+        try {
+          const corpo = await error.context?.json();
+          return corpo?.erro || padrao;
+        } catch {
+          return padrao;
+        }
+      }
+
+      // 1. Precisa de sessao valida no servidor, nao so no navegador.
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.replace("login.html");
+        throw new Error("sem sessao");
+      }
+      const { data: { user }, error: erroUsuario } = await supabase.auth.getUser();
+      if (erroUsuario || !user) {
+        await supabase.auth.signOut();
+        window.location.replace("login.html");
+        throw new Error("sessao invalida");
+      }
+
+      document.getElementById("sair").addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.replace("login.html");
+      });
+
+      // 2. Esconder a tela de quem nao e admin e so cortesia visual: quem
+      //    manda e a RLS, que recusa escrita de qualquer nao-admin.
+      const { data: perfil } = await supabase
+        .from("membros")
+        .select("admin")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (!perfil?.admin) {
+        window.location.replace("membros.html");
+        throw new Error("nao e admin");
+      }
+
+      estado.hidden = true;
+      painelAdmin.hidden = false;
+
+      // 3. Carrega tudo, inclusive inativos (a politica de admin permite).
+      async function carregar() {
+        const { data, error } = await supabase
+          .from("fornecedores")
+          .select("*")
+          .order("categoria", { ascending: true, nullsFirst: false })
+          .order("nome", { ascending: true });
+
+        if (error) {
+          avisar("Não consegui carregar a lista: " + error.message, false);
+          return;
+        }
+        fornecedores = data ?? [];
+        preencherCategorias();
+        render();
+      }
+
+      function preencherCategorias() {
+        const datalist = document.getElementById("categorias");
+        datalist.replaceChildren();
+        for (const c of [...new Set(fornecedores.map((f) => f.categoria).filter(Boolean))].sort()) {
+          const opcao = document.createElement("option");
+          opcao.value = c;
+          datalist.appendChild(opcao);
+        }
+      }
+
+      // --- Categorias: nome e ordem exibidos aos compradores. ---
+
+      async function carregarCategorias() {
+        const { data, error } = await supabase
+          .from("categorias")
+          .select("*")
+          .order("ordem", { ascending: true });
+        if (error) {
+          avisar("Não consegui carregar as categorias: " + error.message, false);
+          return;
+        }
+        categoriasLista = data ?? [];
+        renderCategorias();
+      }
+
+      // Cria a categoria na primeira vez que alguem digita um nome novo no
+      // formulario de fornecedor. Sem isso, ela so existiria no texto solto
+      // de fornecedores.categoria e nunca apareceria aqui para reordenar.
+      async function garantirCategoria(nomeCategoria) {
+        const chave = normalizar(nomeCategoria);
+        if (categoriasLista.some((c) => c.chave === chave)) return;
+        // A nova entra sempre antes do bonus, nunca depois.
+        const normais = categoriasLista.filter((c) => !ehBonus(c.nome));
+        const proximaOrdem = normais.reduce((max, c) => Math.max(max, c.ordem), 0) + 1;
+        const { data, error } = await supabase
+          .from("categorias")
+          .insert({ chave, nome: nomeCategoria, ordem: proximaOrdem })
+          .select()
+          .single();
+        if (error) {
+          // Nao interrompe o fluxo: o fornecedor ja foi salvo. So fica sem
+          // ordem/renome proprios ate alguem tentar de novo.
+          console.error("falha ao criar categoria:", error.message);
+          return;
+        }
+        categoriasLista.push(data);
+        await empurrarBonusParaOFim();
+      }
+
+      // Garante que o bonus tenha sempre a maior ordem, mesmo que uma
+      // categoria nova tenha entrado com o mesmo numero por coincidencia.
+      async function empurrarBonusParaOFim() {
+        const bonus = categoriasLista.find((c) => ehBonus(c.nome));
+        if (!bonus) return;
+        const maiorNormal = categoriasLista
+          .filter((c) => !ehBonus(c.nome))
+          .reduce((max, c) => Math.max(max, c.ordem), 0);
+        if (bonus.ordem > maiorNormal) return;
+        const novaOrdem = maiorNormal + 1;
+        const { error } = await supabase.from("categorias").update({ ordem: novaOrdem }).eq("id", bonus.id);
+        if (!error) bonus.ordem = novaOrdem;
+      }
+
+      function renderCategorias() {
+        const listaCategorias = document.getElementById("listaCategorias");
+        listaCategorias.replaceChildren();
+
+        if (categoriasLista.length === 0) {
+          const vazio = document.createElement("p");
+          vazio.style.cssText = "font-size:0.85rem;color:rgba(242,242,242,0.45);padding:8px 0;";
+          vazio.textContent = "Nenhuma categoria ainda. Ela aparece aqui assim que você salvar o primeiro fornecedor com essa categoria.";
+          listaCategorias.appendChild(vazio);
+          return;
+        }
+
+        // Bonus sempre por ultimo na lista e fora do que se arrasta - nao da
+        // nem para soltar outro item em cima dele.
+        const normais = categoriasLista.filter((c) => !ehBonus(c.nome));
+        const bonus = categoriasLista.filter((c) => ehBonus(c.nome));
+        for (const cat of normais) listaCategorias.appendChild(montarLinhaCategoria(cat, true));
+        for (const cat of bonus) listaCategorias.appendChild(montarLinhaCategoria(cat, false));
+      }
+
+      let arrastandoId = null;
+
+      function montarLinhaCategoria(cat, arrastavel) {
+        const linha = document.createElement("div");
+        linha.className = "linha-categoria" + (arrastavel ? "" : " bonus");
+        linha.draggable = arrastavel;
+        linha.dataset.id = cat.id;
+
+        const icone = document.createElement("span");
+        icone.className = "icone-cat";
+        icone.appendChild(montarIcone(cat.nome));
+
+        const dados = document.createElement("div");
+        dados.className = "dados-cat";
+
+        const nomeInput = document.createElement("input");
+        nomeInput.type = "text";
+        nomeInput.value = cat.nome;
+        nomeInput.setAttribute("aria-label", "Nome da categoria \"" + cat.nome + "\"");
+        nomeInput.addEventListener("change", () => renomearCategoria(cat, nomeInput));
+        dados.appendChild(nomeInput);
+
+        const contagem = document.createElement("span");
+        contagem.className = "contagem-cat";
+        const total = fornecedores.filter((f) => normalizar(f.categoria) === cat.chave).length;
+        contagem.textContent = total === 1 ? "1 fornecedor" : `${total} fornecedores`;
+        dados.appendChild(contagem);
+
+        linha.append(icone, dados);
+
+        if (arrastavel) {
+          const alca = document.createElement("i");
+          alca.className = "fa-solid fa-grip-vertical alca";
+          alca.setAttribute("aria-hidden", "true");
+          alca.title = "Arraste para reordenar";
+          linha.appendChild(alca);
+
+          linha.addEventListener("dragstart", (evento) => {
+            arrastandoId = cat.id;
+            linha.classList.add("arrastando");
+            evento.dataTransfer.effectAllowed = "move";
+          });
+          linha.addEventListener("dragend", () => {
+            linha.classList.remove("arrastando");
+            for (const el of listaCategoriasEl().querySelectorAll(".sobre")) el.classList.remove("sobre");
+          });
+          linha.addEventListener("dragover", (evento) => {
+            evento.preventDefault();
+            if (arrastandoId === cat.id) return;
+            linha.classList.add("sobre");
+          });
+          linha.addEventListener("dragleave", () => linha.classList.remove("sobre"));
+          linha.addEventListener("drop", (evento) => {
+            evento.preventDefault();
+            linha.classList.remove("sobre");
+            if (!arrastandoId || arrastandoId === cat.id) return;
+            reordenarCategorias(arrastandoId, cat.id);
+          });
+        } else {
+          const fixo = document.createElement("span");
+          fixo.className = "fixo";
+          fixo.innerHTML = '<i class="fa-solid fa-lock" aria-hidden="true"></i> Fixo por último';
+          linha.appendChild(fixo);
+        }
+
+        return linha;
+      }
+
+      function listaCategoriasEl() {
+        return document.getElementById("listaCategorias");
+      }
+
+      // So mexe entre categorias normais - o bonus nunca entra como origem
+      // nem como alvo, porque a linha dele nao e arrastavel nem aceita drop.
+      async function reordenarCategorias(idArrastado, idAlvo) {
+        const doIndex = categoriasLista.findIndex((c) => c.id === idArrastado);
+        const paraIndex = categoriasLista.findIndex((c) => c.id === idAlvo);
+        if (doIndex === -1 || paraIndex === -1) return;
+        const [movido] = categoriasLista.splice(doIndex, 1);
+        // Remover antes de reinserir desloca tudo que vinha depois do item
+        // arrastado uma posicao para tras - por isso o alvo tambem precisa
+        // recuar um indice quando o arrasto e para frente (doIndex < paraIndex),
+        // senao o item cai depois do alvo em vez de exatamente no lugar dele.
+        const indexAjustado = doIndex < paraIndex ? paraIndex - 1 : paraIndex;
+        categoriasLista.splice(indexAjustado, 0, movido);
+        renderCategorias();
+        const salvou = await salvarOrdemCategorias();
+        if (!salvou) await carregarCategorias(); // desfaz a reordenacao otimista
+      }
+
+      async function salvarOrdemCategorias() {
+        // Normais na ordem do array (e quem foi arrastado), bonus sempre
+        // por ultimo - independente de onde ele esteja no array.
+        const normais = categoriasLista.filter((c) => !ehBonus(c.nome));
+        const bonus = categoriasLista.filter((c) => ehBonus(c.nome));
+        const emOrdem = [...normais, ...bonus];
+        const resultados = await Promise.all(
+          emOrdem.map((cat, i) => supabase.from("categorias").update({ ordem: i + 1 }).eq("id", cat.id))
+        );
+        const falhou = resultados.find((r) => r.error);
+        if (falhou) {
+          avisar("Não consegui salvar a nova ordem: " + falhou.error.message, false);
+          return false;
+        }
+        emOrdem.forEach((cat, i) => (cat.ordem = i + 1));
+        return true;
+      }
+
+      // Renomear precisa acontecer em dois lugares: a linha em `categorias`
+      // (nome + chave, que ordem/icone usam para achar essa categoria) e o
+      // texto solto em fornecedores.categoria de quem ja esta nela - senao
+      // o nome antigo continua preso nos fornecedores existentes e volta a
+      // aparecer sozinho no formulario (o datalist le direto de la).
+      async function renomearCategoria(cat, input) {
+        const novoNome = input.value.trim();
+        if (!novoNome) {
+          input.value = cat.nome;
+          return;
+        }
+        if (novoNome === cat.nome) return;
+
+        const nomeAntigo = cat.nome;
+        const novaChave = normalizar(novoNome);
+
+        // Match por chave normalizada, nao pelo texto exato: um fornecedor
+        // salvo com diferenca de maiusculas/espacos ("jeans" vs "Jeans")
+        // tem a mesma chave e precisa ser renomeado junto, senao ele fica
+        // orfao da categoria depois do rename.
+        const idsParaAtualizar = fornecedores
+          .filter((f) => normalizar(f.categoria) === cat.chave)
+          .map((f) => f.id);
+
+        if (idsParaAtualizar.length > 0) {
+          const { error: erroFornecedores } = await supabase
+            .from("fornecedores")
+            .update({ categoria: novoNome })
+            .in("id", idsParaAtualizar);
+          if (erroFornecedores) {
+            avisar("Não consegui renomear: " + erroFornecedores.message, false);
+            input.value = cat.nome;
+            return;
+          }
+        }
+
+        const { error } = await supabase
+          .from("categorias")
+          .update({ nome: novoNome, chave: novaChave })
+          .eq("id", cat.id);
+        if (error) {
+          // A linha de categorias nao mudou, entao devolve os fornecedores
+          // pro nome antigo tambem - senao os dois lados ficam inconsistentes
+          // entre si (fornecedores com o nome novo, categoria com o velho).
+          if (idsParaAtualizar.length > 0) {
+            await supabase.from("fornecedores").update({ categoria: nomeAntigo }).in("id", idsParaAtualizar);
+          }
+          avisar("Não consegui renomear a categoria: " + error.message, false);
+          input.value = cat.nome;
+          await carregar();
+          return;
+        }
+
+        cat.nome = novoNome;
+        cat.chave = novaChave;
+        avisar("Categoria renomeada.");
+        await carregar();
+        renderCategorias();
+      }
+
+      function render() {
+        const termo = normalizar(campoBusca.value.trim());
+        const visiveis = fornecedores.filter((f) =>
+          !termo || normalizar([f.nome, f.categoria, f.telefone, f.instagram].join(" ")).includes(termo)
+        );
+
+        document.getElementById("tituloLista").textContent =
+          `Fornecedores (${visiveis.length}${visiveis.length !== fornecedores.length ? " de " + fornecedores.length : ""})`;
+
+        lista.replaceChildren();
+
+        if (visiveis.length === 0) {
+          const vazio = document.createElement("p");
+          vazio.style.cssText = "font-size:0.85rem;color:rgba(242,242,242,0.45);padding:8px 0;";
+          vazio.textContent = fornecedores.length === 0
+            ? "Nenhum fornecedor cadastrado ainda. Use o formulário acima."
+            : "Nada encontrado para esse filtro.";
+          lista.appendChild(vazio);
+          return;
+        }
+
+        for (const f of visiveis) lista.appendChild(montarLinha(f));
+      }
+
+      // Monta por DOM, nunca innerHTML: o texto vem do banco.
+      function montarLinha(f) {
+        const linha = document.createElement("div");
+        linha.className = "linha" + (f.ativo ? "" : " inativo");
+
+        const info = document.createElement("div");
+        info.className = "info";
+
+        const nome = document.createElement("span");
+        nome.className = "nome";
+        nome.textContent = f.nome + (f.ativo ? "" : "  (oculto)");
+        info.appendChild(nome);
+
+        const meta = document.createElement("span");
+        meta.className = "meta";
+        meta.textContent = [f.categoria, f.telefone, f.instagram]
+          .filter(Boolean).join("  •  ") || "sem dados de contato";
+        info.appendChild(meta);
+
+        const botoes = document.createElement("div");
+        botoes.className = "botoes";
+
+        const zap = linkWhatsapp(f.telefone);
+        if (zap) {
+          const abrirZap = document.createElement("a");
+          abrirZap.className = "zap";
+          abrirZap.href = zap;
+          abrirZap.target = "_blank";
+          abrirZap.rel = "noopener";
+          abrirZap.title = "Abrir no WhatsApp";
+          abrirZap.innerHTML = '<i class="fa-brands fa-whatsapp"></i>';
+          botoes.appendChild(abrirZap);
+        }
+
+        const editar = document.createElement("button");
+        editar.type = "button";
+        editar.title = "Editar";
+        editar.innerHTML = '<i class="fa-solid fa-pen"></i>';
+        editar.addEventListener("click", () => entrarEmEdicao(f));
+
+        const alternar = document.createElement("button");
+        alternar.type = "button";
+        alternar.title = f.ativo ? "Ocultar dos compradores" : "Mostrar aos compradores";
+        alternar.innerHTML = f.ativo ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+        alternar.addEventListener("click", () => alternarAtivo(f));
+
+        const remover = document.createElement("button");
+        remover.type = "button";
+        remover.className = "remover";
+        remover.title = "Remover";
+        remover.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        remover.addEventListener("click", () => apagar(f));
+
+        botoes.append(editar, alternar, remover);
+        linha.append(info, botoes);
+        return linha;
+      }
+
+      // Mesma logica do membros.html: so digitos, DDD + 8 ou 9 numeros.
+      function linkWhatsapp(telefone) {
+        const numero = (telefone ?? "").replace(/[^0-9]/g, "");
+        if (numero.length < 10) return null;
+        return "https://wa.me/" + (numero.length <= 11 ? "55" + numero : numero);
+      }
+
+      function entrarEmEdicao(f) {
+        editandoId = f.id;
+        for (const c of campos) el[c].value = f[c] ?? "";
+        document.getElementById("tituloForm").textContent = "Editando: " + f.nome;
+        btSalvar.innerHTML = '<i class="fa-solid fa-check"></i> Salvar alterações';
+        btCancelar.hidden = false;
+        form.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function limparFormulario() {
+        editandoId = null;
+        form.reset();
+        document.getElementById("tituloForm").textContent = "Novo fornecedor";
+        btSalvar.innerHTML = '<i class="fa-solid fa-check"></i> Adicionar';
+        btCancelar.hidden = true;
+      }
+
+      btCancelar.addEventListener("click", limparFormulario);
+
+      form.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+
+        const dados = {};
+        for (const c of campos) {
+          const valor = el[c].value.trim();
+          dados[c] = valor === "" ? null : valor;
+        }
+        if (!dados.nome) {
+          avisar("O nome é obrigatório.", false);
+          return;
+        }
+        // Guarda o @ sempre no mesmo formato, sem o arroba.
+        if (dados.instagram) dados.instagram = dados.instagram.replace(/^@+/, "").trim() || null;
+
+        btSalvar.disabled = true;
+        try {
+          const { error } = editandoId
+            ? await supabase.from("fornecedores").update(dados).eq("id", editandoId)
+            : await supabase.from("fornecedores").insert(dados);
+
+          if (error) {
+            avisar("Não consegui salvar: " + error.message, false);
+            return;
+          }
+
+          avisar(editandoId ? "Alterações salvas." : "Fornecedor adicionado.");
+          limparFormulario();
+          // So libera o botao depois que garantirCategoria termina: senao um
+          // segundo envio rapido, com a mesma categoria nova, le categoriasLista
+          // antes do primeiro inserir a linha e os dois criam categorias duplicadas.
+          if (dados.categoria) await garantirCategoria(dados.categoria);
+          await carregar();
+          renderCategorias();
+        } finally {
+          btSalvar.disabled = false;
+        }
+      });
+
+      async function alternarAtivo(f) {
+        const { error } = await supabase
+          .from("fornecedores")
+          .update({ ativo: !f.ativo })
+          .eq("id", f.id);
+        if (error) {
+          avisar("Não consegui alterar: " + error.message, false);
+          return;
+        }
+        avisar(f.ativo ? "Oculto dos compradores." : "Visível para os compradores.");
+        await carregar();
+        renderCategorias();
+      }
+
+      async function apagar(f) {
+        if (!confirm(`Remover "${f.nome}" definitivamente?\n\nSe for temporário, use o botão de ocultar.`)) return;
+        const { error } = await supabase.from("fornecedores").delete().eq("id", f.id);
+        if (error) {
+          avisar("Não consegui remover: " + error.message, false);
+          return;
+        }
+        avisar("Fornecedor removido.");
+        await carregar();
+        renderCategorias();
+      }
+
+      // --- Abas ---
+
+      const abas = [
+        { aba: document.getElementById("abaFornecedores"), pane: document.getElementById("paneFornecedores") },
+        { aba: document.getElementById("abaAcessos"), pane: document.getElementById("paneAcessos") },
+      ];
+
+      for (const { aba } of abas) {
+        aba.addEventListener("click", () => {
+          for (const outra of abas) {
+            const ativa = outra.aba === aba;
+            outra.aba.classList.toggle("ativa", ativa);
+            outra.aba.setAttribute("aria-selected", String(ativa));
+            outra.pane.hidden = !ativa;
+          }
+        });
+      }
+
+      // --- Criar acesso de comprador na mao ---
+
+      const formAcesso = document.getElementById("formAcesso");
+      const campoEmailAcesso = document.getElementById("emailAcesso");
+      const btCriarAcesso = document.getElementById("criarAcesso");
+      const credencial = document.getElementById("credencial");
+      const credEmail = document.getElementById("credEmail");
+      const credSenha = document.getElementById("credSenha");
+
+      formAcesso.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+        const email = campoEmailAcesso.value.trim().toLowerCase();
+        if (!email) return;
+
+        // A credencial anterior sai da tela antes de comecar: senao, se esta
+        // chamada falhar, a senha de outro comprador continua ali como se
+        // fosse a resposta desta.
+        credencial.hidden = true;
+        btCriarAcesso.disabled = true;
+        try {
+          // A funcao roda com service_role (o navegador nao pode criar conta)
+          // e confere do lado dela que quem chama e admin.
+          const { data, error } = await supabase.functions.invoke("criar-membro", {
+            body: { email },
+          });
+
+          if (error) {
+            avisar(await mensagemDoErro(error, "Não consegui criar o acesso."), false);
+            return;
+          }
+
+          credEmail.textContent = data.email;
+          credSenha.textContent = data.senha;
+          credencial.hidden = false;
+          formAcesso.reset();
+          avisar("Acesso criado. Copie a senha agora.");
+          await carregarMembros();
+        } finally {
+          btCriarAcesso.disabled = false;
+        }
+      });
+
+      async function copiar(texto) {
+        try {
+          await navigator.clipboard.writeText(texto);
+          return true;
+        } catch { /* API nova bloqueada: cai no jeito antigo abaixo */ }
+
+        // execCommand e obsoleto, mas continua sendo o unico caminho quando
+        // a API de clipboard esta barrada (permissao negada, http, navegador
+        // velho) - e aqui perder a senha copiada custa caro: ela nao volta.
+        const area = document.createElement("textarea");
+        area.value = texto;
+        area.setAttribute("readonly", "");
+        area.style.cssText = "position:fixed;top:-1000px;opacity:0;";
+        document.body.appendChild(area);
+        area.select();
+        let copiou = false;
+        try {
+          copiou = document.execCommand("copy");
+        } catch { copiou = false; }
+        area.remove();
+        return copiou;
+      }
+
+      document.getElementById("copiarCred").addEventListener("click", async () => {
+        const texto =
+          "Seu acesso à ListaJota - Lista de Fornecedores\n\n" +
+          `Site: ${location.origin}/login.html\n` +
+          `E-mail: ${credEmail.textContent}\n` +
+          `Senha: ${credSenha.textContent}`;
+        if (await copiar(texto)) {
+          avisar("Mensagem copiada. É só colar para o comprador.");
+        } else {
+          avisar("Não consegui copiar sozinho — clique no e-mail e na senha para selecionar e copie na mão.", false);
+        }
+      });
+
+      // --- Lista de compradores cadastrados ---
+
+      const listaMembros = document.getElementById("listaMembros");
+      const tituloMembros = document.getElementById("tituloMembros");
+
+      function formatarData(iso) {
+        if (!iso) return null;
+        return new Date(iso).toLocaleString("pt-BR", {
+          day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit",
+        });
+      }
+
+      async function carregarMembros() {
+        const { data, error } = await supabase.functions.invoke("gerenciar-membros", {
+          body: { acao: "listar" },
+        });
+
+        if (error) {
+          listaMembros.replaceChildren();
+          const erro = document.createElement("p");
+          erro.style.cssText = "font-size:0.85rem;color:#fca5a5;padding:8px 0;";
+          erro.textContent = await mensagemDoErro(error, "Não consegui carregar os compradores.");
+          listaMembros.appendChild(erro);
+          return;
+        }
+
+        renderMembros(data.membros ?? []);
+      }
+
+      function renderMembros(membros) {
+        tituloMembros.textContent = `Compradores cadastrados (${membros.length})`;
+        listaMembros.replaceChildren();
+
+        if (membros.length === 0) {
+          const vazio = document.createElement("p");
+          vazio.style.cssText = "font-size:0.85rem;color:rgba(242,242,242,0.45);padding:8px 0;";
+          vazio.textContent = "Nenhum comprador cadastrado ainda.";
+          listaMembros.appendChild(vazio);
+          return;
+        }
+
+        for (const m of membros) listaMembros.appendChild(montarLinhaMembro(m));
+      }
+
+      function montarLinhaMembro(m) {
+        const linha = document.createElement("div");
+        linha.className = "linha" + (m.ativo ? "" : " inativo");
+
+        const info = document.createElement("div");
+        info.className = "info";
+
+        const nome = document.createElement("span");
+        nome.className = "nome";
+        nome.textContent = m.email + (m.admin ? "  (admin)" : "") + (!m.admin && !m.ativo ? "  (bloqueado)" : "");
+        info.appendChild(nome);
+
+        const meta = document.createElement("span");
+        meta.className = "meta";
+        const partes = [];
+        if (m.criado_em) partes.push("criado em " + formatarData(m.criado_em));
+        partes.push(m.ultimo_acesso ? "último acesso em " + formatarData(m.ultimo_acesso) : "nunca acessou");
+        if (!m.admin && !m.ativo && m.motivo_desativacao) partes.push(m.motivo_desativacao);
+        meta.textContent = partes.join("  •  ");
+        info.appendChild(meta);
+
+        linha.appendChild(info);
+
+        // Admin nao vira alvo de bloqueio por aqui - a funcao recusa mesmo
+        // que o botao aparecesse, mas nem mostrar o botao e mais honesto.
+        if (!m.admin) {
+          const botoes = document.createElement("div");
+          botoes.className = "botoes";
+
+          const alternar = document.createElement("button");
+          alternar.type = "button";
+          alternar.title = m.ativo ? "Bloquear acesso" : "Reativar acesso";
+          alternar.innerHTML = m.ativo ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>';
+          alternar.addEventListener("click", () => alternarMembro(m, alternar));
+
+          const redefinir = document.createElement("button");
+          redefinir.type = "button";
+          redefinir.title = "Redefinir senha";
+          redefinir.innerHTML = '<i class="fa-solid fa-key"></i>';
+          redefinir.addEventListener("click", () => redefinirSenhaMembro(m, redefinir));
+
+          const excluir = document.createElement("button");
+          excluir.type = "button";
+          excluir.className = "remover";
+          excluir.title = "Excluir acesso";
+          excluir.innerHTML = '<i class="fa-solid fa-trash"></i>';
+          excluir.addEventListener("click", () => excluirMembro(m, excluir));
+
+          botoes.append(alternar, redefinir, excluir);
+          linha.appendChild(botoes);
+        }
+
+        return linha;
+      }
+
+      async function alternarMembro(m, botao) {
+        const pergunta = m.ativo
+          ? `Bloquear o acesso de ${m.email}? Ele para de conseguir entrar até você reativar.`
+          : `Reativar o acesso de ${m.email}?`;
+        if (!confirm(pergunta)) return;
+
+        botao.disabled = true;
+        try {
+          const { data, error } = await supabase.functions.invoke("gerenciar-membros", {
+            body: { acao: "alternar", email: m.email },
+          });
+          if (error) {
+            avisar(await mensagemDoErro(error, "Não consegui alterar o acesso."), false);
+            return;
+          }
+          avisar(data.ativo ? "Acesso reativado." : "Acesso bloqueado.");
+          await carregarMembros();
+        } finally {
+          botao.disabled = false;
+        }
+      }
+
+      async function redefinirSenhaMembro(m, botao) {
+        if (!confirm(`Redefinir a senha de ${m.email}? A senha antiga para de funcionar na hora.`)) return;
+
+        botao.disabled = true;
+        try {
+          const { data, error } = await supabase.functions.invoke("gerenciar-membros", {
+            body: { acao: "redefinir-senha", email: m.email },
+          });
+          if (error) {
+            avisar(await mensagemDoErro(error, "Não consegui redefinir a senha."), false);
+            return;
+          }
+          // Mesmo painel de credencial usado na criacao: a senha nova
+          // tambem so aparece essa vez.
+          credEmail.textContent = data.email;
+          credSenha.textContent = data.senha;
+          credencial.hidden = false;
+          credencial.scrollIntoView({ behavior: "smooth", block: "center" });
+          avisar("Senha redefinida. Copie agora.");
+        } finally {
+          botao.disabled = false;
+        }
+      }
+
+      async function excluirMembro(m, botao) {
+        if (!confirm(`Excluir definitivamente o acesso de ${m.email}?\n\nNão tem como desfazer. Se for temporário, use bloquear em vez de excluir.`)) return;
+
+        botao.disabled = true;
+        try {
+          const { error } = await supabase.functions.invoke("gerenciar-membros", {
+            body: { acao: "excluir", email: m.email },
+          });
+          if (error) {
+            avisar(await mensagemDoErro(error, "Não consegui excluir o acesso."), false);
+            return;
+          }
+          avisar("Acesso excluído.");
+          await carregarMembros();
+        } finally {
+          botao.disabled = false;
+        }
+      }
+
+      campoBusca.addEventListener("input", render);
+      await carregar();
+      await carregarCategorias();
+      await carregarMembros();
+    </script>
+  </body>
+</html>
