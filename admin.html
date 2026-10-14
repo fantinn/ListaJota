@@ -265,6 +265,10 @@
                 <label for="instagram">Instagram <span class="opcional">(opcional)</span></label>
                 <input id="instagram" placeholder="@perfil" />
               </div>
+              <div class="campo largo">
+                <label for="observacoes">O que vende <span class="opcional">(opcional, resumo curto)</span></label>
+                <textarea id="observacoes" rows="2" maxlength="160" placeholder="Ex.: criação de sites e landing pages"></textarea>
+              </div>
             </div>
             <div class="barra-form">
               <button type="submit" class="btn-blue" id="salvar"><i class="fa-solid fa-check"></i> Adicionar</button>
@@ -340,7 +344,7 @@
       const btCancelar = document.getElementById("cancelar");
       const btSalvar = document.getElementById("salvar");
 
-      const campos = ["nome", "categoria", "telefone", "instagram"];
+      const campos = ["nome", "categoria", "telefone", "instagram", "observacoes"];
       const el = Object.fromEntries(campos.map((c) => [c, document.getElementById(c)]));
 
       let editandoId = null;
@@ -671,7 +675,7 @@
       function render() {
         const termo = normalizar(campoBusca.value.trim());
         const visiveis = fornecedores.filter((f) =>
-          !termo || normalizar([f.nome, f.categoria, f.telefone, f.instagram].join(" ")).includes(termo)
+          !termo || normalizar([f.nome, f.categoria, f.telefone, f.instagram, f.observacoes].join(" ")).includes(termo)
         );
 
         document.getElementById("tituloLista").textContent =
@@ -710,6 +714,13 @@
         meta.textContent = [f.categoria, f.telefone, f.instagram]
           .filter(Boolean).join("  •  ") || "sem dados de contato";
         info.appendChild(meta);
+
+        if (f.observacoes) {
+          const resumo = document.createElement("span");
+          resumo.className = "meta";
+          resumo.textContent = f.observacoes;
+          info.appendChild(resumo);
+        }
 
         const botoes = document.createElement("div");
         botoes.className = "botoes";
