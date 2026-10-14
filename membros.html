@@ -239,8 +239,6 @@
         color: rgba(242,242,242,0.6); text-decoration: none;
         transition: color 0.15s;
       }
-      .card .insta-link:hover { color: var(--sky); }
-      .card .insta-link:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
       .card .acoes-card { display: flex; gap: 7px; margin-left: auto; flex-shrink: 0; }
       .card .acoes-card a {
         display: inline-flex; align-items: center; justify-content: center;
@@ -284,6 +282,7 @@
       .card .local { font-size: 0.78rem; color: rgba(242,242,242,0.5); }
       .card .obs { font-size: 0.8rem; line-height: 1.5; color: rgba(242,242,242,0.65); }
       .zap { background: rgba(37,211,102,0.14); border-color: rgba(37,211,102,0.3); color: #4ade80; }
+      .insta { background: rgba(236,72,153,0.14); border-color: rgba(236,72,153,0.32); color: #f472b6; }
 
       .estado {
         display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -1023,28 +1022,42 @@
         if (f.telefone) {
           const meta = document.createElement("p");
           meta.className = "meta";
-          meta.textContent = f.telefone;
+          // So digitos (como o admin salva) ganham mascara: (27) 99286-4820.
+          const so = f.telefone.trim();
+          meta.textContent = /^\d{10,11}$/.test(so)
+            ? `(${so.slice(0, 2)}) ${so.slice(2, so.length - 4)}-${so.slice(-4)}`
+            : f.telefone;
           dados.appendChild(meta);
         }
 
-        // Instagram vai como link de texto, nao como segundo botao redondo:
-        // dois botoes espremiam a coluna a ponto de quebrar o telefone no
-        // meio do numero.
+        // O @ aparece como texto; a acao fica no botao ao lado do WhatsApp.
         if (perfil) {
-          const link = document.createElement("a");
-          link.className = "insta-link";
-          link.href = "https://instagram.com/" + encodeURIComponent(perfil);
-          link.target = "_blank";
-          link.rel = "noopener";
+          const arroba = document.createElement("p");
+          arroba.className = "insta-link";
           const icone = document.createElement("i");
           icone.className = "fa-brands fa-instagram";
           icone.setAttribute("aria-hidden", "true");
-          link.append(icone, "@" + perfil);
-          dados.appendChild(link);
+          arroba.append(icone, "@" + perfil);
+          dados.appendChild(arroba);
         }
 
         const acoes = document.createElement("div");
         acoes.className = "acoes-card";
+
+        if (perfil) {
+          const ig = document.createElement("a");
+          ig.className = "insta";
+          ig.href = "https://instagram.com/" + encodeURIComponent(perfil);
+          ig.target = "_blank";
+          ig.rel = "noopener";
+          ig.setAttribute("aria-label", "Abrir o Instagram de " + f.nome);
+          ig.title = "Abrir no Instagram";
+          const iconeIg = document.createElement("i");
+          iconeIg.className = "fa-brands fa-instagram";
+          iconeIg.setAttribute("aria-hidden", "true");
+          ig.appendChild(iconeIg);
+          acoes.appendChild(ig);
+        }
 
         const zap = linkWhatsapp(f.telefone);
         if (zap) {
