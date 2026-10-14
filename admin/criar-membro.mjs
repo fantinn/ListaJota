@@ -70,6 +70,8 @@ function montarSenha(email, sufixo) {
 const argumentos = process.argv.slice(2);
 const admin = argumentos.includes("--admin");
 const email = (argumentos.find((a) => !a.startsWith("--")) || "").trim().toLowerCase();
+// --senha=XXXX define a senha na mao (fica registrada como "propria").
+const senhaEscolhida = argumentos.find((a) => a.startsWith("--senha="))?.slice(8);
 if (!email || !email.includes("@")) {
   console.error("Uso: node admin/criar-membro.mjs email@doexemplo.com [--admin]");
   process.exit(1);
@@ -122,8 +124,8 @@ if (existente) {
   process.exit(0);
 }
 
-const sufixo = sortearSufixo();
-const senha = montarSenha(email, sufixo);
+const sufixo = senhaEscolhida ? "propria" : sortearSufixo();
+const senha = senhaEscolhida || montarSenha(email, sufixo);
 
 const { data: criado, error: erroAuth } = await supabase.auth.admin.createUser({
   email,
