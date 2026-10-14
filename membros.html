@@ -527,6 +527,198 @@
         .cabecalho-vista { margin: 16px 0 16px; }
         .titulo-vista { font-size: 1.15rem; }
       }
+
+      /* ---------- Busca: limpar, atalho e chips de categoria ---------- */
+      .busca input { padding-right: 84px; }
+      .busca input::-webkit-search-cancel-button { display: none; }
+      .busca .limpar {
+        position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+        width: 30px; height: 30px; border-radius: 8px; cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(242,242,242,0.75);
+      }
+      .busca .limpar:hover { background: rgba(255,255,255,0.16); color: #fff; }
+      .busca .limpar i { position: static; transform: none; color: inherit; font-size: 0.8rem; }
+      .busca kbd {
+        position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+        padding: 3px 8px; border-radius: 6px; pointer-events: none;
+        border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.05);
+        font-family: "Montserrat", sans-serif; font-size: 0.7rem; color: rgba(242,242,242,0.5);
+      }
+      .busca.tem-texto kbd, .busca:focus-within kbd { display: none; }
+      @media (hover: none) { .busca kbd { display: none; } }
+
+      /* Chips: trocar de categoria sem voltar para a grade. Rolam de lado
+         no celular em vez de quebrar em varias linhas. */
+      .chips {
+        display: flex; gap: 8px; margin-top: 12px;
+        overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
+        -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent);
+                mask-image: linear-gradient(90deg, #000 92%, transparent);
+      }
+      .chips::-webkit-scrollbar { display: none; }
+      .chip {
+        flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px;
+        padding: 8px 13px; border-radius: 999px; cursor: pointer;
+        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(242,242,242,0.78);
+        font-family: "Montserrat", sans-serif; font-size: 0.76rem; font-weight: 600; white-space: nowrap;
+        transition: background 0.15s, color 0.15s, border-color 0.15s;
+      }
+      .chip:hover { background: rgba(255,255,255,0.1); color: #fff; }
+      .chip b { font-weight: 700; font-size: 0.68rem; color: rgba(242,242,242,0.45); }
+      .chip.ativo { background: var(--blue); border-color: var(--blue); color: #fff; }
+      .chip.ativo b { color: rgba(255,255,255,0.75); }
+      .chip.fav i { color: #f472b6; }
+      .chip.fav.ativo i { color: #fff; }
+      .chip:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+
+      /* ---------- Card: favorito, copiar telefone, avatar colorido ---------- */
+      .card { position: relative; }
+      .card .inicial { color: #fff; border: none; background: hsl(var(--matiz, 150) 45% 30%); }
+      .card .meta {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 0; background: none; border: none; cursor: pointer;
+        font-family: "Montserrat", sans-serif; text-align: left;
+        transition: color 0.15s;
+      }
+      .card .meta i { font-size: 0.68rem; opacity: 0; transition: opacity 0.15s; }
+      .card .meta:hover { color: #fff; }
+      .card .meta:hover i, .card .meta:focus-visible i { opacity: 0.8; }
+      @media (hover: none) { .card .meta i { opacity: 0.55; } }
+      .card .meta { white-space: nowrap; }
+      @media (max-width: 640px) {
+        .card .acoes-card { gap: 5px; }
+        .card .acoes-card a { width: 38px; height: 38px; }
+        .card .favoritar { width: 28px; }
+      }
+      .card .favoritar {
+        width: 32px; height: 32px; border-radius: 9px; cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: transparent; border: 1px solid transparent;
+        color: rgba(242,242,242,0.35); font-size: 0.9rem;
+        transition: color 0.15s, transform 0.15s, background 0.15s;
+      }
+      .card .favoritar:hover { color: #f472b6; background: rgba(236,72,153,0.1); }
+      .card .favoritar.ligado { color: #f472b6; }
+      .card .favoritar.ligado i { animation: pulsar 0.3s; }
+      @keyframes pulsar { 50% { transform: scale(1.35); } }
+      .card mark { background: rgba(94,224,138,0.28); color: #fff; border-radius: 3px; padding: 0 1px; }
+
+      .vazio {
+        display: flex; flex-direction: column; align-items: center; gap: 12px;
+        grid-column: 1 / -1; padding: 50px 20px; text-align: center;
+        color: rgba(242,242,242,0.55); font-size: 0.88rem;
+      }
+      .vazio i { font-size: 1.6rem; color: rgba(242,242,242,0.3); }
+
+      /* Tile de favoritos: abre a grade, em rosa para nao confundir com o verde
+         das categorias nem com o dourado do bonus. */
+      .tile.favoritos { border-color: rgba(236,72,153,0.35); }
+      .tile.favoritos .icone { display: flex; align-items: center; justify-content: center; color: rgba(244,114,182,0.45); font-size: 46px; }
+      .tile.favoritos:hover { border-color: rgba(236,72,153,0.75); box-shadow: 0 14px 28px -16px rgba(236,72,153,0.45); }
+      .tile.favoritos:hover .icone, .tile.favoritos:hover .indice { color: #f472b6; }
+      .tile.favoritos:hover .seta { background: #f472b6; border-color: #f472b6; color: #1a0410; }
+      .tile.favoritos .qtd::before { background: #f472b6; }
+
+      .toast {
+        position: fixed; left: 50%; bottom: 26px; z-index: 400;
+        transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+        display: inline-flex; align-items: center; gap: 9px;
+        padding: 12px 18px; border-radius: 12px;
+        background: #f2f2f2; color: #0b0b0b;
+        font-size: 0.82rem; font-weight: 600;
+        box-shadow: 0 16px 40px -12px rgba(0,0,0,0.8);
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .toast.visivel { opacity: 1; transform: translate(-50%, 0); }
+      .toast i { color: var(--blue); }
+
+      /* ---------- Destaque: Fantin Sites ---------- */
+      /* Paleta propria (violeta -> ciano) para sair do verde da lista: e o
+         unico contato que tem essa cor, entao se destaca em qualquer vista. */
+      :root { --fx1: #a78bfa; --fx2: #22d3ee; --fx3: #5ee08a; }
+      .spotlight {
+        position: relative; overflow: hidden; isolation: isolate;
+        margin-top: 22px; padding: 26px 28px; border-radius: 20px;
+        border: 1px solid transparent;
+        background:
+          linear-gradient(135deg, #1b1830, #13212a 60%, #14201a) padding-box,
+          linear-gradient(120deg, var(--fx1), var(--fx2), var(--fx3)) border-box;
+        display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 22px;
+      }
+      .spotlight::before {
+        content: ""; position: absolute; inset: -40%; z-index: -1; pointer-events: none;
+        background:
+          radial-gradient(30% 40% at 15% 30%, rgba(167,139,250,0.28), transparent 70%),
+          radial-gradient(30% 40% at 85% 70%, rgba(34,211,238,0.2), transparent 70%);
+      }
+      .spot-logo {
+        width: 64px; height: 64px; border-radius: 18px;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg, var(--fx1), var(--fx2));
+        color: #0d0b1a; font-size: 1.5rem;
+        box-shadow: 0 10px 30px -8px rgba(167,139,250,0.6);
+      }
+      .spot-selo {
+        display: inline-flex; align-items: center; gap: 7px; margin-bottom: 8px;
+        padding: 5px 11px; border-radius: 999px;
+        background: rgba(167,139,250,0.16); border: 1px solid rgba(167,139,250,0.35);
+        color: #c4b5fd; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      }
+      .spotlight h3 {
+        font-size: 1.45rem; font-weight: 900; letter-spacing: -0.01em; line-height: 1.15;
+        background: linear-gradient(100deg, #fff 30%, #c4b5fd 65%, #67e8f9);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent; color: transparent;
+      }
+      .spotlight p { margin-top: 6px; font-size: 0.86rem; line-height: 1.6; color: rgba(242,242,242,0.78); max-width: 520px; }
+      .spot-acoes { display: flex; flex-direction: column; gap: 9px; }
+      .spot-acoes a {
+        display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+        padding: 12px 18px; border-radius: 12px; white-space: nowrap;
+        font-size: 0.82rem; font-weight: 700; text-decoration: none;
+        transition: transform 0.15s, filter 0.15s;
+      }
+      .spot-acoes a:hover { transform: translateY(-2px); filter: brightness(1.1); }
+      .spot-zap { background: linear-gradient(120deg, var(--fx1), var(--fx2)); color: #0d0b1a; }
+      .spot-ig { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16); color: #fff; }
+
+      .card.destaque {
+        border: 1px solid transparent;
+        background:
+          linear-gradient(150deg, #1d1a31, #14222a) padding-box,
+          linear-gradient(120deg, var(--fx1), var(--fx2), var(--fx3)) border-box;
+        box-shadow: 0 18px 40px -22px rgba(167,139,250,0.7);
+      }
+      .card.destaque:hover { border-color: transparent; }
+      .card.destaque .inicial { background: linear-gradient(135deg, var(--fx1), var(--fx2)); color: #0d0b1a; }
+      .card.destaque h2 { color: #fff; }
+      .card .selo-destaque {
+        align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 10px; border-radius: 999px;
+        background: rgba(167,139,250,0.18); color: #c4b5fd;
+        font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      }
+      .grade.sem-rotulo .card.destaque .categoria { display: none; }
+      .card.destaque .zap { background: linear-gradient(120deg, var(--fx1), var(--fx2)); border: none; color: #0d0b1a; }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .spotlight, .card.destaque {
+          background-size: 100% 100%, 200% 200%;
+          animation: brilho-borda 6s ease-in-out infinite alternate;
+        }
+        @keyframes brilho-borda { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 100% 50%; } }
+      }
+
+      @media (max-width: 760px) {
+        .spotlight { grid-template-columns: auto 1fr; padding: 22px 20px; gap: 16px; }
+        .spot-acoes { grid-column: 1 / -1; flex-direction: row; }
+        .spot-acoes a { flex: 1; }
+        .spot-logo { width: 52px; height: 52px; font-size: 1.2rem; border-radius: 14px; }
+        .spotlight h3 { font-size: 1.2rem; }
+      }
     </style>
   </head>
 
@@ -604,15 +796,35 @@
           </div>
         </section>
         <div class="busca-area">
-          <div class="busca">
+          <div class="busca" id="caixaBusca">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" id="busca" placeholder="Buscar fornecedor ou categoria..." autocomplete="off" />
+            <input type="search" id="busca" placeholder="Buscar fornecedor, categoria, cidade ou @..." autocomplete="off" aria-label="Buscar fornecedor" />
+            <kbd aria-hidden="true">/</kbd>
+            <button class="limpar" id="limparBusca" type="button" aria-label="Limpar busca" hidden>
+              <i class="fa-solid fa-xmark"></i>
+            </button>
           </div>
+          <nav class="chips" id="chips" aria-label="Categorias" hidden></nav>
         </div>
 
         <!-- Vista 1: escolha da categoria -->
         <div id="vistaCategorias">
           <div class="categorias" id="categorias"></div>
+
+          <!-- Destaque do Fantin Sites: os dados (telefone, @) vem do proprio
+               cadastro no banco; sem o cadastro, o bloco nao aparece. -->
+          <section class="spotlight" id="spotlight" hidden aria-labelledby="spotNome">
+            <span class="spot-logo" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+            <div>
+              <span class="spot-selo"><i class="fa-solid fa-star" aria-hidden="true"></i> Parceiro em destaque</span>
+              <h3 id="spotNome">Fantin Sites</h3>
+              <p id="spotTexto">Criação de sites e landing pages. Foi quem desenvolveu esta plataforma — quer um site assim para a sua loja?</p>
+            </div>
+            <div class="spot-acoes">
+              <a class="spot-zap" id="spotZap" target="_blank" rel="noopener" hidden><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
+              <a class="spot-ig" id="spotIg" target="_blank" rel="noopener" hidden><i class="fa-brands fa-instagram"></i> <span></span></a>
+            </div>
+          </section>
 
           <!-- Avisos de fim de lista: mesmo texto que ia no PDF, agora fixo
                na pagina, sempre depois do card de bonus. -->
@@ -683,6 +895,8 @@
         <p class="aviso">Lista de uso pessoal e intransferível, vinculada ao seu e-mail de compra.</p>
       </div>
     </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"><i class="fa-solid fa-circle-check"></i> <span></span></div>
 
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/+esm";
@@ -812,7 +1026,7 @@
       });
       document.addEventListener("keydown", (evento) => {
         if (fundoDicas.hidden) return;
-        if (evento.key === "Escape") fecharDicas();
+        if (evento.key === "Escape") { evento.preventDefault(); fecharDicas(); }
         else if (evento.key === "ArrowLeft" && !dicaAnterior.disabled) { dicaAtual--; renderDica(); }
         else if (evento.key === "ArrowRight" && !dicaProxima.disabled) { dicaAtual++; renderDica(); }
       });
@@ -888,6 +1102,78 @@
       }
 
       let categoriaAtiva = "";
+      // Categoria virtual: os contatos marcados com coracao pelo comprador.
+      const FAVORITOS = "__favoritos";
+
+      // Favoritos ficam so neste navegador - e conveniencia, nao dado da
+      // conta. try/catch porque o storage pode estar bloqueado (aba anonima).
+      const CHAVE_FAV = "listajota:favoritos:" + user.id;
+      const favoritos = new Set();
+      try { for (const k of JSON.parse(localStorage.getItem(CHAVE_FAV) ?? "[]")) favoritos.add(k); } catch {}
+      function chaveDe(f) { return (f.nome ?? "") + "|" + (f.telefone ?? ""); }
+      function salvarFavoritos() {
+        try { localStorage.setItem(CHAVE_FAV, JSON.stringify([...favoritos])); } catch {}
+      }
+
+      // Fantin Sites (quem fez a plataforma) ganha destaque proprio. Confere
+      // por nome ou @, para continuar valendo se um dos dois mudar no admin.
+      function ehFantin(f) {
+        const nome = normalizar(f.nome).replace(/\s+/g, " ").trim();
+        const insta = normalizar(f.instagram).replace(/^@/, "").trim();
+        return nome === "fantin sites" || insta === "fantinsi";
+      }
+
+      const toast = document.getElementById("toast");
+      let toastTimer;
+      function avisar(texto) {
+        toast.querySelector("span").textContent = texto;
+        toast.classList.add("visivel");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("visivel"), 1800);
+      }
+
+      // Cor do avatar derivada do nome: sempre a mesma para o mesmo contato,
+      // e a grade deixa de ser uma fileira de quadrados cinza iguais.
+      function matiz(texto) {
+        let h = 0;
+        for (const c of texto ?? "") h = (h * 31 + c.codePointAt(0)) % 360;
+        return h;
+      }
+
+      // Marca na tela os trechos que bateram com a busca. Compara no texto
+      // normalizado (sem acento), mas pinta o texto original.
+      function escreverComDestaque(el, texto, termos) {
+        texto = texto ?? "";
+        if (!termos.length) { el.textContent = texto; return; }
+        let norm = "";
+        const origem = [];
+        for (let i = 0; i < texto.length; i++) {
+          const n = normalizar(texto[i]);
+          for (const c of n) { norm += c; origem.push(i); }
+        }
+        const marcado = new Array(texto.length).fill(false);
+        for (const t of termos) {
+          let pos = norm.indexOf(t);
+          while (t && pos !== -1) {
+            for (let k = pos; k < pos + t.length; k++) marcado[origem[k]] = true;
+            pos = norm.indexOf(t, pos + t.length);
+          }
+        }
+        let i = 0;
+        while (i < texto.length) {
+          let j = i;
+          while (j < texto.length && marcado[j] === marcado[i]) j++;
+          const pedaco = texto.slice(i, j);
+          if (marcado[i]) {
+            const m = document.createElement("mark");
+            m.textContent = pedaco;
+            el.appendChild(m);
+          } else {
+            el.append(pedaco);
+          }
+          i = j;
+        }
+      }
 
       // Só dígitos: o link do WhatsApp não aceita máscara.
       function linkWhatsapp(telefone) {
@@ -914,6 +1200,7 @@
           porCategoria.set(f.categoria, (porCategoria.get(f.categoria) ?? 0) + 1);
         }
         if (porCategoria.size === 0) return;
+        categorias.replaceChildren();
 
         document.getElementById("heroContatos").textContent = fornecedores.filter((f) => f.categoria).length;
         document.getElementById("heroCategorias").textContent = porCategoria.size;
@@ -970,27 +1257,120 @@
           indice.textContent = String(ordenadas.indexOf(categoriaBruta) + 1).padStart(2, "0");
 
           tile.append(indice, icone, seta, texto);
-          tile.addEventListener("click", () => {
-            categoriaAtiva = categoriaBruta;
-            campoBusca.value = "";
-            render();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          });
+          tile.addEventListener("click", () => irPara(categoriaBruta));
           categorias.appendChild(tile);
         }
+
+        // Favoritos abrem a grade quando existem: e o atalho de quem volta
+        // sempre aos mesmos fornecedores.
+        const totalFav = fornecedores.filter((f) => favoritos.has(chaveDe(f))).length;
+        if (totalFav > 0) {
+          const tile = document.createElement("button");
+          tile.type = "button";
+          tile.className = "tile favoritos";
+          tile.innerHTML =
+            '<span class="indice" aria-hidden="true">♥</span>' +
+            '<span class="icone"><i class="fa-solid fa-heart" aria-hidden="true"></i></span>' +
+            '<i class="seta fa-solid fa-arrow-right"></i>' +
+            '<span class="texto"><span class="nome">Meus favoritos</span><span class="qtd"></span></span>';
+          tile.querySelector(".qtd").textContent = totalFav === 1 ? "1 contato" : `${totalFav} contatos`;
+          tile.addEventListener("click", () => irPara(FAVORITOS));
+          categorias.prepend(tile);
+        }
+
+        montarChips(ordenadas, porCategoria, totalFav);
       }
 
-      function voltarParaCategorias() {
-        categoriaAtiva = "";
+      // Chips no topo da vista de contatos: trocar de categoria direto.
+      const chips = document.getElementById("chips");
+      function montarChips(ordenadas, porCategoria, totalFav) {
+        chips.replaceChildren();
+        const criar = (valor, rotulo, total, extra) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "chip" + (extra ? " " + extra : "");
+          b.dataset.valor = valor;
+          if (extra === "fav") {
+            const i = document.createElement("i");
+            i.className = "fa-solid fa-heart";
+            i.setAttribute("aria-hidden", "true");
+            b.appendChild(i);
+          }
+          b.append(rotulo);
+          if (total != null) {
+            const n = document.createElement("b");
+            n.textContent = total;
+            b.appendChild(n);
+          }
+          b.addEventListener("click", () => irPara(valor));
+          chips.appendChild(b);
+        };
+        criar("", "Todas", null);
+        if (totalFav > 0) criar(FAVORITOS, "Favoritos", totalFav, "fav");
+        for (const c of ordenadas) criar(c, nomeExibido(c), porCategoria.get(c));
+      }
+
+      function montarDestaque() {
+        const fantin = fornecedores.find(ehFantin);
+        if (!fantin) return;
+        const spot = document.getElementById("spotlight");
+        document.getElementById("spotNome").textContent = fantin.nome;
+        const zap = linkWhatsapp(fantin.telefone);
+        if (zap) {
+          const a = document.getElementById("spotZap");
+          a.href = zap + "?text=" + encodeURIComponent("Olá! Vi vocês na ListaJota e quero um orçamento de site.");
+          a.hidden = false;
+        }
+        const perfil = (fantin.instagram ?? "").replace(/^@/, "").trim();
+        if (perfil) {
+          const a = document.getElementById("spotIg");
+          a.href = "https://instagram.com/" + encodeURIComponent(perfil);
+          a.querySelector("span").textContent = "@" + perfil;
+          a.hidden = false;
+        }
+        spot.hidden = false;
+      }
+
+      // Navegacao pelo hash: o botao voltar do celular volta para a grade
+      // em vez de sair da pagina, e o link de uma categoria pode ser salvo.
+      function irPara(categoria) {
+        const novo = categoria ? "#" + encodeURIComponent(categoria) : "";
+        if (location.hash !== novo) {
+          history.pushState(null, "", novo || location.pathname + location.search);
+        }
+        aplicarCategoria(categoria);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function aplicarCategoria(categoria) {
+        categoriaAtiva = categoria;
         campoBusca.value = "";
         render();
+      }
+      function categoriaDoHash() {
+        let c = "";
+        try { c = decodeURIComponent(location.hash.slice(1)); } catch {}
+        if (c === FAVORITOS || fornecedores.some((f) => f.categoria === c)) return c;
+        return "";
+      }
+      window.addEventListener("popstate", () => aplicarCategoria(categoriaDoHash()));
+
+      function voltarParaCategorias() {
+        irPara("");
       }
 
       // Monta por DOM, nunca por innerHTML: o conteudo vem do banco e nao
       // pode virar HTML executavel dentro da pagina.
-      function montarCard(f) {
+      function montarCard(f, termos = []) {
         const card = document.createElement("article");
-        card.className = "card";
+        const fantin = ehFantin(f);
+        card.className = "card" + (fantin ? " destaque" : "");
+
+        if (fantin) {
+          const selo = document.createElement("span");
+          selo.className = "selo-destaque";
+          selo.innerHTML = '<i class="fa-solid fa-star" aria-hidden="true"></i> Destaque · criou esta plataforma';
+          card.appendChild(selo);
+        }
 
         if (f.categoria) {
           const cat = document.createElement("span");
@@ -1008,25 +1388,42 @@
         // e um nome comecando com simbolo nao vira um quadrado vazio.
         inicial.textContent = ((f.nome ?? "").match(/[\p{L}\p{N}]/u) ?? ["?"])[0];
         inicial.setAttribute("aria-hidden", "true");
+        inicial.style.setProperty("--matiz", matiz(f.nome));
 
         const dados = document.createElement("div");
         dados.className = "dados";
 
         const titulo = document.createElement("h2");
-        titulo.textContent = f.nome;
+        escreverComDestaque(titulo, f.nome, termos);
         dados.appendChild(titulo);
 
         // Telefone visivel como texto: o botao e a acao, mas o numero ainda
         // precisa dar para ler e copiar sem sair da pagina.
         const perfil = f.instagram ? f.instagram.replace(/^@/, "").trim() : "";
         if (f.telefone) {
-          const meta = document.createElement("p");
+          // Botao: um toque copia o numero (para salvar na agenda).
+          const meta = document.createElement("button");
+          meta.type = "button";
           meta.className = "meta";
+          meta.title = "Copiar telefone";
           // So digitos (como o admin salva) ganham mascara: (27) 99286-4820.
           const so = f.telefone.trim();
-          meta.textContent = /^\d{10,11}$/.test(so)
+          const formatado = /^\d{10,11}$/.test(so)
             ? `(${so.slice(0, 2)}) ${so.slice(2, so.length - 4)}-${so.slice(-4)}`
             : f.telefone;
+          const iconeCopiar = document.createElement("i");
+          iconeCopiar.className = "fa-regular fa-copy";
+          iconeCopiar.setAttribute("aria-hidden", "true");
+          meta.append(formatado, iconeCopiar);
+          meta.setAttribute("aria-label", "Copiar telefone " + formatado);
+          meta.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(formatado);
+              avisar("Telefone copiado");
+            } catch {
+              avisar(formatado);
+            }
+          });
           dados.appendChild(meta);
         }
 
@@ -1043,6 +1440,33 @@
 
         const acoes = document.createElement("div");
         acoes.className = "acoes-card";
+
+        const fav = document.createElement("button");
+        fav.type = "button";
+        fav.className = "favoritar";
+        const pintarFav = () => {
+          const ligado = favoritos.has(chaveDe(f));
+          fav.classList.toggle("ligado", ligado);
+          fav.innerHTML = ligado
+            ? '<i class="fa-solid fa-heart" aria-hidden="true"></i>'
+            : '<i class="fa-regular fa-heart" aria-hidden="true"></i>';
+          fav.setAttribute("aria-pressed", String(ligado));
+          fav.setAttribute("aria-label", (ligado ? "Remover dos favoritos: " : "Favoritar ") + f.nome);
+          fav.title = ligado ? "Remover dos favoritos" : "Favoritar";
+        };
+        pintarFav();
+        fav.addEventListener("click", () => {
+          const k = chaveDe(f);
+          if (favoritos.has(k)) favoritos.delete(k); else favoritos.add(k);
+          salvarFavoritos();
+          pintarFav();
+          avisar(favoritos.has(k) ? "Adicionado aos favoritos" : "Removido dos favoritos");
+          montarCategorias();
+          atualizarChips();
+          // Na vista de favoritos, desmarcar tira o card da lista.
+          if (categoriaAtiva === FAVORITOS && !favoritos.has(k)) render();
+        });
+        acoes.appendChild(fav);
 
         if (perfil) {
           const ig = document.createElement("a");
@@ -1097,9 +1521,32 @@
         return card;
       }
 
+      const caixaBusca = document.getElementById("caixaBusca");
+      const limparBusca = document.getElementById("limparBusca");
+
+      function atualizarChips() {
+        const buscando = campoBusca.value.trim().length > 0;
+        chips.hidden = !categoriaAtiva && !buscando;
+        for (const c of chips.children) {
+          const ativo = !buscando && c.dataset.valor === categoriaAtiva;
+          c.classList.toggle("ativo", ativo);
+          c.setAttribute("aria-current", ativo ? "true" : "false");
+        }
+        const ativo = chips.querySelector(".chip.ativo");
+        if (ativo) ativo.scrollIntoView({ block: "nearest", inline: "center" });
+      }
+
       function render() {
         const termo = normalizar(campoBusca.value.trim());
         const buscando = termo.length > 0;
+        const termos = termo.split(/\s+/).filter(Boolean);
+
+        // Dentro de uma categoria o cabecalho grande so empurra os contatos
+        // para baixo da dobra.
+        document.getElementById("hero").hidden = !!categoriaAtiva;
+        limparBusca.hidden = !buscando;
+        caixaBusca.classList.toggle("tem-texto", buscando);
+        atualizarChips();
 
         // Sem categoria escolhida e sem busca, mostra a grade de categorias.
         if (!buscando && !categoriaAtiva) {
@@ -1114,16 +1561,23 @@
         // A busca atravessa todas as categorias; a categoria escolhida só
         // vale enquanto não houver termo digitado.
         const visiveis = fornecedores.filter((f) => {
+          if (!buscando && categoriaAtiva === FAVORITOS) return favoritos.has(chaveDe(f));
           if (!buscando && categoriaAtiva && f.categoria !== categoriaAtiva) return false;
           if (!buscando) return true;
           const alvo = normalizar(
-            [f.nome, f.categoria, f.cidade, f.estado, f.observacoes, f.instagram].join(" ")
+            [f.nome, nomeExibido(f.categoria), f.categoria, f.cidade, f.estado, f.observacoes, f.instagram, f.telefone].join(" ")
           );
-          return termo.split(/\s+/).every((parte) => alvo.includes(parte));
+          return termos.every((parte) => alvo.includes(parte));
         });
+        // Fantin Sites sempre no topo de onde aparecer; favoritos logo depois
+        // (sort estavel: o resto mantem a ordem alfabetica do banco).
+        const peso = (f) => (ehFantin(f) ? 0 : favoritos.has(chaveDe(f)) ? 1 : 2);
+        visiveis.sort((a, b) => peso(a) - peso(b));
 
-        tituloVista.textContent = buscando ? "Resultados da busca" : nomeExibido(categoriaAtiva);
-        grade.classList.toggle("sem-rotulo", !buscando);
+        tituloVista.textContent = buscando
+          ? `Resultados para “${campoBusca.value.trim()}”`
+          : categoriaAtiva === FAVORITOS ? "Meus favoritos" : nomeExibido(categoriaAtiva);
+        grade.classList.toggle("sem-rotulo", !buscando && categoriaAtiva !== FAVORITOS);
         // Contatos bonus: poucos e com descricao, entao cada card ocupa a
         // largura toda em vez de ficar espremido numa coluna de 250px.
         grade.classList.toggle("larga", !buscando && ehBonus(categoriaAtiva));
@@ -1135,15 +1589,24 @@
         grade.replaceChildren();
 
         if (visiveis.length === 0) {
-          const vazio = document.createElement("p");
-          vazio.className = "obs";
-          vazio.style.color = "rgba(242,242,242,0.5)";
-          vazio.textContent = "Nenhum fornecedor encontrado para essa busca.";
+          const vazio = document.createElement("div");
+          vazio.className = "vazio";
+          const icone = document.createElement("i");
+          icone.className = "fa-solid fa-magnifying-glass";
+          icone.setAttribute("aria-hidden", "true");
+          const txt = document.createElement("p");
+          txt.textContent = "Nenhum fornecedor encontrado. Tente outra palavra ou o nome da cidade.";
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-ghost";
+          btn.textContent = "Limpar busca";
+          btn.addEventListener("click", () => { campoBusca.value = ""; render(); campoBusca.focus(); });
+          vazio.append(icone, txt, btn);
           grade.appendChild(vazio);
           return;
         }
 
-        for (const f of visiveis) grade.appendChild(montarCard(f));
+        for (const f of visiveis) grade.appendChild(montarCard(f, buscando ? termos : []));
       }
 
       if (fornecedores.length === 0) {
@@ -1153,9 +1616,30 @@
         estado.hidden = true;
         painel.hidden = false;
         montarCategorias();
+        montarDestaque();
+        categoriaAtiva = categoriaDoHash();
         render();
         campoBusca.addEventListener("input", render);
         document.getElementById("voltar").addEventListener("click", voltarParaCategorias);
+        limparBusca.addEventListener("click", () => {
+          campoBusca.value = "";
+          render();
+          campoBusca.focus();
+        });
+
+        // Atalhos: "/" foca a busca; Esc limpa a busca ou volta para a grade.
+        document.addEventListener("keydown", (evento) => {
+          if (evento.defaultPrevented || !fundoAviso.hidden || !fundoDicas.hidden) return;
+          const digitando = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName ?? "");
+          if (evento.key === "/" && !digitando) {
+            evento.preventDefault();
+            campoBusca.focus();
+            campoBusca.select();
+          } else if (evento.key === "Escape") {
+            if (campoBusca.value) { campoBusca.value = ""; render(); }
+            else if (categoriaAtiva) { campoBusca.blur(); voltarParaCategorias(); }
+          }
+        });
       }
     </script>
   </body>
