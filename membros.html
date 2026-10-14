@@ -369,36 +369,6 @@
         .info-cabecalho .icone-info { width: 38px; height: 38px; }
       }
 
-      .destaque {
-        display: flex; align-items: flex-start; gap: 14px;
-        padding: 15px 18px; border-radius: 18px; margin-bottom: 6px;
-        background: linear-gradient(155deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
-        -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
-        border: 1px solid rgba(255,255,255,0.11);
-        border-left: 3px solid var(--blue);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
-        font-size: 0.83rem; line-height: 1.6; color: rgba(242,242,242,0.8);
-      }
-      .destaque i { color: var(--sky); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
-
-      /* Aviso temporario: fica 30 s depois do login e some suavemente. A
-         barra fina embaixo mostra o tempo que falta. */
-      .destaque {
-        position: relative; overflow: hidden;
-        transition: opacity 0.5s, max-height 0.5s, padding 0.5s, margin 0.5s, border-width 0.5s;
-      }
-      .destaque::after {
-        content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
-        background: var(--blue); transform-origin: left; opacity: 0.7;
-      }
-      .destaque.contando::after { animation: acabar 30s linear forwards; }
-      @keyframes acabar { to { transform: scaleX(0); } }
-      .destaque.saindo {
-        opacity: 0; max-height: 0 !important;
-        padding-top: 0; padding-bottom: 0; margin: 0; border-width: 0;
-      }
-      .destaque strong { color: #fff; }
-
       /* Abertura da pagina: diz onde a pessoa esta e quanto tem a explorar
          antes do aviso e da busca. */
       /* Manchas de luz fixas atras de tudo: sem nada para desfocar, o vidro
@@ -665,10 +635,6 @@
             <span class="numero-chip"><b id="heroCategorias">0</b> categorias</span>
           </div>
         </section>
-        <p class="destaque" id="avisoIndicacao" hidden>
-          <i class="fa-solid fa-circle-info"></i>
-          <span>Ao chamar qualquer contato desta lista, avise que foi indicação da <strong>Jota Multimarcas</strong> para ter aquela atenção diferenciada dos fornecedores e dos contatos bônus.</span>
-        </p>
         <div class="busca-area">
           <div class="busca">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -805,25 +771,7 @@
       fecharAviso.addEventListener("click", () => {
         fundoAviso.hidden = true;
         document.body.style.overflow = "";
-        mostrarAvisoIndicacao();
       });
-
-      // Aviso da indicacao: so aparece depois do aviso obrigatorio (senao o
-      // tempo correria por tras dele) e some sozinho 30 s depois.
-      function mostrarAvisoIndicacao() {
-        const aviso = document.getElementById("avisoIndicacao");
-        if (!aviso || !aviso.hidden) return;
-        aviso.hidden = false;
-        aviso.classList.add("contando");
-        setTimeout(() => {
-          // A altura fixa so entra agora: o painel pode ainda estar oculto
-          // quando o aviso abre, e a medida sairia 0.
-          aviso.style.maxHeight = aviso.offsetHeight + "px";
-          void aviso.offsetHeight;
-          aviso.classList.add("saindo");
-          setTimeout(() => { aviso.hidden = true; }, 600);
-        }, 30000);
-      }
 
       document.getElementById("sair").addEventListener("click", async () => {
         await supabase.auth.signOut();
