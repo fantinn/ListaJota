@@ -1719,6 +1719,23 @@
     }
     .header-cta i { font-size: 0.72rem; }
 
+    /* "Já comprei" no cabeçalho: só celular/tablet (no desktop já está no desk-nav) */
+    .header-login {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .header-login:hover { background: rgba(255,255,255,0.08); border-color: var(--green); }
+    .header-login i { color: var(--green); font-size: 0.68rem; }
+
     .promo-strip {
       background: #101215;
       border-top: 1px solid rgba(255,255,255,0.06);
@@ -2278,6 +2295,7 @@
     @media (min-width: 1024px) {
       .desk-nav { display: flex; }
       .menu-btn { display: none; }
+      .header-login { display: none; }
       .hero-inner { grid-template-columns: 1.05fr 0.95fr; }
     }
     @media (max-width: 1023px) {
@@ -2299,6 +2317,17 @@
       .brand-mark { width: 30px; height: 30px; font-size: 0.92rem; }
       .header-cta { padding: 10px 14px; font-size: 0.7rem; }
       .header-cta i { display: none; }
+      .header-login { padding: 9px 11px; }
+    }
+    @media (max-width: 479px) {
+      .header-bar { gap: 8px; padding: 10px 12px; }
+      .menu-btn { padding: 6px; }
+      .brand { margin-left: 0; }
+      .brand-text { display: none; }
+      .header-login i { display: none; }
+      .header-login, .header-cta { padding: 9px 12px; }
+    }
+    @media (max-width: 767px) {
 
       .hero { min-height: auto; }
       .hero-inner { padding: 26px 20px 40px; gap: 30px; }
@@ -2561,6 +2590,11 @@
         <a href="#faq">Dúvidas</a>
         <a href="login.html" title="Área de quem já comprou">Já comprei</a>
       </nav>
+
+      <a href="login.html" class="header-login" title="Área de quem já comprou">
+        <i class="fa-solid fa-lock-open"></i>
+        <span>Já comprei</span>
+      </a>
 
       <a href="#comprar" class="header-cta" id="ctaHeader">
         <i class="fa-solid fa-bolt"></i>
