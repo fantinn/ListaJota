@@ -635,89 +635,17 @@
       .toast.visivel { opacity: 1; transform: translate(-50%, 0); }
       .toast i { color: var(--blue); }
 
-      /* ---------- Destaque: Fantin Sites ---------- */
-      /* Paleta propria (violeta -> ciano) para sair do verde da lista: e o
-         unico contato que tem essa cor, entao se destaca em qualquer vista. */
-      :root { --fx1: #a78bfa; --fx2: #22d3ee; --fx3: #5ee08a; }
-      .spotlight {
-        position: relative; overflow: hidden; isolation: isolate;
-        margin-top: 22px; padding: 26px 28px; border-radius: 20px;
-        border: 1px solid transparent;
-        background:
-          linear-gradient(135deg, #1b1830, #13212a 60%, #14201a) padding-box,
-          linear-gradient(120deg, var(--fx1), var(--fx2), var(--fx3)) border-box;
-        display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 22px;
-      }
-      .spotlight::before {
-        content: ""; position: absolute; inset: -40%; z-index: -1; pointer-events: none;
-        background:
-          radial-gradient(30% 40% at 15% 30%, rgba(167,139,250,0.28), transparent 70%),
-          radial-gradient(30% 40% at 85% 70%, rgba(34,211,238,0.2), transparent 70%);
-      }
-      .spot-logo {
-        width: 64px; height: 64px; border-radius: 18px;
-        display: inline-flex; align-items: center; justify-content: center;
-        background: linear-gradient(135deg, var(--fx1), var(--fx2));
-        color: #0d0b1a; font-size: 1.5rem;
-        box-shadow: 0 10px 30px -8px rgba(167,139,250,0.6);
-      }
-      .spot-selo {
-        display: inline-flex; align-items: center; gap: 7px; margin-bottom: 8px;
-        padding: 5px 11px; border-radius: 999px;
-        background: rgba(167,139,250,0.16); border: 1px solid rgba(167,139,250,0.35);
-        color: #c4b5fd; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-      }
-      .spotlight h3 {
-        font-size: 1.45rem; font-weight: 900; letter-spacing: -0.01em; line-height: 1.15;
-        background: linear-gradient(100deg, #fff 30%, #c4b5fd 65%, #67e8f9);
-        -webkit-background-clip: text; background-clip: text;
-        -webkit-text-fill-color: transparent; color: transparent;
-      }
-      .spotlight p { margin-top: 6px; font-size: 0.86rem; line-height: 1.6; color: rgba(242,242,242,0.78); max-width: 520px; }
-      .spot-acoes { display: flex; flex-direction: column; gap: 9px; }
-      .spot-acoes a {
-        display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-        padding: 12px 18px; border-radius: 12px; white-space: nowrap;
-        font-size: 0.82rem; font-weight: 700; text-decoration: none;
-        transition: transform 0.15s, filter 0.15s;
-      }
-      .spot-acoes a:hover { transform: translateY(-2px); filter: brightness(1.1); }
-      .spot-zap { background: linear-gradient(120deg, var(--fx1), var(--fx2)); color: #0d0b1a; }
-      .spot-ig { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16); color: #fff; }
-
-      .card.destaque {
-        border: 1px solid transparent;
-        background:
-          linear-gradient(150deg, #1d1a31, #14222a) padding-box,
-          linear-gradient(120deg, var(--fx1), var(--fx2), var(--fx3)) border-box;
-        box-shadow: 0 18px 40px -22px rgba(167,139,250,0.7);
-      }
-      .card.destaque:hover { border-color: transparent; }
-      .card.destaque .inicial { background: linear-gradient(135deg, var(--fx1), var(--fx2)); color: #0d0b1a; }
-      .card.destaque h2 { color: #fff; }
+      /* ---------- Destaque discreto: Fantin Sites ---------- */
+      /* So dentro de Contatos Bonus: borda e selo em violeta suave, sem
+         brilho nem animacao, para nao competir com os fornecedores da loja. */
+      .card.destaque { border-color: rgba(167,139,250,0.4); }
+      .card.destaque:hover { border-color: rgba(167,139,250,0.7); }
+      .card.destaque .inicial { background: rgba(167,139,250,0.25); color: #ddd6fe; }
       .card .selo-destaque {
         align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
-        padding: 4px 10px; border-radius: 999px;
-        background: rgba(167,139,250,0.18); color: #c4b5fd;
-        font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-      }
-      .grade.sem-rotulo .card.destaque .categoria { display: none; }
-      .card.destaque .zap { background: linear-gradient(120deg, var(--fx1), var(--fx2)); border: none; color: #0d0b1a; }
-
-      @media (prefers-reduced-motion: no-preference) {
-        .spotlight, .card.destaque {
-          background-size: 100% 100%, 200% 200%;
-          animation: brilho-borda 6s ease-in-out infinite alternate;
-        }
-        @keyframes brilho-borda { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 100% 50%; } }
-      }
-
-      @media (max-width: 760px) {
-        .spotlight { grid-template-columns: auto 1fr; padding: 22px 20px; gap: 16px; }
-        .spot-acoes { grid-column: 1 / -1; flex-direction: row; }
-        .spot-acoes a { flex: 1; }
-        .spot-logo { width: 52px; height: 52px; font-size: 1.2rem; border-radius: 14px; }
-        .spotlight h3 { font-size: 1.2rem; }
+        padding: 3px 9px; border-radius: 999px;
+        background: rgba(167,139,250,0.12); color: #c4b5fd;
+        font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
       }
     </style>
   </head>
@@ -810,21 +738,6 @@
         <!-- Vista 1: escolha da categoria -->
         <div id="vistaCategorias">
           <div class="categorias" id="categorias"></div>
-
-          <!-- Destaque do Fantin Sites: os dados (telefone, @) vem do proprio
-               cadastro no banco; sem o cadastro, o bloco nao aparece. -->
-          <section class="spotlight" id="spotlight" hidden aria-labelledby="spotNome">
-            <span class="spot-logo" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
-            <div>
-              <span class="spot-selo"><i class="fa-solid fa-star" aria-hidden="true"></i> Parceiro em destaque</span>
-              <h3 id="spotNome">Fantin Sites</h3>
-              <p id="spotTexto">Criação de sites e landing pages. Foi quem desenvolveu esta plataforma — quer um site assim para a sua loja?</p>
-            </div>
-            <div class="spot-acoes">
-              <a class="spot-zap" id="spotZap" target="_blank" rel="noopener" hidden><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
-              <a class="spot-ig" id="spotIg" target="_blank" rel="noopener" hidden><i class="fa-brands fa-instagram"></i> <span></span></a>
-            </div>
-          </section>
 
           <!-- Avisos de fim de lista: mesmo texto que ia no PDF, agora fixo
                na pagina, sempre depois do card de bonus. -->
@@ -1123,6 +1036,10 @@
         return nome === "fantin sites" || insta === "fantinsi";
       }
 
+      function naAbaBonus() {
+        return !campoBusca.value.trim() && ehBonus(categoriaAtiva);
+      }
+
       const toast = document.getElementById("toast");
       let toastTimer;
       function avisar(texto) {
@@ -1310,27 +1227,6 @@
         for (const c of ordenadas) criar(c, nomeExibido(c), porCategoria.get(c));
       }
 
-      function montarDestaque() {
-        const fantin = fornecedores.find(ehFantin);
-        if (!fantin) return;
-        const spot = document.getElementById("spotlight");
-        document.getElementById("spotNome").textContent = fantin.nome;
-        const zap = linkWhatsapp(fantin.telefone);
-        if (zap) {
-          const a = document.getElementById("spotZap");
-          a.href = zap + "?text=" + encodeURIComponent("Olá! Vi vocês na ListaJota e quero um orçamento de site.");
-          a.hidden = false;
-        }
-        const perfil = (fantin.instagram ?? "").replace(/^@/, "").trim();
-        if (perfil) {
-          const a = document.getElementById("spotIg");
-          a.href = "https://instagram.com/" + encodeURIComponent(perfil);
-          a.querySelector("span").textContent = "@" + perfil;
-          a.hidden = false;
-        }
-        spot.hidden = false;
-      }
-
       // Navegacao pelo hash: o botao voltar do celular volta para a grade
       // em vez de sair da pagina, e o link de uma categoria pode ser salvo.
       function irPara(categoria) {
@@ -1362,13 +1258,15 @@
       // pode virar HTML executavel dentro da pagina.
       function montarCard(f, termos = []) {
         const card = document.createElement("article");
-        const fantin = ehFantin(f);
+        // Destaque so na aba de Contatos Bonus; na busca e nos favoritos o
+        // card aparece igual aos outros.
+        const fantin = ehFantin(f) && naAbaBonus();
         card.className = "card" + (fantin ? " destaque" : "");
 
         if (fantin) {
           const selo = document.createElement("span");
           selo.className = "selo-destaque";
-          selo.innerHTML = '<i class="fa-solid fa-star" aria-hidden="true"></i> Destaque · criou esta plataforma';
+          selo.innerHTML = '<i class="fa-solid fa-code" aria-hidden="true"></i> Criou esta plataforma';
           card.appendChild(selo);
         }
 
@@ -1569,9 +1467,10 @@
           );
           return termos.every((parte) => alvo.includes(parte));
         });
-        // Fantin Sites sempre no topo de onde aparecer; favoritos logo depois
+        // Fantin Sites no topo da aba de bonus; favoritos logo depois
         // (sort estavel: o resto mantem a ordem alfabetica do banco).
-        const peso = (f) => (ehFantin(f) ? 0 : favoritos.has(chaveDe(f)) ? 1 : 2);
+        const bonus = naAbaBonus();
+        const peso = (f) => (bonus && ehFantin(f) ? 0 : favoritos.has(chaveDe(f)) ? 1 : 2);
         visiveis.sort((a, b) => peso(a) - peso(b));
 
         tituloVista.textContent = buscando
@@ -1616,7 +1515,6 @@
         estado.hidden = true;
         painel.hidden = false;
         montarCategorias();
-        montarDestaque();
         categoriaAtiva = categoriaDoHash();
         render();
         campoBusca.addEventListener("input", render);
