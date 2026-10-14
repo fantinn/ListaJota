@@ -289,6 +289,10 @@
       /* Dentro de uma categoria o título já diz qual é; o rótulo em cada
          card só repetiria. Na busca ele volta, porque ali mistura tudo. */
       .grade.sem-rotulo .card .categoria { display: none; }
+      .grade.larga { grid-template-columns: 1fr; }
+      .grade.larga .card { padding: 20px 22px; }
+      .grade.larga .card h2 { font-size: 1.05rem; }
+      .grade.larga .card .obs { font-size: 0.88rem; }
       .card .local { font-size: 0.78rem; color: rgba(242,242,242,0.5); }
       .card .obs { font-size: 0.8rem; line-height: 1.5; color: rgba(242,242,242,0.65); }
       .zap { background: rgba(37,211,102,0.14); border-color: rgba(37,211,102,0.3); color: #4ade80; }
@@ -341,11 +345,6 @@
       .info-bloco p + p { margin-top: 12px; }
       .info-bloco strong { color: #fff; font-weight: 700; }
 
-      /* Atencao: mesmo ambar do aviso de acesso obrigatorio, pra puxar o
-         olho de verdade num ponto de alerta. */
-      .info-bloco.atencao { border-color: rgba(245,158,11,0.35); }
-      .info-bloco.atencao::before { background: radial-gradient(130% 90% at 0% 0%, rgba(245,158,11,0.12), transparent 60%); }
-      .info-bloco.atencao .icone-info { color: #fbbf24; background: rgba(245,158,11,0.16); border-color: rgba(245,158,11,0.35); }
 
       /* Lista numerada: cada item com seu numero, no lugar do "1 - " solto
          no texto. Usada nas Precaucoes e nas Dicas, que tem o mesmo formato. */
@@ -1136,6 +1135,9 @@
 
         tituloVista.textContent = buscando ? "Resultados da busca" : nomeExibido(categoriaAtiva);
         grade.classList.toggle("sem-rotulo", !buscando);
+        // Contatos bonus: poucos e com descricao, entao cada card ocupa a
+        // largura toda em vez de ficar espremido numa coluna de 250px.
+        grade.classList.toggle("larga", !buscando && ehBonus(categoriaAtiva));
 
         contagem.hidden = false;
         contagem.textContent =
