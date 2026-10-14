@@ -113,16 +113,16 @@
       /* Icone como marca d'agua no canto: grande, mas quase invisivel em
          repouso, para nao competir com o nome. */
       .tile .icone {
-        position: absolute; right: -14px; bottom: -18px;
-        width: 118px; height: 118px;
+        position: absolute; right: 16px; bottom: 16px;
+        width: 56px; height: 56px;
         display: block;
-        color: rgba(255,255,255,0.16);
-        transform: rotate(-8deg);
+        color: rgba(255,255,255,0.2);
+        transform: rotate(-6deg);
         transition: color 0.25s, transform 0.25s;
         pointer-events: none;
       }
-      .tile .icone svg { width: 100%; height: 100%; display: block; stroke-width: 1.3; }
-      .tile:hover .icone { color: rgba(94,224,138,0.5); transform: rotate(-3deg) scale(1.06); }
+      .tile .icone svg { width: 100%; height: 100%; display: block; stroke-width: 1.5; }
+      .tile:hover .icone { color: var(--sky); transform: rotate(0deg) scale(1.08); }
 
       /* Diz que o retângulo leva a algum lugar. */
       .tile .seta {
@@ -156,6 +156,9 @@
       /* block, nao o inline padrao do span: inline, o nome e a contagem
          corriam na mesma linha. */
       .tile .texto { position: relative; display: block; }
+      /* Reserva o canto do icone: nome longo quebra de linha em vez de
+         passar por cima dele. */
+      .tile:not(.bonus) .texto { padding-right: 64px; }
 
       /* Os bônus fecham a grade e ganham destaque próprio. Ocupando a
          fileira inteira viram o fecho da lista, em vez de um retângulo
@@ -171,9 +174,9 @@
       .tile.bonus .seta { position: static; order: 3; margin-left: auto; }
       .tile.bonus .texto { order: 2; }
       .tile.bonus .nome { max-width: none; white-space: nowrap; }
-      .tile.bonus .icone { right: 70px; bottom: -34px; color: rgba(245,158,11,0.3); }
+      .tile.bonus .icone { right: 76px; bottom: auto; top: 50%; margin-top: -24px; width: 48px; height: 48px; color: rgba(251,191,36,0.55); }
       .tile.bonus:hover { border-color: rgba(245,158,11,0.7); box-shadow: 0 14px 28px -16px rgba(245,158,11,0.4); }
-      .tile.bonus:hover .icone { color: rgba(251,191,36,0.55); }
+      .tile.bonus:hover .icone { color: #fbbf24; }
       .tile.bonus:hover .seta { color: #1a1100; background: #fbbf24; border-color: #fbbf24; }
 
       /* Vista 2: cabeçalho da lista de contatos. */
@@ -516,11 +519,12 @@
         .categorias { grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .tile { min-height: 140px; padding: 14px; border-radius: 14px; }
         .tile .indice { top: 15px; left: 14px; font-size: 0.66rem; }
-        .tile .icone { width: 88px; height: 88px; right: -12px; bottom: -14px; }
+        .tile .icone { width: 46px; height: 46px; right: 12px; bottom: 12px; }
         .tile .seta { top: 11px; right: 11px; width: 26px; height: 26px; }
-        .tile .nome { font-size: 0.95rem; max-width: 92%; }
+        .tile .nome { font-size: 0.95rem; max-width: 100%; }
+        .tile:not(.bonus) .texto { padding-right: 54px; }
         .tile .qtd { font-size: 0.64rem; }
-        .tile.bonus .icone { right: 50px; bottom: -22px; }
+        .tile.bonus .icone { right: 56px; margin-top: -20px; width: 40px; height: 40px; }
         .cabecalho-vista { margin: 16px 0 16px; }
         .titulo-vista { font-size: 1.15rem; }
       }
