@@ -73,13 +73,13 @@
       .tile {
         position: relative; overflow: hidden;
         display: flex; flex-direction: column; justify-content: flex-end;
-        min-height: 152px; padding: 18px;
-        border-radius: 16px;
-        background: var(--darker);
+        min-height: 172px; padding: 20px;
+        border-radius: 18px;
+        background: linear-gradient(160deg, #1a1a1a, var(--darker) 55%);
         border: 1px solid rgba(255,255,255,0.09);
         color: var(--light);
         font-family: "Montserrat", sans-serif; text-align: left; cursor: pointer;
-        transition: transform 0.18s, border-color 0.18s;
+        transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
       }
       /* Brilho no canto superior, atrás do conteúdo. Discreto em repouso:
          com 9 tiles lado a lado, brilho forte em todos vira ruído. */
@@ -99,37 +99,44 @@
       /* Ícone dentro de um quadrado próprio: solto no canto ele lia como
          enfeite; emoldurado vira o marcador da categoria. */
       .tile .icone {
-        position: absolute; top: 16px; left: 18px;
+        position: absolute; top: 18px; left: 20px;
         display: inline-flex; align-items: center; justify-content: center;
-        width: 40px; height: 40px; border-radius: 11px;
-        background: rgba(0,177,64,0.14);
-        border: 1px solid rgba(0,177,64,0.24);
+        width: 48px; height: 48px; border-radius: 14px;
+        background: linear-gradient(145deg, rgba(0,177,64,0.26), rgba(0,177,64,0.08));
+        border: 1px solid rgba(0,177,64,0.3);
         color: var(--sky);
-        transition: background 0.18s, border-color 0.18s;
+        transition: background 0.18s, border-color 0.18s, transform 0.18s;
       }
-      .tile .icone svg { width: 21px; height: 21px; display: block; }
+      .tile .icone svg { width: 25px; height: 25px; display: block; }
+      .tile:hover .icone { transform: scale(1.06) rotate(-3deg); }
       .tile:hover .icone { background: rgba(0,177,64,0.26); border-color: rgba(0,177,64,0.5); }
 
       /* Diz que o retângulo leva a algum lugar. */
       .tile .seta {
-        position: absolute; top: 26px; right: 20px;
-        font-size: 0.78rem; color: rgba(242,242,242,0.22);
-        transition: transform 0.18s, color 0.18s;
+        position: absolute; top: 20px; right: 20px;
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 30px; height: 30px; border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+        font-size: 0.72rem; color: rgba(242,242,242,0.35);
+        transition: transform 0.18s, color 0.18s, background 0.18s;
       }
-      .tile:hover .seta { color: var(--sky); transform: translateX(3px); }
+      .tile:hover .seta { color: #04120a; background: var(--sky); transform: translateX(3px); }
       .tile .nome {
         position: relative; display: block;
         font-family: "Montserrat", sans-serif;
-        font-size: 1.05rem; font-weight: 700; line-height: 1.25;
+        font-size: 1.1rem; font-weight: 800; line-height: 1.25;
         /* Anula o "anywhere" global: só quebra palavra que não couber
            sozinha na linha, senão virava "Bermuda / s Street". */
         overflow-wrap: break-word;
       }
       .tile .qtd {
-        position: relative; display: block; margin-top: 6px;
-        font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-        color: rgba(242,242,242,0.45);
+        position: relative; display: inline-block; margin-top: 9px;
+        padding: 4px 10px; border-radius: 999px;
+        background: rgba(255,255,255,0.06);
+        font-size: 0.66rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+        color: rgba(242,242,242,0.6);
       }
+      .tile:hover .qtd { background: rgba(0,177,64,0.18); color: var(--sky); }
 
       /* block, nao o inline padrao do span: inline, o nome e a contagem
          corriam na mesma linha. */
@@ -144,7 +151,7 @@
         min-height: 0; padding: 20px;
         border-color: rgba(245,158,11,0.32);
       }
-      .tile.bonus .icone { position: static; width: 44px; height: 44px; }
+      .tile.bonus .icone { position: static; width: 48px; height: 48px; }
       .tile.bonus .icone svg { width: 23px; height: 23px; }
       /* order manda a seta para o fim: no DOM ela vem antes do texto, por
          causa do posicionamento absoluto dos outros tiles. */
@@ -342,13 +349,57 @@
       }
 
       .destaque {
-        display: flex; align-items: flex-start; gap: 12px;
-        padding: 14px 16px; border-radius: 12px; margin-bottom: 18px;
-        background: rgba(0,177,64,0.1); border: 1px solid rgba(0,177,64,0.35);
-        font-size: 0.82rem; line-height: 1.5; color: rgba(242,242,242,0.9);
+        display: flex; align-items: flex-start; gap: 14px;
+        padding: 16px 18px; border-radius: 14px; margin-bottom: 6px;
+        background: linear-gradient(100deg, rgba(0,177,64,0.14), rgba(0,177,64,0.04));
+        border: 1px solid rgba(0,177,64,0.3);
+        border-left: 4px solid var(--blue);
+        font-size: 0.84rem; line-height: 1.6; color: rgba(242,242,242,0.88);
       }
-      .destaque i { color: var(--sky); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+      .destaque i { color: var(--sky); font-size: 1.05rem; margin-top: 2px; flex-shrink: 0; }
       .destaque strong { color: #fff; }
+
+      /* Abertura da pagina: diz onde a pessoa esta e quanto tem a explorar
+         antes do aviso e da busca. */
+      .hero { padding: 26px 0 22px; }
+      .hero .eyebrow {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 6px 12px; border-radius: 999px; margin-bottom: 14px;
+        background: rgba(0,177,64,0.14); border: 1px solid rgba(0,177,64,0.28);
+        color: var(--sky);
+        font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      }
+      .hero h1 {
+        font-size: clamp(1.7rem, 4.6vw, 2.6rem); font-weight: 800; line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+      .hero h1 span {
+        background: linear-gradient(100deg, #5ee08a, #00b140);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent; color: transparent;
+      }
+      .hero p.sub {
+        margin-top: 10px; max-width: 560px;
+        font-size: 0.92rem; line-height: 1.6; color: rgba(242,242,242,0.6);
+      }
+      .hero .numeros { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+      .hero .numero-chip {
+        display: inline-flex; align-items: baseline; gap: 7px;
+        padding: 9px 14px; border-radius: 12px;
+        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+        font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
+        color: rgba(242,242,242,0.55);
+      }
+      .hero .numero-chip b { font-size: 1.15rem; font-weight: 800; color: #fff; letter-spacing: 0; }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .tile { animation: entrar 0.4s both; }
+        .tile:nth-child(2) { animation-delay: 0.04s; }
+        .tile:nth-child(3) { animation-delay: 0.08s; }
+        .tile:nth-child(4) { animation-delay: 0.12s; }
+        .tile:nth-child(n+5) { animation-delay: 0.16s; }
+        @keyframes entrar { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+      }
 
       /* Aviso de acesso individual, mostrado a cada entrada na area. */
       .fundo-aviso {
@@ -550,6 +601,15 @@
       </div>
 
       <div id="painel" hidden>
+        <section class="hero" id="hero">
+          <span class="eyebrow"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Fornecedores verificados</span>
+          <h1>Sua lista de <span>fornecedores</span></h1>
+          <p class="sub">Escolha uma categoria, toque no contato e a conversa abre direto no WhatsApp.</p>
+          <div class="numeros" id="heroNumeros" hidden>
+            <span class="numero-chip"><b id="heroContatos">0</b> contatos</span>
+            <span class="numero-chip"><b id="heroCategorias">0</b> categorias</span>
+          </div>
+        </section>
         <p class="destaque">
           <i class="fa-solid fa-circle-info"></i>
           <span>Ao chamar qualquer contato desta lista, avise que foi indicação da <strong>Jota Multimarcas</strong> para ter aquela atenção diferenciada dos fornecedores e dos contatos bônus.</span>
@@ -557,7 +617,7 @@
         <div class="busca-area">
           <div class="busca">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" id="busca" placeholder="Buscar por nome, categoria, cidade..." autocomplete="off" />
+            <input type="search" id="busca" placeholder="Buscar fornecedor ou categoria..." autocomplete="off" />
           </div>
         </div>
 
@@ -881,6 +941,10 @@
           porCategoria.set(f.categoria, (porCategoria.get(f.categoria) ?? 0) + 1);
         }
         if (porCategoria.size === 0) return;
+
+        document.getElementById("heroContatos").textContent = fornecedores.filter((f) => f.categoria).length;
+        document.getElementById("heroCategorias").textContent = porCategoria.size;
+        document.getElementById("heroNumeros").hidden = false;
 
         // Ordem definida no admin, com o bonus sempre por ultimo - isso nao
         // depende dos dados estarem em dia: mesmo que uma categoria fique
