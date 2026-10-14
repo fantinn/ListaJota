@@ -56,12 +56,13 @@
       }
       .busca input {
         width: 100%; padding: 15px 16px 15px 44px;
-        background: rgba(255,255,255,0.05);
+        background: rgba(255,255,255,0.06);
         border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 12px; color: var(--light);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+        border-radius: 16px; color: var(--light);
         font-family: "Montserrat", sans-serif; font-size: 0.95rem;
       }
-      .busca input:focus { outline: none; border-color: var(--blue); background: rgba(0,177,64,0.08); }
+      .busca input:focus { outline: none; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.09); }
       .busca input::placeholder { color: rgba(242,242,242,0.28); }
 
       /* Vista 1: os retângulos de categoria. */
@@ -73,70 +74,78 @@
       .tile {
         position: relative; overflow: hidden;
         display: flex; flex-direction: column; justify-content: flex-end;
-        min-height: 172px; padding: 20px;
-        border-radius: 18px;
-        background: linear-gradient(160deg, #1a1a1a, var(--darker) 55%);
-        border: 1px solid rgba(255,255,255,0.09);
+        min-height: 150px; padding: 18px;
+        border-radius: 22px;
+        /* Vidro: fundo translucido + blur do que esta atras + borda de luz
+           no topo (inset) e sombra suave embaixo. O que aparece "atras" sao
+           as manchas neutras do body::after. */
+        background: linear-gradient(155deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03) 60%);
+        -webkit-backdrop-filter: blur(22px) saturate(160%);
+        backdrop-filter: blur(22px) saturate(160%);
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.22),
+          inset 0 -1px 0 rgba(255,255,255,0.04),
+          0 10px 30px -14px rgba(0,0,0,0.7);
         color: var(--light);
         font-family: "Montserrat", sans-serif; text-align: left; cursor: pointer;
-        transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
       }
-      /* Brilho no canto superior, atrás do conteúdo. Discreto em repouso:
-         com 9 tiles lado a lado, brilho forte em todos vira ruído. */
+      /* Reflexo diagonal, so um toque: da a leitura de superficie de vidro. */
       .tile::before {
         content: "";
         position: absolute; inset: 0; pointer-events: none;
-        background: radial-gradient(120% 90% at 100% 0%, rgba(0,177,64,0.22), transparent 62%);
-        transition: opacity 0.18s; opacity: 0.5;
+        background: linear-gradient(120deg, rgba(255,255,255,0.14) 0%, transparent 38%);
+        opacity: 0.55; transition: opacity 0.2s;
       }
       .tile:hover {
-        transform: translateY(-3px); border-color: rgba(0,177,64,0.55);
-        box-shadow: 0 16px 30px -18px rgba(0,177,64,0.7);
+        transform: translateY(-3px);
+        background: linear-gradient(155deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05) 60%);
+        border-color: rgba(255,255,255,0.22);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.3),
+          0 18px 36px -16px rgba(0,0,0,0.8);
       }
-      .tile:hover::before { opacity: 1; }
-      .tile:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+      .tile:hover::before { opacity: 0.9; }
+      .tile:focus-visible { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }
 
-      /* Ícone dentro de um quadrado próprio: solto no canto ele lia como
-         enfeite; emoldurado vira o marcador da categoria. */
+      /* Ícone pequeno, em vidro também. O verde fica só no ícone ao passar
+         o mouse: em repouso a grade inteira é neutra. */
       .tile .icone {
-        position: absolute; top: 18px; left: 20px;
+        position: absolute; top: 16px; left: 18px;
         display: inline-flex; align-items: center; justify-content: center;
-        width: 48px; height: 48px; border-radius: 14px;
-        background: linear-gradient(145deg, rgba(0,177,64,0.26), rgba(0,177,64,0.08));
-        border: 1px solid rgba(0,177,64,0.3);
-        color: var(--sky);
-        transition: background 0.18s, border-color 0.18s, transform 0.18s;
+        width: 36px; height: 36px; border-radius: 11px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.14);
+        color: rgba(242,242,242,0.85);
+        transition: color 0.2s, background 0.2s, border-color 0.2s;
       }
-      .tile .icone svg { width: 25px; height: 25px; display: block; }
-      .tile:hover .icone { transform: scale(1.06) rotate(-3deg); }
-      .tile:hover .icone { background: rgba(0,177,64,0.26); border-color: rgba(0,177,64,0.5); }
+      .tile .icone svg { width: 19px; height: 19px; display: block; }
+      .tile:hover .icone { color: var(--sky); background: rgba(0,177,64,0.14); border-color: rgba(94,224,138,0.35); }
 
       /* Diz que o retângulo leva a algum lugar. */
       .tile .seta {
-        position: absolute; top: 20px; right: 20px;
+        position: absolute; top: 18px; right: 18px;
         display: inline-flex; align-items: center; justify-content: center;
-        width: 30px; height: 30px; border-radius: 50%;
-        background: rgba(255,255,255,0.05);
-        font-size: 0.72rem; color: rgba(242,242,242,0.35);
-        transition: transform 0.18s, color 0.18s, background 0.18s;
+        width: 28px; height: 28px; border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+        font-size: 0.68rem; color: rgba(242,242,242,0.4);
+        transition: transform 0.2s, color 0.2s, background 0.2s;
       }
-      .tile:hover .seta { color: #04120a; background: var(--sky); transform: translateX(3px); }
+      .tile:hover .seta { color: #fff; background: rgba(255,255,255,0.18); transform: translateX(3px); }
       .tile .nome {
         position: relative; display: block;
         font-family: "Montserrat", sans-serif;
-        font-size: 1.1rem; font-weight: 800; line-height: 1.25;
+        font-size: 1.02rem; font-weight: 700; line-height: 1.25;
         /* Anula o "anywhere" global: só quebra palavra que não couber
            sozinha na linha, senão virava "Bermuda / s Street". */
         overflow-wrap: break-word;
       }
       .tile .qtd {
-        position: relative; display: inline-block; margin-top: 9px;
-        padding: 4px 10px; border-radius: 999px;
-        background: rgba(255,255,255,0.06);
-        font-size: 0.66rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-        color: rgba(242,242,242,0.6);
+        position: relative; display: block; margin-top: 6px;
+        font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+        color: rgba(242,242,242,0.5);
       }
-      .tile:hover .qtd { background: rgba(0,177,64,0.18); color: var(--sky); }
 
       /* block, nao o inline padrao do span: inline, o nome e a contagem
          corriam na mesma linha. */
@@ -148,29 +157,30 @@
       .tile.bonus {
         grid-column: 1 / -1;
         flex-direction: row; align-items: center; justify-content: flex-start; gap: 16px;
-        min-height: 0; padding: 20px;
-        border-color: rgba(245,158,11,0.32);
+        min-height: 0; padding: 16px 18px;
+        border-color: rgba(245,158,11,0.3);
       }
-      .tile.bonus .icone { position: static; width: 48px; height: 48px; }
-      .tile.bonus .icone svg { width: 23px; height: 23px; }
+      .tile.bonus .icone { position: static; width: 38px; height: 38px; }
+      .tile.bonus .icone svg { width: 20px; height: 20px; }
       /* order manda a seta para o fim: no DOM ela vem antes do texto, por
          causa do posicionamento absoluto dos outros tiles. */
       .tile.bonus .seta { position: static; order: 3; margin-left: auto; }
       .tile.bonus .texto { order: 2; }
       /* Deitado, o brilho vem da direita, nao do topo. */
       .tile.bonus::before {
-        background: radial-gradient(60% 200% at 100% 50%, rgba(245,158,11,0.26), transparent 65%);
+        background: radial-gradient(60% 200% at 100% 50%, rgba(245,158,11,0.16), transparent 65%);
+        opacity: 1;
       }
       .tile.bonus:hover {
-        border-color: rgba(245,158,11,0.65);
-        box-shadow: 0 16px 30px -18px rgba(245,158,11,0.6);
+        border-color: rgba(245,158,11,0.55);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 18px 36px -16px rgba(245,158,11,0.35);
       }
       .tile.bonus .icone {
         color: #fbbf24;
         background: rgba(245,158,11,0.13);
         border-color: rgba(245,158,11,0.26);
       }
-      .tile.bonus:hover .icone { background: rgba(245,158,11,0.24); border-color: rgba(245,158,11,0.5); }
+      .tile.bonus:hover .icone { color: #fbbf24; background: rgba(245,158,11,0.22); border-color: rgba(245,158,11,0.5); }
       .tile.bonus:hover .seta { color: #fbbf24; }
 
       /* Vista 2: cabeçalho da lista de contatos. */
@@ -207,12 +217,14 @@
 
       .card {
         display: flex; flex-direction: column; gap: 10px;
-        padding: 14px; border-radius: 14px;
-        background: var(--darker);
-        border: 1px solid rgba(255,255,255,0.09);
+        padding: 14px; border-radius: 18px;
+        background: linear-gradient(155deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+        -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,0.11);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 8px 24px -14px rgba(0,0,0,0.7);
         transition: border-color 0.2s, transform 0.2s;
       }
-      .card:hover { border-color: rgba(0,177,64,0.45); transform: translateY(-2px); }
+      .card:hover { border-color: rgba(255,255,255,0.24); transform: translateY(-2px); }
 
       /* Linha de contato: inicial, dados e acao lado a lado. Empilhado,
          cada card tinha um nome no topo, um vazio no meio e uma barra
@@ -251,10 +263,10 @@
         flex-shrink: 0;
         display: inline-flex; align-items: center; justify-content: center;
         width: 38px; height: 38px; border-radius: 10px;
-        background: linear-gradient(140deg, rgba(0,177,64,0.3), rgba(0,177,64,0.08));
-        border: 1px solid rgba(0,177,64,0.26);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.14);
         font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.95rem;
-        color: var(--sky); text-transform: uppercase;
+        color: rgba(242,242,242,0.85); text-transform: uppercase;
       }
       .card h2 {
         font-size: 0.92rem; font-weight: 700; line-height: 1.3;
@@ -265,7 +277,7 @@
       }
       .card .categoria {
         align-self: flex-start; padding: 4px 10px; border-radius: 6px;
-        background: rgba(0,177,64,0.16); color: var(--sky);
+        background: rgba(255,255,255,0.08); color: rgba(242,242,242,0.7);
         font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
       }
       /* Dentro de uma categoria o título já diz qual é; o rótulo em cada
@@ -293,12 +305,15 @@
 
       .info-bloco {
         position: relative; overflow: hidden;
-        padding: 26px 28px; border-radius: 18px;
-        background: var(--darker); border: 1px solid rgba(255,255,255,0.09);
+        padding: 26px 28px; border-radius: 22px;
+        background: linear-gradient(155deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+        -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.11);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 30px -16px rgba(0,0,0,0.7);
       }
       .info-bloco::before {
         content: ""; position: absolute; inset: 0; pointer-events: none;
-        background: radial-gradient(130% 90% at 0% 0%, rgba(0,177,64,0.14), transparent 60%);
+        background: linear-gradient(120deg, rgba(255,255,255,0.08) 0%, transparent 35%);
       }
       .info-bloco > * { position: relative; }
 
@@ -306,8 +321,8 @@
       .info-cabecalho .icone-info {
         flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
         width: 42px; height: 42px; border-radius: 12px;
-        background: rgba(0,177,64,0.15); border: 1px solid rgba(0,177,64,0.3);
-        color: var(--sky); font-size: 1.05rem;
+        background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+        color: rgba(242,242,242,0.85); font-size: 1rem;
       }
       .info-cabecalho h3 {
         font-family: "Montserrat", sans-serif; font-size: 1.05rem; font-weight: 700; color: #fff;
@@ -318,12 +333,12 @@
         color: rgba(242,242,242,0.78);
       }
       .info-bloco p + p { margin-top: 12px; }
-      .info-bloco strong { color: var(--sky); font-weight: 700; }
+      .info-bloco strong { color: #fff; font-weight: 700; }
 
       /* Atencao: mesmo ambar do aviso de acesso obrigatorio, pra puxar o
          olho de verdade num ponto de alerta. */
       .info-bloco.atencao { border-color: rgba(245,158,11,0.35); }
-      .info-bloco.atencao::before { background: radial-gradient(130% 90% at 0% 0%, rgba(245,158,11,0.16), transparent 60%); }
+      .info-bloco.atencao::before { background: radial-gradient(130% 90% at 0% 0%, rgba(245,158,11,0.12), transparent 60%); }
       .info-bloco.atencao .icone-info { color: #fbbf24; background: rgba(245,158,11,0.16); border-color: rgba(245,158,11,0.35); }
 
       /* Lista numerada: cada item com seu numero, no lugar do "1 - " solto
@@ -334,8 +349,8 @@
         flex-shrink: 0; margin-top: 1px;
         display: inline-flex; align-items: center; justify-content: center;
         width: 24px; height: 24px; border-radius: 50%;
-        background: rgba(0,177,64,0.15); border: 1px solid rgba(0,177,64,0.32);
-        color: var(--sky); font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.72rem;
+        background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16);
+        color: rgba(242,242,242,0.85); font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 0.72rem;
       }
       .item-numerado p {
         margin: 0; font-size: 0.8rem; line-height: 1.6;
@@ -350,33 +365,44 @@
 
       .destaque {
         display: flex; align-items: flex-start; gap: 14px;
-        padding: 16px 18px; border-radius: 14px; margin-bottom: 6px;
-        background: linear-gradient(100deg, rgba(0,177,64,0.14), rgba(0,177,64,0.04));
-        border: 1px solid rgba(0,177,64,0.3);
-        border-left: 4px solid var(--blue);
-        font-size: 0.84rem; line-height: 1.6; color: rgba(242,242,242,0.88);
+        padding: 15px 18px; border-radius: 18px; margin-bottom: 6px;
+        background: linear-gradient(155deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+        -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,0.11);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+        font-size: 0.83rem; line-height: 1.6; color: rgba(242,242,242,0.8);
       }
-      .destaque i { color: var(--sky); font-size: 1.05rem; margin-top: 2px; flex-shrink: 0; }
+      .destaque i { color: rgba(242,242,242,0.6); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
       .destaque strong { color: #fff; }
 
       /* Abertura da pagina: diz onde a pessoa esta e quanto tem a explorar
          antes do aviso e da busca. */
+      /* Manchas de luz fixas atras de tudo: sem nada para desfocar, o vidro
+         dos cards nao tem o que mostrar. Neutras (azul-acinzentado e quente),
+         de proposito sem verde - o verde fica so nos detalhes. */
+      body::after {
+        content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background:
+          radial-gradient(40% 35% at 12% 18%, rgba(120,140,200,0.20), transparent 70%),
+          radial-gradient(38% 34% at 88% 30%, rgba(200,170,150,0.14), transparent 70%),
+          radial-gradient(45% 40% at 55% 85%, rgba(110,130,190,0.16), transparent 70%);
+      }
+
       .hero { padding: 26px 0 22px; }
       .hero .eyebrow {
         display: inline-flex; align-items: center; gap: 8px;
         padding: 6px 12px; border-radius: 999px; margin-bottom: 14px;
-        background: rgba(0,177,64,0.14); border: 1px solid rgba(0,177,64,0.28);
-        color: var(--sky);
-        font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+        background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(242,242,242,0.75);
+        font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
       }
+      .hero .eyebrow i { color: var(--sky); }
       .hero h1 {
         font-size: clamp(1.7rem, 4.6vw, 2.6rem); font-weight: 800; line-height: 1.1;
         letter-spacing: -0.02em;
       }
       .hero h1 span {
-        background: linear-gradient(100deg, #5ee08a, #00b140);
-        -webkit-background-clip: text; background-clip: text;
-        -webkit-text-fill-color: transparent; color: transparent;
+        color: rgba(242,242,242,0.55); font-weight: 600;
       }
       .hero p.sub {
         margin-top: 10px; max-width: 560px;
@@ -386,7 +412,9 @@
       .hero .numero-chip {
         display: inline-flex; align-items: baseline; gap: 7px;
         padding: 9px 14px; border-radius: 12px;
-        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+        -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
         font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
         color: rgba(242,242,242,0.55);
       }
@@ -525,12 +553,12 @@
         /* Duas colunas: em coluna única só cabiam ~2 categorias na tela e
            os bônus ficavam a nove rolagens de distância. */
         .categorias { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .tile { min-height: 132px; padding: 15px; border-radius: 14px; }
-        .tile .icone { top: 13px; left: 15px; width: 34px; height: 34px; border-radius: 9px; }
-        .tile .icone svg { width: 18px; height: 18px; }
-        .tile .seta { top: 20px; right: 15px; font-size: 0.7rem; }
+        .tile { min-height: 128px; padding: 14px; border-radius: 18px; }
+        .tile .icone { top: 12px; left: 14px; width: 32px; height: 32px; border-radius: 10px; }
+        .tile .icone svg { width: 17px; height: 17px; }
+        .tile .seta { top: 14px; right: 14px; width: 26px; height: 26px; }
         .tile .nome { font-size: 0.92rem; }
-        .tile .qtd { font-size: 0.66rem; }
+        .tile .qtd { font-size: 0.64rem; }
         .cabecalho-vista { margin: 16px 0 16px; }
         .titulo-vista { font-size: 1.15rem; }
       }
