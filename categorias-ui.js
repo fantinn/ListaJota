@@ -32,11 +32,11 @@ export const DESENHOS = {
     ["path", "M12 2.5 V21.5 M3.8 7.2 L20.2 16.8 M20.2 7.2 L3.8 16.8"],
     ["path", "M9.2 4.6 L12 6.8 L14.8 4.6 M9.2 19.4 L12 17.2 L14.8 19.4"],
   ],
-  // Bola
+  // Camisa de time (fill = massa translucida do desenho, path = tracos)
   "camisas de time": [
-    ["circle", 12, 12, 9],
-    ["path", "M12 7 L16 9.9 L14.5 14.6 H9.5 L8 9.9 Z"],
-    ["path", "M12 7 V3 M16 9.9 L19.8 8.7 M14.5 14.6 L17 18 M9.5 14.6 L7 18 M8 9.9 L4.2 8.7"],
+    ["fill", "M8 3.5 L3 6.5 L5.2 10.5 L7.5 9.5 V20.5 H16.5 V9.5 L18.8 10.5 L21 6.5 L16 3.5 C15.2 5.2 8.8 5.2 8 3.5 Z"],
+    ["path", "M8 3.5 L3 6.5 L5.2 10.5 L7.5 9.5 V20.5 H16.5 V9.5 L18.8 10.5 L21 6.5 L16 3.5 C15.2 5.2 8.8 5.2 8 3.5 Z"],
+    ["path", "M7.5 14 H16.5"],
   ],
   // Tenis de perfil. A sola em barra e o que faz ler como calcado: sem ela o
   // desenho vira uma cunha sem significado.
@@ -62,45 +62,54 @@ export const DESENHOS = {
     ["path", "M7 2.8 H17 L18 21.2 H13.8 L12 11.4 L10.2 21.2 H6 Z"],
     ["path", "M7.1 6.4 H16.9"],
   ],
-  // Coroa (mesmo desenho de "pecas de grife")
-  "grifes & multimarcas": [["path", "M3.5 18.5 L5 7 L9.5 11.5 L12 5 L14.5 11.5 L19 7 L20.5 18.5 Z"], ["path", "M3.5 18.5 H20.5"]],
-  // Camiseta (mesmo desenho de "camisas/bermudas street")
-  "streetwear": [
-    ["path", "M8.5 3 L4.5 5 L2.5 9 L5.5 10.8 V21 H18.5 V10.8 L21.5 9 L19.5 5 L15.5 3"],
-    ["path", "M8.5 3 C9.6 5.9 14.4 5.9 15.5 3"],
+  // Coroa
+  "grifes & multimarcas": [
+    ["fill", "M3.5 18 L5 7.5 L9.5 12 L12 5 L14.5 12 L19 7.5 L20.5 18 Z"],
+    ["path", "M3.5 18 L5 7.5 L9.5 12 L12 5 L14.5 12 L19 7.5 L20.5 18 Z"],
+    ["path", "M3.5 21 H20.5"],
   ],
-  // Tenis (mesmo desenho de "calcados")
+  // Moletom
+  "streetwear": [
+    ["fill", "M9 3.5 C9.3 5.3 10.5 6.3 12 6.3 C13.5 6.3 14.7 5.3 15 3.5 L19.5 5.5 L22 10.5 L19.2 12 V20.5 H4.8 V12 L2 10.5 L4.5 5.5 Z"],
+    ["path", "M9 3.5 C9.3 5.3 10.5 6.3 12 6.3 C13.5 6.3 14.7 5.3 15 3.5 L19.5 5.5 L22 10.5 L19.2 12 V20.5 H4.8 V12 L2 10.5 L4.5 5.5 Z"],
+    ["path", "M10.5 7 V10.5 M13.5 7 V10.5 M8.5 16 H15.5"],
+  ],
+  // Tenis
   "tenis & calcados": [
+    ["fill", "M4.3 16.9 V11.3 C4.3 10.5 4.9 9.9 5.7 9.9 H8.3 C8.8 9.9 9.3 10.2 9.5 10.6 L10.7 12.9 C11 13.4 11.5 13.8 12.1 13.9 L17.7 15.2 C18.9 15.5 19.8 16 20.3 16.9 Z"],
+    ["path", "M4.3 16.9 V11.3 C4.3 10.5 4.9 9.9 5.7 9.9 H8.3 C8.8 9.9 9.3 10.2 9.5 10.6 L10.7 12.9 C11 13.4 11.5 13.8 12.1 13.9 L17.7 15.2 C18.9 15.5 19.8 16 20.3 16.9 Z"],
     ["path", "M2.6 16.9 H21.4 C21.4 18.4 20.2 19.5 18.7 19.5 H5.3 C3.8 19.5 2.6 18.4 2.6 16.9 Z"],
-    ["path", "M4.3 16.9 V11.3 C4.3 10.5 4.9 9.9 5.7 9.9 H8.3 C8.8 9.9 9.3 10.2 9.5 10.6 L10.7 12.9 C11 13.4 11.5 13.8 12.1 13.9 L17.7 15.2 C18.9 15.5 19.8 16 20.3 16.9"],
     ["path", "M6.6 12.7 H9.2"],
   ],
-  // Onda
+  // Prancha de surf
   "surf originais": [
-    ["path", "M2.5 17 C5 17 5.5 14.5 8 14.5 C10.5 14.5 11 17 13.5 17 C16 17 16.5 14.5 19 14.5 C20.2 14.5 21 15 21.5 15.5"],
-    ["path", "M2.5 21 C5 21 5.5 18.5 8 18.5 C10.5 18.5 11 21 13.5 21 C16 21 16.5 18.5 19 18.5 C20.2 18.5 21 19 21.5 19.5"],
-    ["path", "M3 12.5 C3 7.5 7 4 13 3.5 C11.2 5 10.8 6.8 11.5 8.6 C12.2 10.4 14 11.4 16.2 11.5"],
+    ["fill", "M19.5 4.5 C14 4.8 7.5 9.5 4.5 19.5 C14.5 16.5 19.2 10 19.5 4.5 Z"],
+    ["path", "M19.5 4.5 C14 4.8 7.5 9.5 4.5 19.5 C14.5 16.5 19.2 10 19.5 4.5 Z"],
+    ["path", "M17 7 L7.5 16.5"],
   ],
   // Raio
   "dry fit & confeccao": [
+    ["fill", "M13.5 2.5 L5 13.5 H11 L10 21.5 L19 10 H12.8 Z"],
     ["path", "M13.5 2.5 L5 13.5 H11 L10 21.5 L19 10 H12.8 Z"],
   ],
-  // Relogio
+  // Diamante
   "acessorios, joias & relogios": [
-    ["circle", 12, 12, 5.5],
-    ["path", "M12 9.3 V12 L13.8 13.2"],
-    ["path", "M9.2 6.6 L9.9 2.8 H14.1 L14.8 6.6 M9.2 17.4 L9.9 21.2 H14.1 L14.8 17.4"],
+    ["fill", "M6.5 4 H17.5 L21.5 9.5 H2.5 Z"],
+    ["path", "M6.5 4 H17.5 L21.5 9.5 L12 20.5 L2.5 9.5 Z"],
+    ["path", "M2.5 9.5 H21.5 M9.5 9.5 L12 20.5 L14.5 9.5 M9 4 L9.5 9.5 M15 4 L14.5 9.5"],
   ],
   // Presente
   "brindes & personalizados": [
-    ["path", "M3.5 9.5 H20.5 V21 H3.5 Z"],
-    ["path", "M2.5 9.5 H21.5 V6.5 H2.5 Z"],
-    ["path", "M12 6.5 V21"],
-    ["path", "M12 6.5 C12 6.5 9 6.5 8.2 5 C7.4 3.5 8.6 2.2 10 2.8 C11.6 3.4 12 6.5 12 6.5 Z"],
-    ["path", "M12 6.5 C12 6.5 15 6.5 15.8 5 C16.6 3.5 15.4 2.2 14 2.8 C12.4 3.4 12 6.5 12 6.5 Z"],
+    ["fill", "M3 8 H21 V12 H3 Z"],
+    ["path", "M3 8 H21 V12 H3 Z"],
+    ["path", "M4.5 12 V21 H19.5 V12"],
+    ["path", "M12 8 V21"],
+    ["path", "M12 8 C12 8 9 8 8.2 6.3 C7.4 4.7 8.6 3.3 10 3.9 C11.6 4.6 12 8 12 8 Z"],
+    ["path", "M12 8 C12 8 15 8 15.8 6.3 C16.6 4.7 15.4 3.3 14 3.9 C12.4 4.6 12 8 12 8 Z"],
   ],
   // Estrela
   "contatos bonus": [
+    ["fill", "M12 2.8 L14.8 8.7 L21.2 9.6 L16.6 14.2 L17.7 20.6 L12 17.6 L6.3 20.6 L7.4 14.2 L2.8 9.6 L9.2 8.7 Z"],
     ["path", "M12 2.8 L14.8 8.7 L21.2 9.6 L16.6 14.2 L17.7 20.6 L12 17.6 L6.3 20.6 L7.4 14.2 L2.8 9.6 L9.2 8.7 Z"],
   ],
 };
@@ -134,6 +143,12 @@ export function montarIcone(categoria) {
     } else {
       const p = document.createElementNS(SVG_NS, "path");
       p.setAttribute("d", forma[1]);
+      // "fill": massa translucida atras dos tracos (duotone minimalista).
+      if (forma[0] === "fill") {
+        p.setAttribute("fill", "currentColor");
+        p.setAttribute("fill-opacity", "0.22");
+        p.setAttribute("stroke", "none");
+      }
       svg.appendChild(p);
     }
   }
