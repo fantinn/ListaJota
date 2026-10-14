@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#141516" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2300b140'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='900' font-size='19' text-anchor='middle' fill='%2304120a'%3EJ%3C/text%3E%3C/svg%3E" />
     <title>Minha lista de fornecedores</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -360,8 +362,11 @@
         font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
       }
       .hero .eyebrow i { color: var(--sky); }
+      /* O subtitulo acompanha o tamanho do titulo (mesma escala) para as
+         duas linhas terem a mesma largura em qualquer tela. */
+      .hero { --titulo: clamp(1.25rem, 6.4vw, 2.6rem); }
       .hero h1 {
-        font-size: clamp(1.7rem, 4.6vw, 2.6rem); font-weight: 800; line-height: 1.1;
+        font-size: var(--titulo); font-weight: 800; line-height: 1.1;
         letter-spacing: -0.02em;
       }
       .hero h1 span {
@@ -370,8 +375,8 @@
         -webkit-text-fill-color: transparent; color: transparent;
       }
       .hero p.sub {
-        margin-top: 10px; max-width: 560px;
-        font-size: 0.92rem; line-height: 1.6; color: rgba(242,242,242,0.78);
+        margin-top: 10px; white-space: nowrap;
+        font-size: calc(var(--titulo) * 0.52); line-height: 1.6; color: rgba(242,242,242,0.72);
       }
       .hero .numeros { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
       .hero .numero-chip {
@@ -524,6 +529,9 @@
         .tile:not(.bonus) .texto { padding-right: 54px; }
         .tile .qtd { font-size: 0.64rem; }
         .tile.bonus .icone { right: 56px; margin-top: -20px; width: 40px; height: 40px; }
+
+        .tile .nome { font-size: 0.92rem; }
+        .tile { min-height: 128px; }
         .cabecalho-vista { margin: 16px 0 16px; }
         .titulo-vista { font-size: 1.15rem; }
       }
@@ -616,7 +624,7 @@
       /* Tile de favoritos: abre a grade, em rosa para nao confundir com o verde
          das categorias nem com o dourado do bonus. */
       .tile.favoritos { border-color: rgba(236,72,153,0.35); }
-      .tile.favoritos .icone { display: flex; align-items: center; justify-content: center; color: rgba(244,114,182,0.45); font-size: 46px; }
+      .tile.favoritos .icone { display: flex; align-items: center; justify-content: center; color: rgba(244,114,182,0.28); font-size: 46px; }
       .tile.favoritos:hover { border-color: rgba(236,72,153,0.75); box-shadow: 0 14px 28px -16px rgba(236,72,153,0.45); }
       .tile.favoritos:hover .icone, .tile.favoritos:hover .indice { color: #f472b6; }
       .tile.favoritos:hover .seta { background: #f472b6; border-color: #f472b6; color: #1a0410; }
@@ -634,6 +642,49 @@
       }
       .toast.visivel { opacity: 1; transform: translate(-50%, 0); }
       .toast i { color: var(--blue); }
+
+      .card .chamado {
+        display: flex; align-items: center; gap: 6px; margin-top: 5px;
+        font-size: 0.7rem; font-weight: 600; color: rgba(94,224,138,0.8);
+      }
+      .card .chamado i { font-size: 0.66rem; }
+
+      .voltar-topo {
+        position: fixed; right: 18px; bottom: 22px; z-index: 110;
+        width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: rgba(31,32,34,0.92); border: 1px solid rgba(255,255,255,0.16);
+        color: #fff; backdrop-filter: blur(8px);
+        box-shadow: 0 10px 24px -10px rgba(0,0,0,0.9);
+        opacity: 0; transform: translateY(12px); pointer-events: none;
+        transition: opacity 0.2s, transform 0.2s, background 0.15s;
+      }
+      .voltar-topo.visivel { opacity: 1; transform: none; pointer-events: auto; }
+      .voltar-topo:hover { background: var(--blue); border-color: var(--blue); }
+      .voltar-topo:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+
+      @media (prefers-reduced-motion: no-preference) {
+        /* Na busca nao: a lista refaz a cada tecla e ficaria piscando. */
+        .grade:not(.buscando) .card { animation: entrar 0.3s both; }
+      }
+
+      /* Icone no alto, no lugar do numero de ordem: no canto de baixo ele
+         roubava a largura do nome e "Multimarcas" quebrava no meio. Assim
+         o nome usa a largura toda do card em qualquer tela. */
+      .tile:not(.bonus) .indice { display: none; }
+      .tile:not(.bonus) .icone {
+        top: 20px; left: 20px; right: auto; bottom: auto;
+        width: 36px; height: 36px; transform: none;
+        color: rgba(255,255,255,0.4);
+      }
+      .tile:not(.bonus):hover .icone { transform: scale(1.08); }
+      .tile:not(.bonus) .texto { padding-right: 0; }
+      .tile .nome { max-width: none; }
+      .categorias .tile.favoritos .icone { font-size: 30px; color: rgba(244,114,182,0.6); }
+      @media (max-width: 640px) {
+        .tile:not(.bonus) .icone { top: 14px; left: 14px; width: 30px; height: 30px; }
+        .categorias .tile.favoritos .icone { font-size: 26px; }
+      }
 
       /* ---------- Destaque discreto: Fantin Sites ---------- */
       /* So dentro de Contatos Bonus: borda e selo em violeta suave, sem
@@ -717,7 +768,7 @@
         <section class="hero" id="hero">
           <span class="eyebrow"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Fornecedores verificados</span>
           <h1>Sua lista de <span>fornecedores</span></h1>
-          <p class="sub">Escolha uma categoria, toque no contato e a conversa abre direto no WhatsApp.</p>
+          <p class="sub">Escolha a categoria e chame direto no WhatsApp.</p>
           <div class="numeros" id="heroNumeros" hidden>
             <span class="numero-chip"><b id="heroContatos">0</b> contatos</span>
             <span class="numero-chip"><b id="heroCategorias">0</b> categorias</span>
@@ -808,6 +859,10 @@
         <p class="aviso">Lista de uso pessoal e intransferível, vinculada ao seu e-mail de compra.</p>
       </div>
     </div>
+
+    <button class="voltar-topo" id="voltarTopo" type="button" aria-label="Voltar ao topo">
+      <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
 
     <div class="toast" id="toast" role="status" aria-live="polite"><i class="fa-solid fa-circle-check"></i> <span></span></div>
 
@@ -1028,6 +1083,27 @@
         try { localStorage.setItem(CHAVE_FAV, JSON.stringify([...favoritos])); } catch {}
       }
 
+      // Quem ja foi chamado no WhatsApp (e quando): ajuda o lojista a lembrar
+      // com quem ja falou. Tambem so neste navegador.
+      const CHAVE_CHAMADOS = "listajota:chamados:" + user.id;
+      let chamados = {};
+      try { chamados = JSON.parse(localStorage.getItem(CHAVE_CHAMADOS) ?? "{}") ?? {}; } catch {}
+      function registrarChamado(f) {
+        chamados[chaveDe(f)] = new Date().toISOString();
+        try { localStorage.setItem(CHAVE_CHAMADOS, JSON.stringify(chamados)); } catch {}
+      }
+      function textoChamado(f) {
+        const quando = chamados[chaveDe(f)];
+        if (!quando) return "";
+        const d = new Date(quando);
+        const hoje = new Date();
+        const ontem = new Date(hoje); ontem.setDate(hoje.getDate() - 1);
+        const mesmoDia = (a, b) => a.toDateString() === b.toDateString();
+        if (mesmoDia(d, hoje)) return "Você chamou hoje";
+        if (mesmoDia(d, ontem)) return "Você chamou ontem";
+        return "Você chamou em " + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+      }
+
       // Fantin Sites (quem fez a plataforma) ganha destaque proprio. Confere
       // por nome ou @, para continuar valendo se um dos dois mudar no admin.
       function ehFantin(f) {
@@ -1235,12 +1311,17 @@
           history.pushState(null, "", novo || location.pathname + location.search);
         }
         aplicarCategoria(categoria);
-        window.scrollTo({ top: 0, behavior: "smooth" });
       }
+      // Ao voltar para a grade, devolve a pessoa ao ponto onde estava, em
+      // vez de jogar para o topo e obrigar a rolar de novo ate os bonus.
+      let posicaoGrade = 0;
       function aplicarCategoria(categoria) {
+        const estavaNaGrade = !categoriaAtiva && !campoBusca.value.trim();
+        if (estavaNaGrade && categoria) posicaoGrade = window.scrollY;
         categoriaAtiva = categoria;
         campoBusca.value = "";
         render();
+        window.scrollTo({ top: categoria ? 0 : posicaoGrade });
       }
       function categoriaDoHash() {
         let c = "";
@@ -1394,8 +1475,27 @@
           icone.className = "fa-brands fa-whatsapp";
           icone.setAttribute("aria-hidden", "true");
           a.appendChild(icone);
+          a.addEventListener("click", () => {
+            registrarChamado(f);
+            pintarChamado();
+          });
           acoes.appendChild(a);
         }
+
+        const chamado = document.createElement("p");
+        chamado.className = "chamado";
+        const pintarChamado = () => {
+          const t = textoChamado(f);
+          chamado.hidden = !t;
+          chamado.replaceChildren();
+          if (!t) return;
+          const i = document.createElement("i");
+          i.className = "fa-solid fa-check-double";
+          i.setAttribute("aria-hidden", "true");
+          chamado.append(i, t);
+        };
+        pintarChamado();
+        dados.appendChild(chamado);
 
         topo.append(inicial, dados);
         if (acoes.children.length > 0) topo.appendChild(acoes);
@@ -1477,6 +1577,7 @@
           ? `Resultados para “${campoBusca.value.trim()}”`
           : categoriaAtiva === FAVORITOS ? "Meus favoritos" : nomeExibido(categoriaAtiva);
         grade.classList.toggle("sem-rotulo", !buscando && categoriaAtiva !== FAVORITOS);
+        grade.classList.toggle("buscando", buscando);
         // Contatos bonus: poucos e com descricao, entao cada card ocupa a
         // largura toda em vez de ficar espremido numa coluna de 250px.
         grade.classList.toggle("larga", !buscando && ehBonus(categoriaAtiva));
@@ -1490,16 +1591,23 @@
         if (visiveis.length === 0) {
           const vazio = document.createElement("div");
           vazio.className = "vazio";
+          // Mensagem conforme o motivo: busca sem resultado ou favoritos vazios.
+          const semFavoritos = !buscando && categoriaAtiva === FAVORITOS;
           const icone = document.createElement("i");
-          icone.className = "fa-solid fa-magnifying-glass";
+          icone.className = semFavoritos ? "fa-regular fa-heart" : "fa-solid fa-magnifying-glass";
           icone.setAttribute("aria-hidden", "true");
           const txt = document.createElement("p");
-          txt.textContent = "Nenhum fornecedor encontrado. Tente outra palavra ou o nome da cidade.";
+          txt.textContent = semFavoritos
+            ? "Você ainda não tem favoritos. Toque no coração de um contato para guardá-lo aqui."
+            : "Nenhum fornecedor encontrado. Tente outra palavra ou o nome da categoria.";
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-ghost";
-          btn.textContent = "Limpar busca";
-          btn.addEventListener("click", () => { campoBusca.value = ""; render(); campoBusca.focus(); });
+          btn.textContent = semFavoritos ? "Ver categorias" : "Limpar busca";
+          btn.addEventListener("click", () => {
+            if (semFavoritos) { voltarParaCategorias(); return; }
+            campoBusca.value = ""; render(); campoBusca.focus();
+          });
           vazio.append(icone, txt, btn);
           grade.appendChild(vazio);
           return;
@@ -1518,6 +1626,16 @@
         categoriaAtiva = categoriaDoHash();
         render();
         campoBusca.addEventListener("input", render);
+        // Enter fecha o teclado do celular para os resultados aparecerem.
+        campoBusca.addEventListener("keydown", (evento) => {
+          if (evento.key === "Enter") campoBusca.blur();
+        });
+
+        // Botao de voltar ao topo, so depois de rolar bastante.
+        const topoBtn = document.getElementById("voltarTopo");
+        const mostrarTopo = () => topoBtn.classList.toggle("visivel", window.scrollY > 700);
+        window.addEventListener("scroll", mostrarTopo, { passive: true });
+        topoBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
         document.getElementById("voltar").addEventListener("click", voltarParaCategorias);
         limparBusca.addEventListener("click", () => {
           campoBusca.value = "";
