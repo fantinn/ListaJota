@@ -85,8 +85,27 @@
 
       form .btn-blue { width: 100%; margin-top: 6px; }
 
+      .liberar {
+        display: flex; align-items: center; gap: 14px;
+        margin-top: 22px; padding: 14px 16px; border-radius: 14px;
+        background: rgba(0,177,64,0.1); border: 1px solid rgba(0,177,64,0.35);
+        color: #fff; text-decoration: none;
+        transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      }
+      .liberar:hover { background: rgba(0,177,64,0.18); border-color: rgba(94,224,138,0.6); transform: translateY(-1px); }
+      .liberar:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+      .liberar-icone {
+        flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: var(--blue); color: #fff; font-size: 0.95rem;
+      }
+      .liberar-texto { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+      .liberar-texto strong { font-size: 0.86rem; font-weight: 700; }
+      .liberar-texto small { font-size: 0.74rem; color: rgba(242,242,242,0.7); }
+      .liberar > i { color: var(--sky); font-size: 0.8rem; }
+
       .ajuda {
-        margin-top: 26px; padding-top: 22px;
+        margin-top: 22px; padding-top: 22px;
         border-top: 1px solid rgba(255,255,255,0.08);
         text-align: center; font-size: 0.76rem; line-height: 1.6;
       }
@@ -110,7 +129,7 @@
       <div class="brand"><a class="marca" href="index.html" aria-label="ListaJota - página inicial"><span class="marca-j">J</span><span class="marca-txt">Lista<strong>Jota</strong></span></a></div>
 
       <h1>Área do comprador</h1>
-      <p class="subtitle">Entre com o e-mail que você usou na compra e a senha que enviamos junto com a confirmação.</p>
+      <p class="subtitle">Entre com o e-mail que você usou na compra e a senha que você criou ao liberar o acesso.</p>
 
       <div class="erro" id="erro">
         <i class="fa-solid fa-triangle-exclamation" style="margin-top:2px;"></i>
@@ -134,6 +153,17 @@
           <i class="fa-solid fa-lock-open"></i> Acessar a lista
         </button>
       </form>
+
+      <!-- Quem pagou (principalmente no PIX, fechando a aba antes do
+           redirecionamento) cai aqui sem ter criado a senha ainda. -->
+      <a class="liberar" href="ativar.html">
+        <span class="liberar-icone"><i class="fa-solid fa-key" aria-hidden="true"></i></span>
+        <span class="liberar-texto">
+          <strong>Acabou de comprar?</strong>
+          <small>Liberar meu acesso e criar a senha</small>
+        </span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
 
       <div class="ajuda">
         <p class="text-faint">Perdeu a senha ou não recebeu o acesso?</p>
@@ -194,7 +224,7 @@
 
         if (error) {
           // Mensagem unica de proposito: nao revela se o e-mail existe.
-          mostrarErro("E-mail ou senha inválidos. Confira os dados que enviamos na confirmação da compra.");
+          mostrarErro("E-mail ou senha inválidos. Se você acabou de comprar e ainda não criou sua senha, use o botão “Liberar meu acesso” abaixo.");
           botao.disabled = false;
           botao.innerHTML = '<i class="fa-solid fa-lock-open"></i> Acessar a lista';
           return;
